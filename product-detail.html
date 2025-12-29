@@ -34,14 +34,18 @@
 
             <div class="nav-links">
                 <a href="index.html" class="nav-link">Home</a>
-                <a href="index.html#products" class="nav-link active">Shop</a>
+                <a href="shop.html" class="nav-link active">Shop</a>
                 <a href="#" class="nav-link">Features</a>
                 <a href="#" class="nav-link">Blog</a>
                 <a href="#" class="nav-link">About</a>
             </div>
 
             <div class="nav-actions">
-                <a href="cart.html" class="cart-btn">
+                <a href="wishlist.html" class="wishlist-btn nav-icon">
+                    <i class="far fa-heart"></i>
+                    <span class="wishlist-count">0</span>
+                </a>
+                <a href="cart.html" class="cart-btn nav-icon">
                     <i class="fas fa-shopping-bag"></i>
                     <span class="cart-count">0</span>
                 </a>
@@ -53,12 +57,11 @@
     <main class="container pdp-main">
         <div class="breadcrumb">
             <a href="index.html">Home</a> <i class="fas fa-chevron-right"></i>
-            <a href="index.html#products">Shop</a> <i class="fas fa-chevron-right"></i>
+            <a href="shop.html">Shop</a> <i class="fas fa-chevron-right"></i>
             <span id="breadcrumb-product-name">Product</span>
         </div>
 
         <div class="pdp-grid" id="pdp-content">
-            <!-- Product details injected here -->
             <div class="pdp-image-section">
                 <div class="main-image-card">
                     <img id="pdp-image" src="" alt="">
@@ -80,12 +83,15 @@
 
                 <div class="pdp-options">
                     <div class="option-group">
+                        <label>Color</label>
+                        <div class="color-swatches" id="pdp-colors">
+                            <!-- Color swatches injected here -->
+                        </div>
+                    </div>
+                    <div class="option-group">
                         <label>Size</label>
-                        <div class="size-chips">
-                            <span class="chip">S</span>
-                            <span class="chip active">M</span>
-                            <span class="chip">L</span>
-                            <span class="chip">XL</span>
+                        <div class="size-chips" id="pdp-sizes">
+                            <!-- Size chips injected here -->
                         </div>
                     </div>
                 </div>
@@ -93,11 +99,14 @@
                 <div class="pdp-actions">
                     <div class="qty-input">
                         <button class="qty-btn" id="pdp-qty-minus">-</button>
-                        <input type="number" id="pdp-qty" value="1" min="1">
+                        <input type="number" id="pdp-qty" value="1" min="1" readonly>
                         <button class="qty-btn" id="pdp-qty-plus">+</button>
                     </div>
                     <button class="btn btn-primary btn-lg" id="pdp-add-to-cart">
                         <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                    <button class="btn-wishlist-pdp" id="pdp-wishlist-btn" title="Add to Wishlist">
+                        <i class="far fa-heart"></i>
                     </button>
                 </div>
 
@@ -128,19 +137,8 @@
     <!-- Scripts -->
     <script src="js/products.js"></script>
     <script src="js/cart.js"></script>
+    <script src="js/wishlist.js"></script>
     <script src="js/main.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const productId = urlParams.get('id');
-
-            if (productId) {
-                renderPDP(productId);
-            } else {
-                window.location.href = 'index.html';
-            }
-        });
-    </script>
 </body>
 
 </html>

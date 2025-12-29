@@ -14,7 +14,7 @@ function showToast(message) {
     }, 3000);
 }
 
-// Render Products (Index Page)
+// Render Products (Shop Page)
 function renderProducts(filterCategory = 'all', sortType = 'default', searchQuery = '') {
     const container = document.getElementById('products-container');
     const categoryTitle = document.getElementById('category-title');
@@ -50,9 +50,9 @@ function renderProducts(filterCategory = 'all', sortType = 'default', searchQuer
                     <img src="${product.image}" alt="${product.name}">
                 </a>
                 <div class="product-overlay">
-                    <a href="product-detail.html?id=${product.id}" class="btn-icon" title="View Details">
-                        <i class="fas fa-eye"></i>
-                    </a>
+                    <button class="btn-icon btn-wishlist ${wishlist.isInWishlist(product.id) ? 'active' : ''}" data-id="${product.id}" onclick="wishlist.toggleItem('${product.id}')" title="Add to Wishlist">
+                        <i class="${wishlist.isInWishlist(product.id) ? 'fas' : 'far'} fa-heart"></i>
+                    </button>
                     <button class="btn-icon" onclick="cart.addItem('${product.id}')" title="Add to Cart">
                         <i class="fas fa-shopping-cart"></i>
                     </button>
@@ -88,41 +88,98 @@ function renderPDP(productId) {
     document.getElementById('pdp-image').src = product.image;
     document.getElementById('pdp-image').alt = product.name;
 
+    // Render Colors
+    const colorContainer = document.querySelector('.color-swatches');
+    if (colorContainer && product.colors) {
+        colorContainer.innerHTML = product.colors.map((color, index) => `
+            <div class="swatch ${index === 0 ? 'active' : ''}" style="background-color: ${color}" data-color="${color}"></div>
+        `).join('');
+
+        document.querySelectorAll('.swatch').forEach(sw => {
+            sw.onclick = () => {
+                document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+                sw.classList.add('active');
+            };
+        });
+    }
+
+    // Render Sizes
+    const sizeContainer = document.querySelector('.size-chips');
+    if (sizeContainer && product.sizes) {
+        sizeContainer.innerHTML = product.sizes.map((size, index) => `
+            <span class="chip ${index === 0 ? 'active' : ''}">${size}</span>
+        `).join('');
+
+        document.querySelectorAll('.chip').forEach(ch => {
+            ch.onclick = () => {
+                document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                ch.classList.add('active');
+            };
+        });
+    }
+
+    // Wishlist Button in PDP
+    const wishlistBtn = document.getElementById('pdp-wishlist-btn');
+    if (wishlistBtn) {
+        wishlistBtn.dataset.id = product.id;
+        if (wishlist.isInWishlist(product.id)) {
+            wishlistBtn.classList.add('active');
+            wishlistBtn.innerHTML = '<i class="fas fa-heart"></i>';
+        }
+
+        wishlistBtn.onclick = () => {
+            wishlist.toggleItem(product.id);
+            if (wishlist.isInWishlist(product.id)) {
+                wishlistBtn.classList.add('active');
+                wishlistBtn.innerHTML = '<i class="fas fa-heart"></i>';
+            } else {
+                wishlistBtn.classList.remove('active');
+                wishlistBtn.innerHTML = '<i class="far fa-heart"></i>';
+            }
+        };
+    }
+
     // Qty Logic
     const qtyInput = document.getElementById('pdp-qty');
     const plusBtn = document.getElementById('pdp-qty-plus');
     const minusBtn = document.getElementById('pdp-qty-minus');
     const addBtn = document.getElementById('pdp-add-to-cart');
 
-    plusBtn.onclick = () => qtyInput.value = parseInt(qtyInput.value) + 1;
-    minusBtn.onclick = () => {
-        if (parseInt(qtyInput.value) > 1) qtyInput.value = parseInt(qtyInput.value) - 1;
-    };
+    if (qtyInput && plusBtn && minusBtn && addBtn) {
+        plusBtn.onclick = () => qtyInput.value = parseInt(qtyInput.value) + 1;
+        minusBtn.onclick = () => {
+            if (parseInt(qtyInput.value) > 1) qtyInput.value = parseInt(qtyInput.value) - 1;
+        };
 
-    addBtn.onclick = () => {
-        cart.addItem(product.id, parseInt(qtyInput.value));
-    };
+        addBtn.onclick = () => {
+            const selectedSize = document.querySelector('.chip.active')?.textContent;
+            const selectedColor = document.querySelector('.swatch.active')?.dataset.color;
+            cart.addItem(product.id, parseInt(qtyInput.value));
+            showToast(`Added to cart with size ${selectedSize}`);
+        };
+    }
 
     // Related Products
     const relatedContainer = document.getElementById('related-products-container');
-    const related = products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
-
-    relatedContainer.innerHTML = related.map(p => `
-        <div class="product-card">
-            <div class="product-image">
-                <a href="product-detail.html?id=${p.id}">
-                    <img src="${p.image}" alt="${p.name}">
-                </a>
+    if (relatedContainer) {
+        const related = products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
+        relatedContainer.innerHTML = related.map(p => `
+            <div class="product-card">
+                <div class="product-image">
+                    <a href="product-detail.html?id=${p.id}">
+                        <img src="${p.image}" alt="${p.name}">
+                    </a>
+                </div>
+                <div class="product-info">
+                    <p class="product-cat">${p.category}</p>
+                    <a href="product-detail.html?id=${p.id}">
+                        <h3 class="product-title">${p.name}</h3>
+                    </a>
+                    <div class="product-price">$${p.price.toFixed(2)}</div>
+                </div>
             </div>
-            <div class="product-info">
-                <p class="product-cat">${p.category}</p>
-                <a href="product-detail.html?id=${p.id}">
-                    <h3 class="product-title">${p.name}</h3>
-                </a>
-                <div class="product-price">$${p.price.toFixed(2)}</div>
-            </div>
-        </div>
-    `).join('');
+        `).join('');
+    }
 }
 
 // Event Listeners
@@ -136,8 +193,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 800);
 
-    // Index Page Initializations
-    if (document.getElementById('products-container')) {
+    // Page Specific Inits
+    const path = window.location.pathname;
+
+    if (path.includes('shop.html') || document.getElementById('products-container')) {
         renderProducts();
 
         // Sub-Navbar Category Clicks
@@ -147,21 +206,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelectorAll('.cat-link').forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
                 renderProducts(link.dataset.category);
-
-                // Scroll to products
-                document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
             });
         });
 
-        // Search
-        const searchInput = document.getElementById('search-input');
+        // Search in Shop
+        const searchInput = document.getElementById('search-input-shop');
         if (searchInput) {
             searchInput.addEventListener('input', (e) => {
                 renderProducts('all', 'default', e.target.value);
             });
         }
 
-        // Sort
+        // Sort Select
         const sortSelect = document.getElementById('sort-select');
         if (sortSelect) {
             sortSelect.addEventListener('change', (e) => {
@@ -170,7 +226,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Checkout Modal Logic (For Cart Page)
+    // PDP Init
+    if (path.includes('product-detail.html')) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+        if (productId) {
+            renderPDP(productId);
+        }
+    }
+
+    // Cart Page Init
+    if (path.includes('cart.html')) {
+        cart.updateCartPageUI();
+    }
+
+    // Wishlist Page Init
+    if (path.includes('wishlist.html')) {
+        wishlist.renderWishlistPage();
+    }
+
+    // Global Checkout Modal Logic
     const checkoutBtn = document.getElementById('checkout-btn');
     const checkoutModal = document.getElementById('checkout-modal');
     const closeModals = document.querySelectorAll('.close-modal');
@@ -181,8 +256,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 showToast("Your cart is empty!");
                 return;
             }
-
-            // Prepare checkout summary
             const summaryItems = document.getElementById('checkout-items');
             if (summaryItems) {
                 summaryItems.innerHTML = cart.items.map(item => `
@@ -195,10 +268,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 `).join('');
             }
-
             const finalTotal = document.getElementById('final-order-total');
             if (finalTotal) finalTotal.textContent = `$${cart.getTotal().toFixed(2)}`;
-
             checkoutModal.classList.add('active');
         });
     }
@@ -214,11 +285,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (checkoutForm) {
         checkoutForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            showToast("Order placed successfully! Thank you for shopping.");
+            showToast("Order placed successfully!");
             cart.clear();
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 2000);
+            setTimeout(() => { window.location.href = 'index.html'; }, 2000);
         });
     }
 });

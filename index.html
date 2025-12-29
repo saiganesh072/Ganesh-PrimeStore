@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PrimeStore | Modern E-commerce</title>
   <meta name="description"
-    content="Premium shopping experience with PrimeStore. High quality products, seamless cart and checkout.">
+    content="Premium shopping experience with PrimeStore. High quality products and seamless shopping.">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,18 +36,18 @@
 
       <div class="nav-links">
         <a href="index.html" class="nav-link active">Home</a>
-        <a href="#products" class="nav-link">Shop</a>
+        <a href="shop.html" class="nav-link">Shop</a>
         <a href="#" class="nav-link">Features</a>
         <a href="#" class="nav-link">Blog</a>
         <a href="#" class="nav-link">About</a>
       </div>
 
       <div class="nav-actions">
-        <div class="search-box">
-          <input type="text" id="search-input" placeholder="Search products...">
-          <i class="fas fa-search"></i>
-        </div>
-        <a href="cart.html" class="cart-btn">
+        <a href="wishlist.html" class="wishlist-btn nav-icon">
+          <i class="far fa-heart"></i>
+          <span class="wishlist-count">0</span>
+        </a>
+        <a href="cart.html" class="cart-btn nav-icon">
           <i class="fas fa-shopping-bag"></i>
           <span class="cart-count">0</span>
         </a>
@@ -55,20 +55,6 @@
       </div>
     </div>
   </nav>
-
-  <!-- Sub Navigation (Shop Categories) -->
-  <div class="sub-navbar">
-    <div class="container">
-      <div class="category-links">
-        <a href="#" class="cat-link active" data-category="all">All Products</a>
-        <a href="#" class="cat-link" data-category="women">Women</a>
-        <a href="#" class="cat-link" data-category="men">Men</a>
-        <a href="#" class="cat-link" data-category="bag">Bag</a>
-        <a href="#" class="cat-link" data-category="shoes">Shoes</a>
-        <a href="#" class="cat-link" data-category="watches">Watches</a>
-      </div>
-    </div>
-  </div>
 
   <!-- Main Content -->
   <main>
@@ -81,7 +67,7 @@
           <p>Discover our curated collection of high-quality fashion pieces designed for those who value both comfort
             and sophistication.</p>
           <div class="hero-btns">
-            <a href="#products" class="btn btn-primary">Shop Now</a>
+            <a href="shop.html" class="btn btn-primary">Shop Now</a>
             <a href="#" class="btn btn-outline">Learn More</a>
           </div>
         </div>
@@ -109,29 +95,7 @@
       </div>
     </section>
 
-    <!-- Product Listing -->
-    <section class="products-section" id="products">
-      <div class="container">
-        <div class="section-header">
-          <div class="header-left">
-            <h2>Featured Products</h2>
-            <p id="category-title">Showing all products</p>
-          </div>
-          <div class="filter-controls">
-            <select id="sort-select" class="custom-select">
-              <option value="default">Sort by: Featured</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="newest">Newest First</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="products-grid" id="products-container">
-          <!-- Products will be injected here by JS -->
-        </div>
-      </div>
-    </section>
+    <!-- Newsletter or Features could go here -->
   </main>
 
   <!-- Toast Notifications -->
@@ -154,7 +118,7 @@
       <div class="footer-links">
         <h4>Quick Links</h4>
         <ul>
-          <li><a href="#">Home</a></li>
+          <li><a href="index.html">Home</a></li>
           <li><a href="#">About Us</a></li>
           <li><a href="#">Contact</a></li>
           <li><a href="#">FAQs</a></li>
@@ -163,10 +127,10 @@
       <div class="footer-links">
         <h4>Categories</h4>
         <ul>
-          <li><a href="#">Women's Fashion</a></li>
-          <li><a href="#">Men's Fashion</a></li>
-          <li><a href="#">Watches</a></li>
-          <li><a href="#">Accessories</a></li>
+          <li><a href="shop.html?cat=women">Women's Fashion</a></li>
+          <li><a href="shop.html?cat=men">Men's Fashion</a></li>
+          <li><a href="shop.html?cat=watches">Watches</a></li>
+          <li><a href="shop.html?cat=shoes">Shoes</a></li>
         </ul>
       </div>
       <div class="footer-newsletter">
@@ -194,6 +158,7 @@
   <!-- Scripts -->
   <script src="js/products.js"></script>
   <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
   <script src="js/main.js"></script>
 </body>
 
