@@ -1,7 +1,7 @@
 class Cart {
     constructor() {
         this.items = JSON.parse(localStorage.getItem('primestore_cart')) || [];
-        this.updateUI();
+        this.updateCartCount();
     }
 
     addItem(productId, quantity = 1) {
@@ -19,14 +19,21 @@ class Cart {
         }
 
         this.save();
-        this.updateUI();
+        this.updateCartCount();
         showToast(`Added ${product.name} to cart!`);
+
+        // Instead of sidebar, we can redirect or just update count
+        // Redirecting to cart page is a good option if user wants to see it
+        // window.location.href = 'cart.html'; 
     }
 
     removeItem(productId) {
         this.items = this.items.filter(item => item.id !== productId);
         this.save();
-        this.updateUI();
+        this.updateCartCount();
+        if (window.location.pathname.includes('cart.html')) {
+            this.updateCartPageUI();
+        }
     }
 
     updateQuantity(productId, delta) {
@@ -37,7 +44,10 @@ class Cart {
                 this.removeItem(productId);
             } else {
                 this.save();
-                this.updateUI();
+                this.updateCartCount();
+                if (window.location.pathname.includes('cart.html')) {
+                    this.updateCartPageUI();
+                }
             }
         }
     }
@@ -45,7 +55,10 @@ class Cart {
     clear() {
         this.items = [];
         this.save();
-        this.updateUI();
+        this.updateCartCount();
+        if (window.location.pathname.includes('cart.html')) {
+            this.updateCartPageUI();
+        }
     }
 
     save() {
@@ -60,55 +73,59 @@ class Cart {
         return this.items.reduce((sum, item) => sum + item.quantity, 0);
     }
 
-    updateUI() {
-        const cartCount = document.querySelector('.cart-count');
-        const cartContainer = document.getElementById('cart-items-container');
+    updateCartCount() {
+        const cartCounts = document.querySelectorAll('.cart-count');
+        cartCounts.forEach(el => {
+            el.textContent = this.getCount();
+        });
+    }
+
+    updateCartPageUI() {
+        const cartListContainer = document.getElementById('cart-list-container');
+        const itemsCountEl = document.getElementById('cart-items-count');
         const subtotalEl = document.getElementById('cart-subtotal');
         const totalEl = document.getElementById('cart-total');
 
-        if (cartCount) cartCount.textContent = this.getCount();
+        if (!cartListContainer) return;
 
-        if (cartContainer) {
-            if (this.items.length === 0) {
-                cartContainer.innerHTML = `
-                    <div class="empty-cart-msg">
-                        <i class="fas fa-shopping-basket"></i>
-                        <p>Your cart is empty</p>
-                        <button class="btn btn-primary" id="continue-shopping-btn">Start Shopping</button>
-                    </div>
-                `;
-                document.getElementById('continue-shopping-btn').addEventListener('click', () => {
-                    document.getElementById('cart-sidebar').classList.remove('open');
-                    document.getElementById('cart-overlay').classList.remove('open');
-                });
-            } else {
-                cartContainer.innerHTML = this.items.map(item => `
-                    <div class="cart-item">
-                        <div class="item-img">
-                            <img src="${item.image}" alt="${item.name}">
-                        </div>
-                        <div class="item-details">
-                            <h4>${item.name}</h4>
-                            <p class="item-price">$${item.price.toFixed(2)}</p>
-                            <div class="item-controls">
-                                <div class="qty-selector">
-                                    <button class="qty-btn minus" onclick="cart.updateQuantity('${item.id}', -1)">-</button>
-                                    <span class="qty-val">${item.quantity}</span>
-                                    <button class="qty-btn plus" onclick="cart.updateQuantity('${item.id}', 1)">+</button>
-                                </div>
-                                <button class="remove-item" onclick="cart.removeItem('${item.id}')">
-                                    <i class="fas fa-trash-alt"></i> Remove
-                                </button>
+        itemsCountEl.textContent = this.getCount();
+
+        if (this.items.length === 0) {
+            cartListContainer.innerHTML = `
+                <div class="empty-cart-msg">
+                    <i class="fas fa-shopping-basket"></i>
+                    <p>Your cart is empty</p>
+                    <a href="index.html#products" class="btn btn-primary">Start Shopping</a>
+                </div>
+            `;
+        } else {
+            cartListContainer.innerHTML = this.items.map(item => `
+                <div class="cart-page-item">
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="cart-item-info">
+                        <h4>${item.name}</h4>
+                        <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                        <div class="item-controls">
+                            <div class="qty-input" style="height: 40px; width: 120px;">
+                                <button class="qty-btn" onclick="cart.updateQuantity('${item.id}', -1)">-</button>
+                                <input type="number" value="${item.quantity}" readonly>
+                                <button class="qty-btn" onclick="cart.updateQuantity('${item.id}', 1)">+</button>
                             </div>
+                            <button class="remove-item" onclick="cart.removeItem('${item.id}')" style="margin-left: 20px;">
+                                <i class="fas fa-trash-alt"></i> Remove
+                            </button>
                         </div>
                     </div>
-                `).join('');
-            }
+                    <div class="item-subtotal" style="font-weight: 700; font-size: 20px;">
+                        $${(item.price * item.quantity).toFixed(2)}
+                    </div>
+                </div>
+            `).join('');
         }
 
         const total = this.getTotal();
-        if (subtotalEl) subtotalEl.textContent = `$${total.toFixed(2)}`;
-        if (totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
+        subtotalEl.textContent = `$${total.toFixed(2)}`;
+        totalEl.textContent = `$${total.toFixed(2)}`;
     }
 }
 

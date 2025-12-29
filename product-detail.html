@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | PrimeStore</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="pdp-page">
+    <div id="loader" class="loader-container">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="index.html" class="logo">
+                PRIME<span>STORE</span>
+            </a>
+
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.html#products" class="nav-link active">Shop</a>
+                <a href="#" class="nav-link">Features</a>
+                <a href="#" class="nav-link">Blog</a>
+                <a href="#" class="nav-link">About</a>
+            </div>
+
+            <div class="nav-actions">
+                <a href="cart.html" class="cart-btn">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count">0</span>
+                </a>
+                <a href="#" class="btn btn-primary sign-in-btn">Sign In</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container pdp-main">
+        <div class="breadcrumb">
+            <a href="index.html">Home</a> <i class="fas fa-chevron-right"></i>
+            <a href="index.html#products">Shop</a> <i class="fas fa-chevron-right"></i>
+            <span id="breadcrumb-product-name">Product</span>
+        </div>
+
+        <div class="pdp-grid" id="pdp-content">
+            <!-- Product details injected here -->
+            <div class="pdp-image-section">
+                <div class="main-image-card">
+                    <img id="pdp-image" src="" alt="">
+                </div>
+            </div>
+            <div class="pdp-info-section">
+                <span class="badge" id="pdp-category">Category</span>
+                <h1 id="pdp-name">Product Name</h1>
+                <div class="pdp-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <span>(120 Reviews)</span>
+                </div>
+                <p class="pdp-price" id="pdp-price">$0.00</p>
+                <p class="pdp-desc" id="pdp-desc">Description goes here...</p>
+
+                <div class="pdp-options">
+                    <div class="option-group">
+                        <label>Size</label>
+                        <div class="size-chips">
+                            <span class="chip">S</span>
+                            <span class="chip active">M</span>
+                            <span class="chip">L</span>
+                            <span class="chip">XL</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pdp-actions">
+                    <div class="qty-input">
+                        <button class="qty-btn" id="pdp-qty-minus">-</button>
+                        <input type="number" id="pdp-qty" value="1" min="1">
+                        <button class="qty-btn" id="pdp-qty-plus">+</button>
+                    </div>
+                    <button class="btn btn-primary btn-lg" id="pdp-add-to-cart">
+                        <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                </div>
+
+                <div class="pdp-meta">
+                    <p><strong>SKU:</strong> <span id="pdp-id">PROD-001</span></p>
+                    <p><strong>Availability:</strong> <span class="text-success">In Stock</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="related-products">
+            <h2>Related Products</h2>
+            <div class="products-grid" id="related-products-container">
+                <!-- Related products -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <footer class="footer">
+        <div class="container footer-bottom">
+            <p>&copy; 2024 PrimeStore. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+
+            if (productId) {
+                renderPDP(productId);
+            } else {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+
+</html>
