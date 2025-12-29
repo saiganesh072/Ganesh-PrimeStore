@@ -15,8 +15,8 @@ const products = [
         "name": "Herschel supply",
         "price": 35.31,
         "image": "images/product-02.jpg",
-        "category": "women",
-        "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
+        "category": "bag",
+        "description": "This premium bag blends functionality with minimalist design. Perfect for daily use or light travel.",
         "tags": ["Fashion", "Bag"],
         "colors": ["#333333", "#ffffff", "#f1c40f"],
         "sizes": ["One Size"]
@@ -111,22 +111,22 @@ const products = [
     },
     {
         "id": "sai0011",
-        "name": "Herschel supply",
+        "name": "Herschel Travel Backpack",
         "price": 63.16,
         "image": "images/product-11.jpg",
-        "category": "men",
-        "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
-        "tags": ["Fashion", "Streetstyle"],
+        "category": "bag",
+        "description": "A spacious and durable backpack for all your travel needs. Featuring multiple compartments and ergonomic straps.",
+        "tags": ["Fashion", "Bag"],
         "colors": ["#34495e", "#1abc9c"],
-        "sizes": ["M", "L", "XL"]
+        "sizes": ["One Size"]
     },
     {
         "id": "sai0012",
-        "name": "Herschel supply",
+        "name": "Herschel Leather Belt",
         "price": 63.15,
         "image": "images/product-12.jpg",
         "category": "men",
-        "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
+        "description": "Classic leather belt with a modern buckle design. A must-have accessory for any wardrobe.",
         "tags": ["Fashion", "Belt"],
         "colors": ["#7f8c8d", "#2c3e50"],
         "sizes": ["S", "M", "L"]

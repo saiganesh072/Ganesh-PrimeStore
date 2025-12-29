@@ -245,7 +245,31 @@ document.addEventListener('DOMContentLoaded', () => {
         wishlist.renderWishlistPage();
     }
 
-    // Global Checkout Modal Logic
+    // Sign In Modal Logic
+    const signInBtns = document.querySelectorAll('.sign-in-btn');
+    const signInModal = document.getElementById('signin-modal');
+    if (signInModal) {
+        signInBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                signInModal.classList.add('active');
+            });
+        });
+
+        const signInForm = document.getElementById('signin-form');
+        if (signInForm) {
+            signInForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                showToast("Welcome back! Signing you in...");
+                setTimeout(() => {
+                    signInModal.classList.remove('active');
+                    showToast("Signed in successfully!");
+                }, 1500);
+            });
+        }
+    }
+
+    // Checkout Modal Logic
     const checkoutBtn = document.getElementById('checkout-btn');
     const checkoutModal = document.getElementById('checkout-modal');
     const closeModals = document.querySelectorAll('.close-modal');
