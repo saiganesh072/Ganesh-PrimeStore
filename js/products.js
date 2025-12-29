@@ -1,194 +1,146 @@
-[
+const products = [
     {
         "id": "p1",
         "name": "Esprit Ruffle Shirt",
         "price": 16.64,
-        "image": "/images/product-01.jpg",
+        "image": "images/product-01.jpg",
         "category": "women",
         "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
-        "tags": [
-            "Fashion",
-            "Shirt"
-        ]
+        "tags": ["Fashion", "Shirt"]
     },
     {
         "id": "p2",
         "name": "Herschel supply",
         "price": 35.31,
-        "image": "/images/product-02.jpg",
+        "image": "images/product-02.jpg",
         "category": "women",
         "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
-        "tags": [
-            "Fashion",
-            "Bag"
-        ]
+        "tags": ["Fashion", "Bag"]
     },
     {
         "id": "p3",
         "name": "Only Check Trouser",
         "price": 25.50,
-        "image": "/images/product-03.jpg",
+        "image": "images/product-03.jpg",
         "category": "men",
         "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
-        "tags": [
-            "Fashion",
-            "Denim"
-        ]
+        "tags": ["Fashion", "Denim"]
     },
     {
         "id": "p4",
         "name": "Classic Trench Coat",
         "price": 75.00,
-        "image": "/images/product-04.jpg",
+        "image": "images/product-04.jpg",
         "category": "women",
         "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
-        "tags": [
-            "Fashion",
-            "Coat"
-        ]
+        "tags": ["Fashion", "Coat"]
     },
     {
         "id": "p5",
         "name": "Front Pocket Jumper",
         "price": 34.75,
-        "image": "/images/product-05.jpg",
+        "image": "images/product-05.jpg",
         "category": "women",
         "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
-        "tags": [
-            "Fashion",
-            "Jumper"
-        ]
+        "tags": ["Fashion", "Jumper"]
     },
     {
         "id": "p6",
         "name": "Vintage Inspired Classic",
         "price": 93.20,
-        "image": "/images/product-06.jpg",
+        "image": "images/product-06.jpg",
         "category": "watches",
         "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
-        "tags": [
-            "Fashion",
-            "Watch"
-        ]
+        "tags": ["Fashion", "Watch"]
     },
     {
         "id": "p7",
         "name": "Shirt in Stretch Cotton",
         "price": 52.66,
-        "image": "/images/product-07.jpg",
+        "image": "images/product-07.jpg",
         "category": "women",
         "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
-        "tags": [
-            "Fashion",
-            "Shirt"
-        ]
+        "tags": ["Fashion", "Shirt"]
     },
     {
         "id": "p8",
         "name": "Pieces Metallic Printed",
         "price": 18.96,
-        "image": "/images/product-08.jpg",
+        "image": "images/product-08.jpg",
         "category": "women",
         "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
-        "tags": [
-            "Qt",
-            "Fashion"
-        ]
+        "tags": ["Qt", "Fashion"]
     },
     {
         "id": "p9",
         "name": "Converse All Star Hi Plimsolls",
         "price": 75.00,
-        "image": "/images/product-09.jpg",
+        "image": "images/product-09.jpg",
         "category": "shoes",
         "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
-        "tags": [
-            "Fashion",
-            "Shoes"
-        ]
+        "tags": ["Fashion", "Shoes"]
     },
     {
         "id": "p10",
         "name": "Femme T-Shirt In Stripe",
         "price": 25.85,
-        "image": "/images/product-10.jpg",
+        "image": "images/product-10.jpg",
         "category": "women",
         "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
-        "tags": [
-            "Fashion",
-            "Shirt"
-        ]
+        "tags": ["Fashion", "Shirt"]
     },
     {
         "id": "p11",
         "name": "Herschel supply",
         "price": 63.16,
-        "image": "/images/product-11.jpg",
+        "image": "images/product-11.jpg",
         "category": "men",
         "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
-        "tags": [
-            "Fashion",
-            "Streetstyle"
-        ]
+        "tags": ["Fashion", "Streetstyle"]
     },
     {
         "id": "p12",
         "name": "Herschel supply",
         "price": 63.15,
-        "image": "/images/product-12.jpg",
+        "image": "images/product-12.jpg",
         "category": "men",
         "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
-        "tags": [
-            "Fashion",
-            "Belt"
-        ]
+        "tags": ["Fashion", "Belt"]
     },
     {
         "id": "p13",
         "name": "T-Shirt with Sleeve",
         "price": 18.49,
-        "image": "/images/product-13.jpg",
+        "image": "images/product-13.jpg",
         "category": "women",
         "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
-        "tags": [
-            "Fashion",
-            "Shirt"
-        ]
+        "tags": ["Fashion", "Shirt"]
     },
     {
         "id": "p14",
         "name": "Pretty Little Thing",
         "price": 54.79,
-        "image": "/images/product-14.jpg",
+        "image": "images/product-14.jpg",
         "category": "women",
         "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
-        "tags": [
-            "Fashion",
-            "Trendy"
-        ]
+        "tags": ["Fashion", "Trendy"]
     },
     {
         "id": "p15",
         "name": "Mini Silver Mesh Watch",
         "price": 86.85,
-        "image": "/images/product-15.jpg",
+        "image": "images/product-15.jpg",
         "category": "watches",
         "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
-        "tags": [
-            "Fashion",
-            "Watch"
-        ]
+        "tags": ["Fashion", "Watch"]
     },
     {
         "id": "p16",
         "name": "Square Neck Back",
         "price": 29.64,
-        "image": "/images/product-16.jpg",
+        "image": "images/product-16.jpg",
         "category": "women",
         "description": "Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.",
-        "tags": [
-            "Fashion",
-            "Top"
-        ]
+        "tags": ["Fashion", "Top"]
     }
-]
+];
