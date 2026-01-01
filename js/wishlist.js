@@ -1,4 +1,6 @@
-class Wishlist {
+import { products } from './products.js';
+
+export class Wishlist {
     constructor() {
         this.items = JSON.parse(localStorage.getItem('primestore_wishlist')) || [];
         this.updateUI();
@@ -112,4 +114,4 @@ class Wishlist {
     }
 }
 
-const wishlist = new Wishlist();
+

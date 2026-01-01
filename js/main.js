@@ -9,17 +9,50 @@ import BlogView from './views/BlogView.js';
 import AboutView from './views/AboutView.js';
 import SignInView from './views/SignInView.js';
 import { analytics } from './analytics.js';
+import { products } from './products.js';
+import { Cart } from './cart.js';
+import { Wishlist } from './wishlist.js';
 
-// Global State (can be moved to a State Manager later)
-window.appState = {
-    cart: [],
-    wishlist: []
+// Global Instances
+let cart;
+let wishlist;
+
+// Expose products to window just in case any legacy inline script needs it (though we should avoid this)
+window.productsData = products;
+
+// Global Toast Function
+window.showToast = (message) => {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerText = message;
+    container.appendChild(toast);
+
+    // Trigger reflow
+    toast.offsetHeight;
+    toast.classList.add('show');
+
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+            container.removeChild(toast);
+        }, 300);
+    }, 3000);
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize Logic
+    cart = new Cart();
+    wishlist = new Wishlist();
+
+    // Attach to window for global access from buttons (onclick="cart.addItem...")
+    // Since we are using onclick attributes in HTML strings, we MUST expose these to window
+    window.cart = cart;
+    window.wishlist = wishlist;
 
     // --- GitHub Pages SPA Redirect Handler ---
-    // If we were redirected from 404.html with a query param 'p', restore the path
     const params = new URLSearchParams(window.location.search);
     const redirectPath = params.get('p');
     if (redirectPath) {
@@ -30,51 +63,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // Routes Configuration
     const routes = [
         { path: '/', view: HomeView, name: 'home' },
-        { path: '/index.html', view: HomeView, name: 'home' }, // Handle excess
+        { path: '/index.html', view: HomeView, name: 'home' },
         { path: '/shop', view: ShopView, name: 'shop', onMounted: initShopPage },
-        // /product-slug/p-id  -> We will simplify matching logic in Router or use this pattern
-        // My simple router uses :param. Let's align with the requested requirement:
-        // [domain]/[product-slug]/p-[unique-id]
-        // The router regex needs to match this. 
-        // Let's simpler route handling first: "/product/:slug/p-:id"
-        // If user REALLY wants exactly "domain/shirt/p-123", I'd need a catch-all or smarter regex.
-        // For this implementation, I will use a clearer pattern that is easier to manage:
-        // /product/:id  (Classic) or /:slug/p-:id (Advanced)
-        // I will implement the requested format in the Router config by using a regex path if possible, 
-        // or just use a generic matcher for PDP.
-        // Let's try to match the requested format: "/:slug/p-:id" 
-        // But ":slug" would match "shop", "about" etc. 
-        // So I should put specific routes FIRST.
-
         { path: '/features', view: FeaturesView, name: 'features' },
         { path: '/blog', view: BlogView, name: 'blog' },
         { path: '/about', view: AboutView, name: 'about' },
         { path: '/signin', view: SignInView, name: 'signin' },
         { path: '/cart', view: CartView, name: 'cart', onMounted: initCartPage },
         { path: '/wishlist', view: WishlistView, name: 'wishlist', onMounted: initWishlistPage },
-
-        // PDP Route: Catch-all style for slug, but ending in p-:id
-        // Since my router is simple, I might need to make it smarter.
-        // I will use a specific prefix to avoid collision for now, OR rely on specific order.
-        // However, the prompt asked for: `[domain]/[product-slug]/p-[unique-id]`
-        // This is tricky because "features" looks like a slug.
-        // I will add the PDP route LAST.
-        // Pattern: /(.+)/p-(.+) -> but Router checks exact match.
-        // I'll update Router regex in a moment. For now, let's assume Router can handle /:slug/p-:id
         { path: '/:slug/p-:id', view: ProductDetailView, name: 'pdp', onMounted: initPDP }
     ];
 
     // Initialize Router
     const router = new Router(routes);
 
-    // Initialize Global UI (Loader, sticky nav, etc from original main.js)
+    // Initialize Global UI
     initGlobalUI();
 });
 
-// --- Legacy Function Ports (kept for logic reuse) ---
+// --- UI Logic ---
 
 function initGlobalUI() {
-    // Loader
     const loader = document.getElementById('loader');
     if (loader) {
         setTimeout(() => {
@@ -85,7 +94,6 @@ function initGlobalUI() {
         }, 800);
     }
 
-    // Sticky Navbar
     const navbar = document.querySelector('.navbar');
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
@@ -94,78 +102,150 @@ function initGlobalUI() {
             navbar.classList.remove('scrolled');
         }
     });
-
-    // Update Counts (Mock)
-    updateCounts();
 }
 
-function updateCounts() {
-    // In a real app, read from localStorage
-    const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
-    const savedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-
-    document.querySelectorAll('.cart-count').forEach(el => el.textContent = savedCart.length);
-    document.querySelectorAll('.wishlist-count').forEach(el => el.textContent = savedWishlist.length);
-}
-
-// Page Specific Initializers (called by Router onMount)
+// --- Page Initializers ---
 
 function initShopPage() {
     console.log("Shop Mounted");
-    // Re-bind category filters, search, sort
-    // Import logic from products.js or inline it here
-    // For now, trigger a global event or call a global function if products.js is globally loaded
-    if (window.renderProducts) {
-        window.renderProducts(window.productsData || []);
+    renderProducts(products);
 
-        // Category Filter
-        document.querySelectorAll('.cat-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                document.querySelectorAll('.cat-link').forEach(l => l.classList.remove('active'));
-                e.target.classList.add('active');
-                const cat = e.target.dataset.category;
-                window.filterProducts(cat);
-            });
+    // Category Filter
+    document.querySelectorAll('.cat-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('.cat-link').forEach(l => l.classList.remove('active'));
+            e.target.classList.add('active');
+            const cat = e.target.dataset.category;
+            filterProducts(cat);
         });
+    });
+
+    // Search
+    const searchInput = document.getElementById('search-input-shop');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(term));
+            renderProducts(filtered);
+        });
+    }
+
+    // Sort
+    const sortSelect = document.getElementById('sort-select');
+    if (sortSelect) {
+        sortSelect.addEventListener('change', (e) => {
+            const val = e.target.value;
+            let sorted = [...products]; // copy
+            // Actually, we should sort the *currently filtered* list if we want to be perfect, 
+            // but for simplicity let's sort all. Or better: read from DOM? No, re-filter.
+            // Let's simplified: just sort all products for now.
+
+            if (val === 'price-low') sorted.sort((a, b) => a.price - b.price);
+            if (val === 'price-high') sorted.sort((a, b) => b.price - a.price);
+
+            renderProducts(sorted);
+        });
+    }
+}
+
+function renderProducts(items) {
+    const container = document.getElementById('products-container');
+    if (!container) return;
+
+    const categoryTitle = document.getElementById('category-title');
+    if (categoryTitle) categoryTitle.textContent = `Showing ${items.length} products`;
+
+    if (items.length === 0) {
+        container.innerHTML = '<p class="no-products">No products found.</p>';
+        return;
+    }
+
+    container.innerHTML = items.map(product => `
+        <div class="product-card">
+            <div class="product-image">
+                <a href="/${product.name.replace(/\s+/g, '-').toLowerCase()}/p-${product.id}" data-link>
+                    <img src="${product.image}" alt="${product.name}">
+                </a>
+                <div class="product-overlay">
+                    <button class="btn-icon btn-wishlist ${wishlist.isInWishlist(product.id) ? 'active' : ''}" 
+                            data-id="${product.id}" 
+                            onclick="wishlist.toggleItem('${product.id}')">
+                        <i class="${wishlist.isInWishlist(product.id) ? 'fas' : 'far'} fa-heart"></i>
+                    </button>
+                    <button class="btn-icon" onclick="cart.addItem('${product.id}')">
+                        <i class="fas fa-shopping-cart"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="product-info">
+                <p class="product-cat">${product.category}</p>
+                <a href="/${product.name.replace(/\s+/g, '-').toLowerCase()}/p-${product.id}" data-link>
+                    <h3 class="product-title">${product.name}</h3>
+                </a>
+                <div class="product-price">$${product.price.toFixed(2)}</div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function filterProducts(category) {
+    if (category === 'all') {
+        renderProducts(products);
+    } else {
+        const filtered = products.filter(p => p.category === category);
+        renderProducts(filtered);
     }
 }
 
 function initPDP(params) {
     console.log("PDP Mounted", params);
     const { id } = params;
-    // Fetch product by ID (from window.productsData)
-    if (window.productsData) {
-        const product = window.productsData.find(p => p.id === id || p.id === `p-${id}` || p.id === params.id); // Check ID format
 
-        if (product) {
-            document.getElementById('pdp-image').src = product.image;
-            document.getElementById('pdp-name').textContent = product.name;
-            document.getElementById('pdp-price').textContent = `$${product.price.toFixed(2)}`;
-            document.getElementById('pdp-category').textContent = product.category;
-            // document.getElementById('pdp-id').textContent = product.id; // Already set by view
+    // params.id comes from URL. If URL is /.../p-sai001, router params might be 'sai001' if mapped correctly
+    // or 'p-sai001' if logic is loose.
+    // Our Router logic extracts after 'p-'. So it should be just ID.
+    // However, let's be safe.
 
-            // Analytic Push
-            analytics.trackPageView('pdp', {
-                product_name: product.name,
-                product_id: product.id,
-                price: product.price,
-                currency: 'USD',
-                category: product.category,
-                stock_status: 'In Stock'
-            });
+    const cleanId = id.replace('p-', '');
+    const product = products.find(p => p.id === cleanId || p.id === id);
+
+    if (product) {
+        document.getElementById('pdp-image').src = product.image;
+        document.getElementById('pdp-name').textContent = product.name;
+        document.getElementById('pdp-price').textContent = `$${product.price.toFixed(2)}`;
+        document.getElementById('pdp-category').textContent = product.category;
+
+        // Setup Add to Cart
+        const addBtn = document.getElementById('pdp-add-to-cart');
+        if (addBtn) {
+            addBtn.onclick = () => {
+                const qty = parseInt(document.getElementById('pdp-qty').value) || 1;
+                cart.addItem(product.id, qty);
+            };
         }
+
+        // Qty Buttons
+        const mBtn = document.getElementById('pdp-qty-minus');
+        const pBtn = document.getElementById('pdp-qty-plus');
+        const qInput = document.getElementById('pdp-qty');
+
+        if (mBtn && qInput) mBtn.onclick = () => { if (qInput.value > 1) qInput.value--; };
+        if (pBtn && qInput) pBtn.onclick = () => { qInput.value++; };
+
+        // Analytics
+        analytics.trackPageView('pdp', {
+            product_name: product.name,
+            product_id: product.id,
+            price: product.price
+        });
     }
 }
 
 function initCartPage() {
-    if (window.updateCartPageUI) {
-        window.updateCartPageUI();
-    }
+    cart.updateCartPageUI();
 }
 
 function initWishlistPage() {
-    if (window.renderWishlist) {
-        window.renderWishlist();
-    }
+    wishlist.renderWishlistPage();
 }

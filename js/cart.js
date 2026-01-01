@@ -1,4 +1,6 @@
-class Cart {
+import { products } from './products.js';
+
+export class Cart {
     constructor() {
         this.items = JSON.parse(localStorage.getItem('primestore_cart')) || [];
         this.updateCartCount();
@@ -129,4 +131,4 @@ class Cart {
     }
 }
 
-const cart = new Cart();
+
