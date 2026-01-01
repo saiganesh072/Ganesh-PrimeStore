@@ -30,72 +30,36 @@
   <!-- Navigation -->
   <nav class="navbar">
     <div class="container nav-content">
-      <a href="index.html" class="logo">
+      <a href="/" class="logo" data-link>
         PRIME<span>STORE</span>
       </a>
 
       <div class="nav-links">
-        <a href="index.html" class="nav-link active">Home</a>
-        <a href="shop.html" class="nav-link">Shop</a>
-        <a href="#" class="nav-link">Features</a>
-        <a href="#" class="nav-link">Blog</a>
-        <a href="#" class="nav-link">About</a>
+        <a href="/" class="nav-link active" data-link>Home</a>
+        <a href="/shop" class="nav-link" data-link>Shop</a>
+        <a href="/features" class="nav-link" data-link>Features</a>
+        <a href="/blog" class="nav-link" data-link>Blog</a>
+        <a href="/about" class="nav-link" data-link>About</a>
       </div>
 
       <div class="nav-actions">
-        <a href="wishlist.html" class="wishlist-btn nav-icon">
+        <a href="/wishlist" class="wishlist-btn nav-icon" data-link>
           <i class="far fa-heart"></i>
           <span class="wishlist-count">0</span>
         </a>
-        <a href="cart.html" class="cart-btn nav-icon">
+        <a href="/cart" class="cart-btn nav-icon" data-link>
           <i class="fas fa-shopping-bag"></i>
           <span class="cart-count">0</span>
         </a>
-        <a href="#" class="btn btn-primary sign-in-btn">Sign In</a>
+        <a href="/signin" class="btn btn-primary sign-in-btn" data-link>Sign In</a>
       </div>
     </div>
   </nav>
 
   <!-- Main Content -->
-  <main>
-    <!-- Hero Section -->
-    <section class="hero" id="home-section">
-      <div class="container hero-content">
-        <div class="hero-text">
-          <span class="badge">New Collection 2024</span>
-          <h1>Elevate Your Style With <span>Premium</span> Essentials</h1>
-          <p>Discover our curated collection of high-quality fashion pieces designed for those who value both comfort
-            and sophistication.</p>
-          <div class="hero-btns">
-            <a href="shop.html" class="btn btn-primary">Shop Now</a>
-            <a href="#" class="btn btn-outline">Learn More</a>
-          </div>
-        </div>
-        <div class="hero-image">
-          <div class="image-card">
-            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1000&auto=format&fit=crop"
-              alt="Hero Model">
-            <div class="image-overlay"></div>
-          </div>
-          <div class="floating-card c1">
-            <i class="fas fa-check-circle"></i>
-            <div>
-              <h4>Top Rated</h4>
-              <p>4.9/5 Rating</p>
-            </div>
-          </div>
-          <div class="floating-card c2">
-            <i class="fas fa-truck"></i>
-            <div>
-              <h4>Fast Delivery</h4>
-              <p>Free for orders > $50</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Newsletter or Features could go here -->
+  <!-- Main Content -->
+  <main id="app">
+    <!-- SPA Content will be injected here -->
   </main>
 
   <!-- Toast Notifications -->
@@ -136,7 +100,7 @@
   <footer class="footer">
     <div class="container footer-grid">
       <div class="footer-about">
-        <a href="#" class="logo">PRIME<span>STORE</span></a>
+        <a href="/" class="logo" data-link>PRIME<span>STORE</span></a>
         <p>Providing the best quality fashion essentials since 2024. Our mission is to make premium style accessible to
           everyone.</p>
         <div class="social-links">
@@ -149,19 +113,19 @@
       <div class="footer-links">
         <h4>Quick Links</h4>
         <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">FAQs</a></li>
+          <li><a href="/" data-link>Home</a></li>
+          <li><a href="/about" data-link>About Us</a></li>
+          <li><a href="#" data-link>Contact</a></li>
+          <li><a href="#" data-link>FAQs</a></li>
         </ul>
       </div>
       <div class="footer-links">
         <h4>Categories</h4>
         <ul>
-          <li><a href="shop.html?cat=women">Women's Fashion</a></li>
-          <li><a href="shop.html?cat=men">Men's Fashion</a></li>
-          <li><a href="shop.html?cat=watches">Watches</a></li>
-          <li><a href="shop.html?cat=shoes">Shoes</a></li>
+          <li><a href="/shop" data-link>Women's Fashion</a></li>
+          <li><a href="/shop" data-link>Men's Fashion</a></li>
+          <li><a href="/shop" data-link>Watches</a></li>
+          <li><a href="/shop" data-link>Shoes</a></li>
         </ul>
       </div>
       <div class="footer-newsletter">
@@ -190,7 +154,7 @@
   <script src="js/products.js"></script>
   <script src="js/cart.js"></script>
   <script src="js/wishlist.js"></script>
-  <script src="js/main.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 
 </html>

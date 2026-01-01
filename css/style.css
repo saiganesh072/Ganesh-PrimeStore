@@ -621,7 +621,9 @@ img {
 
 @media (min-width: 992px) {
     .pdp-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 45% 1fr;
+        /* Image takes ~45% */
+        gap: 40px;
     }
 }
 
@@ -633,7 +635,8 @@ img {
 
 .main-image-card img {
     width: 100%;
-    height: 600px;
+    height: 480px;
+    /* Reduced from 600px */
     object-fit: cover;
     transition: transform 0.5s ease;
 }

@@ -31,7 +31,7 @@ class Cart {
         this.items = this.items.filter(item => item.id !== productId);
         this.save();
         this.updateCartCount();
-        if (window.location.pathname.includes('cart.html')) {
+        if (document.getElementById('cart-list-container')) {
             this.updateCartPageUI();
         }
     }
