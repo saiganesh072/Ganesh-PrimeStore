@@ -75,7 +75,7 @@ export class Wishlist {
                     <i class="far fa-heart"></i>
                     <h2>Your wishlist is empty</h2>
                     <p>Browser our products and add your favorites to the list!</p>
-                    <a href="shop.html" class="btn btn-primary">Go to Shop</a>
+                    <a href="/Ganesh-PrimeStore/shop" class="btn btn-primary" data-link>Go to Shop</a>
                 </div>
             `;
             return;
@@ -83,13 +83,16 @@ export class Wishlist {
 
         const wishlistProducts = products.filter(p => this.items.includes(p.id));
 
+        const repoName = '/Ganesh-PrimeStore';
+        const basePath = window.location.pathname.includes(repoName) ? repoName : '';
+
         container.innerHTML = `
             <div class="products-grid">
                 ${wishlistProducts.map(product => `
                     <div class="product-card">
                         <div class="product-image">
-                            <a href="product-detail.html?id=${product.id}">
-                                <img src="${product.image}" alt="${product.name}">
+                            <a href="${basePath}/${product.name.replace(/\s+/g, '-').toLowerCase()}/p-${product.id}" data-link>
+                                <img src="${product.image.startsWith('http') || product.image.startsWith('/') ? product.image : basePath + '/' + product.image}" alt="${product.name}">
                             </a>
                             <div class="product-overlay">
                                 <button class="btn-icon btn-wishlist active" data-id="${product.id}" onclick="wishlist.toggleItem('${product.id}')">
@@ -102,7 +105,7 @@ export class Wishlist {
                         </div>
                         <div class="product-info">
                             <p class="product-cat">${product.category}</p>
-                            <a href="product-detail.html?id=${product.id}">
+                            <a href="${basePath}/${product.name.replace(/\s+/g, '-').toLowerCase()}/p-${product.id}" data-link>
                                 <h3 class="product-title">${product.name}</h3>
                             </a>
                             <div class="product-price">$${product.price.toFixed(2)}</div>

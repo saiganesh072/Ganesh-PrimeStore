@@ -75,7 +75,16 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     // Initialize Router
-    const router = new Router(routes);
+    // Detect base path: if hostname is github.io, assume /RepoName/
+    // Or simpler: hardcode it if we know the repo, or detect from location.pathname on first load
+    // Actually, on GH pages: /Ganesh-PrimeStore/index.html -> base is /Ganesh-PrimeStore
+    // Localhost: /index.html -> base is ''
+
+    // Auto-detect base path
+    const repoName = '/Ganesh-PrimeStore';
+    const basePath = window.location.pathname.includes(repoName) ? repoName : '';
+
+    const router = new Router(routes, basePath);
 
     // Initialize Global UI
     initGlobalUI();
@@ -161,11 +170,20 @@ function renderProducts(items) {
         return;
     }
 
+    // Get base path for links and images
+    const repoName = '/Ganesh-PrimeStore';
+    const basePath = window.location.pathname.includes(repoName) ? repoName : '';
+
     container.innerHTML = items.map(product => `
         <div class="product-card">
             <div class="product-image">
-                <a href="/${product.name.replace(/\s+/g, '-').toLowerCase()}/p-${product.id}" data-link>
-                    <img src="${product.image}" alt="${product.name}">
+                <a href="${basePath}/${product.name.replace(/\s+/g, '-').toLowerCase()}/p-${product.id}" data-link>
+                    <img src="${product.image}" alt="${product.name}"> <!-- Image is already relative to root, so standard img tag works if <base> is not set, BUT for SPA pushState, we might need absolute -->
+                    <!-- Wait, if we are at /repo/shop, 'images/foo.jpg' -> /repo/shop/images/foo.jpg (WRONG) -->
+                    <!-- We need: /repo/images/foo.jpg -->
+                    <!-- So we should use absolute path with base -->
+                    <!-- Actually product.image is 'images/...' -->
+                    <!-- <img src="${basePath}/${product.image}"> -->
                 </a>
                 <div class="product-overlay">
                     <button class="btn-icon btn-wishlist ${wishlist.isInWishlist(product.id) ? 'active' : ''}" 
@@ -180,13 +198,57 @@ function renderProducts(items) {
             </div>
             <div class="product-info">
                 <p class="product-cat">${product.category}</p>
-                <a href="/${product.name.replace(/\s+/g, '-').toLowerCase()}/p-${product.id}" data-link>
+                <a href="${basePath}/${product.name.replace(/\s+/g, '-').toLowerCase()}/p-${product.id}" data-link>
                     <h3 class="product-title">${product.name}</h3>
                 </a>
                 <div class="product-price">$${product.price.toFixed(2)}</div>
             </div>
         </div>
     `).join('');
+
+    // Fix Image Sources after render (or do it in template)
+    // Doing it in template is cleaner:
+    // src="${basePath}/${product.image}" if basePath exists, else just product.image?
+    // If basePath is '', product.image is 'images/...', works relative to root /
+    // If basePath is '/Repo', result '/Repo/images/...', works.
+
+    // Re-rendering with fixed image src logic:
+    const finalHTML = items.map(product => {
+        // Handle image path
+        let imgPath = product.image;
+        if (!imgPath.startsWith('/') && !imgPath.startsWith('http')) {
+            imgPath = `${basePath}/${imgPath}`;
+        }
+
+        return `
+        <div class="product-card">
+            <div class="product-image">
+                <a href="${basePath}/${product.name.replace(/\s+/g, '-').toLowerCase()}/p-${product.id}" data-link>
+                    <img src="${imgPath}" alt="${product.name}">
+                </a>
+                <div class="product-overlay">
+                    <button class="btn-icon btn-wishlist ${wishlist.isInWishlist(product.id) ? 'active' : ''}" 
+                            data-id="${product.id}" 
+                            onclick="wishlist.toggleItem('${product.id}')">
+                        <i class="${wishlist.isInWishlist(product.id) ? 'fas' : 'far'} fa-heart"></i>
+                    </button>
+                    <button class="btn-icon" onclick="cart.addItem('${product.id}')">
+                        <i class="fas fa-shopping-cart"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="product-info">
+                <p class="product-cat">${product.category}</p>
+                <a href="${basePath}/${product.name.replace(/\s+/g, '-').toLowerCase()}/p-${product.id}" data-link>
+                    <h3 class="product-title">${product.name}</h3>
+                </a>
+                <div class="product-price">$${product.price.toFixed(2)}</div>
+            </div>
+        </div>
+        `;
+    }).join('');
+
+    container.innerHTML = finalHTML;
 }
 
 function filterProducts(category) {
@@ -211,7 +273,13 @@ function initPDP(params) {
     const product = products.find(p => p.id === cleanId || p.id === id);
 
     if (product) {
-        document.getElementById('pdp-image').src = product.image;
+        const repoName = '/Ganesh-PrimeStore';
+        const basePath = window.location.pathname.includes(repoName) ? repoName : '';
+        let imgPath = product.image;
+        if (!imgPath.startsWith('/') && !imgPath.startsWith('http')) {
+            imgPath = `${basePath}/${imgPath}`;
+        }
+        document.getElementById('pdp-image').src = imgPath;
         document.getElementById('pdp-name').textContent = product.name;
         document.getElementById('pdp-price').textContent = `$${product.price.toFixed(2)}`;
         document.getElementById('pdp-category').textContent = product.category;

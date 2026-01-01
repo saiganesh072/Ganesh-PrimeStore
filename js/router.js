@@ -1,8 +1,9 @@
 import { analytics } from './analytics.js';
 
 export class Router {
-    constructor(routes) {
+    constructor(routes, basePath = '') {
         this.routes = routes;
+        this.basePath = basePath;
         this.root = document.getElementById('app');
 
         // Handle navigation events
@@ -14,11 +15,9 @@ export class Router {
                 e.preventDefault();
                 this.navigateTo(e.target.href);
             } else if (e.target.closest('a')) {
-                // Also handle standard <a> tags if they are internal links
                 const link = e.target.closest('a');
                 // Check if it's an internal link
-                if (link.hostname === window.location.hostname && !link.hash) {
-                    // Simple check, can be made more robust
+                if (link.matches('[data-link]') || (link.hostname === window.location.hostname && !link.hash)) {
                     e.preventDefault();
                     this.navigateTo(link.href);
                 }
@@ -30,15 +29,51 @@ export class Router {
     }
 
     navigateTo(url) {
-        history.pushState(null, null, url);
-        this.loadRoute(location.pathname);
+        // If url is full URL, extract path
+        // If url is relative path, append to base?
+        // Actually usually we pass full path e.g. /shop
+
+        // If we click <a href="/shop">, url is https://domain/shop.
+        // We need https://domain/Repo/shop if base is Repo.
+        // My click listener passes `e.target.href` which is FULL URL.
+        // So `navigateTo` receives full URL.
+        // history.pushState expects relative or full path.
+
+        // If I pass full URL to pushState, it works.
+        // loadRoute takes pathname. 
+        // Window.location.pathname will include /Repo/shop.
+        // My loadRoute logic strips base path. So routing logic is safe.
+        // The ISSUE is the <a href> in the HTML.
+        // If I write <a href="/shop">, browser resolves to domain.com/shop.
+        // I need <a href="/Repo/shop">.
+
+        // So I MUST update all Views to prefix links with the Repo path.
+        // Since I cannot easily inject `basePath` into every view function without refactoring all of them to accept props...
+        // I will use a clever trick: I will define a global `APP_BASE` constant or helper class that views use.
+        // OR better: Update `index.html` to include `<base href="/Ganesh-PrimeStore/">`?
+        // No, `<base>` messes up anchor links (#).
+
+        // I will do a bulk replace in all View files to use a placeholder or relative paths?
+        // Relative paths `href="shop"` from `index.html` (at /Repo/) goes to `/Repo/shop`.
+        // From `/Repo/shop` (which is virtual), `href="shop"` goes to `/Repo/shop/shop`. BAD.
+
+        // Correct approach: Use absolute paths with Repo prefix.
+        // I will update the Views to use a variable.
+        const basePath = window.location.pathname.includes('/Ganesh-PrimeStore') ? '/Ganesh-PrimeStore' : '';
+        return `... <a href="${basePath}/shop"> ...`;
     }
 
     async loadRoute(pathname) {
-        // Adjust for GitHub Pages base path if needed
-        // For now, assuming root or handling via <base> tag logic if complex
+        // Normalize path by removing base path
+        let path = pathname;
+        if (this.basePath && path.startsWith(this.basePath)) {
+            path = path.substring(this.basePath.length);
+        }
+        if (path === '' || path === '/') {
+            path = '/index.html'; // Default mapping, but let's stick to '/' being home if configured
+            if (this.routes.find(r => r.path === '/')) path = '/';
+        }
 
-        const path = pathname === '/' ? '/index.html' : pathname; // Normalizing root
         let match = null;
         let routeParams = {};
 
@@ -57,7 +92,7 @@ export class Router {
 
             regexPath = regexPath.replace(/\//g, '\\/'); // Escape slashes
             const regex = new RegExp(`^${regexPath}$`);
-            const potentialMatch = pathname.match(regex);
+            const potentialMatch = path.match(regex);
 
             if (potentialMatch) {
                 match = route;
