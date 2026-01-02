@@ -3,7 +3,8 @@ import { products } from './products.js';
 export class Cart {
     constructor() {
         this.items = JSON.parse(localStorage.getItem('primestore_cart')) || [];
-        this.updateCartCount();
+        // Delay initial count update to ensure DOM is ready if called early
+        setTimeout(() => this.notify(), 0);
     }
 
     addItem(productId, quantity = 1) {
@@ -21,21 +22,14 @@ export class Cart {
         }
 
         this.save();
-        this.updateCartCount();
-        showToast(`Added ${product.name} to cart!`);
-
-        // Instead of sidebar, we can redirect or just update count
-        // Redirecting to cart page is a good option if user wants to see it
-        // window.location.href = 'cart.html'; 
+        this.notify();
+        window.showToast(`Added ${product.name} to cart!`);
     }
 
     removeItem(productId) {
         this.items = this.items.filter(item => item.id !== productId);
         this.save();
-        this.updateCartCount();
-        if (document.getElementById('cart-list-container')) {
-            this.updateCartPageUI();
-        }
+        this.notify();
     }
 
     updateQuantity(productId, delta) {
@@ -46,10 +40,7 @@ export class Cart {
                 this.removeItem(productId);
             } else {
                 this.save();
-                this.updateCartCount();
-                if (window.location.pathname.includes('cart.html')) {
-                    this.updateCartPageUI();
-                }
+                this.notify();
             }
         }
     }
@@ -57,10 +48,7 @@ export class Cart {
     clear() {
         this.items = [];
         this.save();
-        this.updateCartCount();
-        if (window.location.pathname.includes('cart.html')) {
-            this.updateCartPageUI();
-        }
+        this.notify();
     }
 
     save() {
@@ -75,60 +63,21 @@ export class Cart {
         return this.items.reduce((sum, item) => sum + item.quantity, 0);
     }
 
-    updateCartCount() {
+    // Emit event for UI updates
+    notify() {
+        // Update global counters immediately
         const cartCounts = document.querySelectorAll('.cart-count');
         cartCounts.forEach(el => {
             el.textContent = this.getCount();
         });
-    }
 
-    updateCartPageUI() {
-        const cartListContainer = document.getElementById('cart-list-container');
-        const itemsCountEl = document.getElementById('cart-items-count');
-        const subtotalEl = document.getElementById('cart-subtotal');
-        const totalEl = document.getElementById('cart-total');
-
-        if (!cartListContainer) return;
-
-        itemsCountEl.textContent = this.getCount();
-
-        if (this.items.length === 0) {
-            cartListContainer.innerHTML = `
-                <div class="empty-cart-msg">
-                    <i class="fas fa-shopping-basket"></i>
-                    <p>Your cart is empty</p>
-                    <a href="index.html#products" class="btn btn-primary">Start Shopping</a>
-                </div>
-            `;
-        } else {
-            cartListContainer.innerHTML = this.items.map(item => `
-                <div class="cart-page-item">
-                    <img src="${item.image}" alt="${item.name}">
-                    <div class="cart-item-info">
-                        <h4>${item.name}</h4>
-                        <div class="cart-item-price">$${item.price.toFixed(2)}</div>
-                        <div class="item-controls">
-                            <div class="qty-input" style="height: 40px; width: 120px;">
-                                <button class="qty-btn" onclick="cart.updateQuantity('${item.id}', -1)">-</button>
-                                <input type="number" value="${item.quantity}" readonly>
-                                <button class="qty-btn" onclick="cart.updateQuantity('${item.id}', 1)">+</button>
-                            </div>
-                            <button class="remove-item" onclick="cart.removeItem('${item.id}')" style="margin-left: 20px;">
-                                <i class="fas fa-trash-alt"></i> Remove
-                            </button>
-                        </div>
-                    </div>
-                    <div class="item-subtotal" style="font-weight: 700; font-size: 20px;">
-                        $${(item.price * item.quantity).toFixed(2)}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        const total = this.getTotal();
-        subtotalEl.textContent = `$${total.toFixed(2)}`;
-        totalEl.textContent = `$${total.toFixed(2)}`;
+        // Dispatch custom event for views
+        window.dispatchEvent(new CustomEvent('cart-updated', {
+            detail: {
+                items: this.items,
+                total: this.getTotal(),
+                count: this.getCount()
+            }
+        }));
     }
 }
-
-

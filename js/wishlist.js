@@ -3,7 +3,7 @@ import { products } from './products.js';
 export class Wishlist {
     constructor() {
         this.items = JSON.parse(localStorage.getItem('primestore_wishlist')) || [];
-        this.updateUI();
+        setTimeout(() => this.notify(), 0);
     }
 
     toggleItem(productId) {
@@ -19,13 +19,13 @@ export class Wishlist {
         }
 
         this.save();
-        this.updateUI();
+        this.notify();
     }
 
     removeItem(productId) {
         this.items = this.items.filter(id => id !== productId);
         this.save();
-        this.updateUI();
+        this.notify();
     }
 
     save() {
@@ -40,81 +40,41 @@ export class Wishlist {
         return this.items.length;
     }
 
-    updateUI() {
+    notify() {
+        // Update global counters
         const wishlistCounts = document.querySelectorAll('.wishlist-count');
         wishlistCounts.forEach(el => {
             el.textContent = this.getCount();
         });
 
-        // Update wishlist page if visible
-        const container = document.getElementById('wishlist-container');
-        if (container) {
-            this.renderWishlistPage();
-        }
-
-        // Update all wishlist icons on the page
+        // Update all wishlist icons on the page immediately (optional, but good for reactivity)
         document.querySelectorAll('.btn-wishlist').forEach(btn => {
             const id = btn.dataset.id;
             if (this.isInWishlist(id)) {
                 btn.classList.add('active');
-                btn.querySelector('i').className = 'fas fa-heart';
+                const icon = btn.querySelector('i');
+                if (icon) icon.className = 'fas fa-heart';
             } else {
                 btn.classList.remove('active');
-                btn.querySelector('i').className = 'far fa-heart';
+                const icon = btn.querySelector('i');
+                if (icon) icon.className = 'far fa-heart';
             }
         });
+
+        // Dispatch event
+        window.dispatchEvent(new CustomEvent('wishlist-updated', {
+            detail: {
+                items: this.items,
+                count: this.getCount()
+            }
+        }));
     }
 
+    // Move render logic to WishlistView.js (View layer) 
+    // But for now, we can keep using WishlistView to listen to events.
     renderWishlistPage() {
-        const container = document.getElementById('wishlist-container');
-        if (!container) return;
-
-        if (this.items.length === 0) {
-            container.innerHTML = `
-                <div class="empty-wishlist">
-                    <i class="far fa-heart"></i>
-                    <h2>Your wishlist is empty</h2>
-                    <p>Browser our products and add your favorites to the list!</p>
-                    <a href="/Ganesh-PrimeStore/shop" class="btn btn-primary" data-link>Go to Shop</a>
-                </div>
-            `;
-            return;
-        }
-
-        const wishlistProducts = products.filter(p => this.items.includes(p.id));
-
-        const repoName = '/Ganesh-PrimeStore';
-        const basePath = window.location.pathname.includes(repoName) ? repoName : '';
-
-        container.innerHTML = `
-            <div class="products-grid">
-                ${wishlistProducts.map(product => `
-                    <div class="product-card">
-                        <div class="product-image">
-                            <a href="${basePath}/${product.name.replace(/\s+/g, '-').toLowerCase()}/p-${product.id}" data-link>
-                                <img src="${product.image.startsWith('http') || product.image.startsWith('/') ? product.image : basePath + '/' + product.image}" alt="${product.name}">
-                            </a>
-                            <div class="product-overlay">
-                                <button class="btn-icon btn-wishlist active" data-id="${product.id}" onclick="wishlist.toggleItem('${product.id}')">
-                                    <i class="fas fa-heart"></i>
-                                </button>
-                                <button class="btn-icon" onclick="cart.addItem('${product.id}')">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <p class="product-cat">${product.category}</p>
-                            <a href="${basePath}/${product.name.replace(/\s+/g, '-').toLowerCase()}/p-${product.id}" data-link>
-                                <h3 class="product-title">${product.name}</h3>
-                            </a>
-                            <div class="product-price">$${product.price.toFixed(2)}</div>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        `;
+        // Deprecated here, should be in View.
+        // But main.js calls it. We will refactor main.js to call WishlistView.onMounted
+        // So we will leave this empty or remove it.
     }
 }
-
-

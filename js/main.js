@@ -1,13 +1,16 @@
 import { Router } from './router.js';
+import { CONFIG } from './config.js';
+import { AuthService } from './auth.js';
 import HomeView from './views/HomeView.js';
 import ShopView from './views/ShopView.js';
 import ProductDetailView from './views/ProductDetailView.js';
-import CartView from './views/CartView.js';
-import WishlistView from './views/WishlistView.js';
+import * as CartPage from './views/CartView.js';
+import * as WishlistPage from './views/WishlistView.js';
+import * as CheckoutPage from './views/CheckoutView.js';
 import FeaturesView from './views/FeaturesView.js';
 import BlogView from './views/BlogView.js';
 import AboutView from './views/AboutView.js';
-import SignInView from './views/SignInView.js';
+import * as SignInPage from './views/SignInView.js';
 import { analytics } from './analytics.js';
 import { products } from './products.js';
 import { Cart } from './cart.js';
@@ -16,11 +19,12 @@ import { Wishlist } from './wishlist.js';
 // Global Instances
 let cart;
 let wishlist;
+let auth;
 
-// Expose products to window just in case any legacy inline script needs it (though we should avoid this)
+// Expose products
 window.productsData = products;
 
-// Global Toast Function
+// Global Toast 
 window.showToast = (message) => {
     const container = document.getElementById('toast-container');
     if (!container) return;
@@ -30,35 +34,62 @@ window.showToast = (message) => {
     toast.innerText = message;
     container.appendChild(toast);
 
-    // Trigger reflow
-    toast.offsetHeight;
+    toast.offsetHeight; // force reflow
     toast.classList.add('show');
 
     setTimeout(() => {
         toast.classList.remove('show');
         setTimeout(() => {
-            container.removeChild(toast);
+            if (container.contains(toast)) {
+                container.removeChild(toast);
+            }
         }, 300);
     }, 3000);
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize Logic
-    cart = new Cart();
-    wishlist = new Wishlist();
-
-    // Attach to window for global access from buttons (onclick="cart.addItem...")
-    // Since we are using onclick attributes in HTML strings, we MUST expose these to window
-    window.cart = cart;
-    window.wishlist = wishlist;
-
-    // --- GitHub Pages SPA Redirect Handler ---
+    // --- GitHub Pages SPA 404 Redirect Handler ---
     const params = new URLSearchParams(window.location.search);
     const redirectPath = params.get('p');
+
     if (redirectPath) {
-        window.history.replaceState(null, null, redirectPath);
+        let targetUrl = redirectPath;
+        if (params.get('q')) {
+            targetUrl += '?' + params.get('q').replace(/~and~/g, '&');
+        }
+        window.history.replaceState(null, null, targetUrl);
     }
     // -----------------------------------------
+
+    // Initialize Business Logic
+    cart = new Cart();
+    wishlist = new Wishlist();
+    auth = new AuthService();
+
+    window.cart = cart;
+    window.wishlist = wishlist;
+    window.auth = auth;
+
+    // Handle Auth UI Updates
+    auth.subscribe(user => {
+        const signinBtn = document.querySelector('.sign-in-btn');
+        if (signinBtn) {
+            if (user) {
+                // If user has a name, show it, else show generic
+                signinBtn.textContent = user.name || 'Account';
+                signinBtn.href = '/profile'; // Placeholder
+                // Override default link behavior for logout check
+                signinBtn.onclick = (e) => {
+                    e.preventDefault();
+                    if (confirm('Log out?')) auth.logout();
+                };
+            } else {
+                signinBtn.textContent = 'Sign In';
+                signinBtn.href = '/signin';
+                signinBtn.onclick = null; // Remove handler to let router handle it
+            }
+        }
+    });
 
     // Routes Configuration
     const routes = [
@@ -68,23 +99,16 @@ document.addEventListener('DOMContentLoaded', () => {
         { path: '/features', view: FeaturesView, name: 'features' },
         { path: '/blog', view: BlogView, name: 'blog' },
         { path: '/about', view: AboutView, name: 'about' },
-        { path: '/signin', view: SignInView, name: 'signin' },
-        { path: '/cart', view: CartView, name: 'cart', onMounted: initCartPage },
-        { path: '/wishlist', view: WishlistView, name: 'wishlist', onMounted: initWishlistPage },
+        { path: '/signin', view: SignInPage.view, name: 'signin', onMounted: SignInPage.onMounted },
+        { path: '/cart', view: CartPage.view, name: 'cart', onMounted: CartPage.onMounted },
+        { path: '/checkout', view: CheckoutPage.view, name: 'checkout', onMounted: CheckoutPage.onMounted },
+        { path: '/wishlist', view: WishlistPage.view, name: 'wishlist', onMounted: WishlistPage.onMounted },
         { path: '/:slug/p-:id', view: ProductDetailView, name: 'pdp', onMounted: initPDP }
     ];
 
     // Initialize Router
-    // Detect base path: if hostname is github.io, assume /RepoName/
-    // Or simpler: hardcode it if we know the repo, or detect from location.pathname on first load
-    // Actually, on GH pages: /Ganesh-PrimeStore/index.html -> base is /Ganesh-PrimeStore
-    // Localhost: /index.html -> base is ''
-
-    // Auto-detect base path
-    const repoName = '/Ganesh-PrimeStore';
-    const basePath = window.location.pathname.includes(repoName) ? repoName : '';
-
-    const router = new Router(routes, basePath);
+    const router = new Router(routes);
+    window.router = router;
 
     // Initialize Global UI
     initGlobalUI();
@@ -310,10 +334,4 @@ function initPDP(params) {
     }
 }
 
-function initCartPage() {
-    cart.updateCartPageUI();
-}
 
-function initWishlistPage() {
-    wishlist.renderWishlistPage();
-}

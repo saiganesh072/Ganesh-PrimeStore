@@ -1,5 +1,6 @@
-export default function CartView() {
-    return `
+import { CONFIG } from '../config.js';
+
+export const view = () => `
     <main class="container cart-main">
         <div class="cart-title-section">
             <h1>Shopping Cart</h1>
@@ -9,6 +10,9 @@ export default function CartView() {
         <div class="cart-content-grid">
             <div class="cart-items-list" id="cart-list-container">
                 <!-- Cart items injected here -->
+                <div class="loader-container" style="position: relative; height: 200px; opacity: 1;">
+                    <div class="loader"></div>
+                </div>
             </div>
 
             <div class="order-summary-card">
@@ -36,48 +40,92 @@ export default function CartView() {
             </div>
         </div>
     </main>
-    
-    <!-- Checkout Modal is handled globally or re-injected here -->
-    <!-- For simplicity, we can keep the modal logic global or in main.js, 
-         but ideally it should be here. I'll include the modal markup here for now. -->
-    <div class="modal" id="checkout-modal">
-        <div class="modal-content checkout-content">
-            <button class="close-modal"><i class="fas fa-times"></i></button>
-            <div class="checkout-grid">
-                <div class="checkout-form">
-                    <h3>Shipping Information</h3>
-                    <form id="checkout-form">
-                        <div class="form-group">
-                            <label>Full Name</label>
-                            <input type="text" required placeholder="John Doe">
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" required placeholder="john@example.com">
-                            </div>
-                            <div class="form-group">
-                                <label>Phone</label>
-                                <input type="tel" required placeholder="+1 234 567 890">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Shipping Address</label>
-                            <textarea required placeholder="123 Shopping St, Fashion City"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Place Order</button>
-                    </form>
-                </div>
-                <div class="checkout-summary">
-                    <h3>Confirm Order</h3>
-                    <div id="checkout-items" class="checkout-mini-list"></div>
-                    <div class="final-total">
-                        <span>Order Total:</span>
-                        <span id="final-order-total">$0.00</span>
+`;
+
+export const onMounted = () => {
+    const listContainer = document.getElementById('cart-list-container');
+    const checkoutBtn = document.getElementById('checkout-btn');
+
+    // Initial Render
+    renderCart(window.cart.items);
+
+    // Listen for updates
+    window.addEventListener('cart-updated', (e) => {
+        renderCart(e.detail.items);
+    });
+
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', () => {
+            if (window.cart.getCount() === 0) {
+                window.showToast("Your cart is empty!");
+                return;
+            }
+            // Proceed to mock checkout
+            // Since we don't have a specific checkout route yet, we can create one or show a modal.
+            // The prompt asked for "Checkout Flow". 
+            // I'll create a simple Checkout View later. For now, alert or placeholder.
+            window.router.navigateTo('/checkout');
+        });
+    }
+};
+
+function renderCart(items) {
+    const listContainer = document.getElementById('cart-list-container');
+    const countEl = document.getElementById('cart-items-count');
+    const subEl = document.getElementById('cart-subtotal');
+    const totalEl = document.getElementById('cart-total');
+
+    if (!listContainer) return;
+
+    // Calculate totals
+    const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const count = items.reduce((sum, item) => sum + item.quantity, 0);
+
+    // Update summary text
+    if (countEl) countEl.textContent = count;
+    if (subEl) subEl.textContent = `$${total.toFixed(2)}`;
+    if (totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
+
+    // Render Items
+    if (items.length === 0) {
+        listContainer.innerHTML = `
+            <div class="empty-cart-msg">
+                <i class="fas fa-shopping-basket"></i>
+                <p>Your cart is empty</p>
+                <a href="/shop" data-link class="btn btn-primary">Start Shopping</a>
+            </div>
+        `;
+        return;
+    }
+
+    const basePath = CONFIG.getBasePath();
+
+    listContainer.innerHTML = items.map(item => {
+        let imgPath = item.image;
+        if (!imgPath.startsWith('/') && !imgPath.startsWith('http')) {
+            imgPath = `${basePath}/${imgPath}`;
+        }
+
+        return `
+        <div class="cart-page-item">
+            <img src="${imgPath}" alt="${item.name}">
+            <div class="cart-item-info">
+                <h4>${item.name}</h4>
+                <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                <div class="item-controls">
+                    <div class="qty-input" style="height: 40px; width: 120px;">
+                        <button class="qty-btn" onclick="cart.updateQuantity('${item.id}', -1)">-</button>
+                        <input type="number" value="${item.quantity}" readonly>
+                        <button class="qty-btn" onclick="cart.updateQuantity('${item.id}', 1)">+</button>
                     </div>
+                    <button class="remove-item" onclick="cart.removeItem('${item.id}')" style="margin-left: 20px;">
+                        <i class="fas fa-trash-alt"></i> Remove
+                    </button>
                 </div>
             </div>
+            <div class="item-subtotal" style="font-weight: 700; font-size: 20px;">
+                $${(item.price * item.quantity).toFixed(2)}
+            </div>
         </div>
-    </div>
-    `;
+    `}).join('');
 }
