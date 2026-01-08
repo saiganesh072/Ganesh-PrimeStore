@@ -27,24 +27,22 @@ export class Router {
 
     navigateTo(url) {
         // Construct full URL including base path for pushState
-        // If url is '/shop', and base is '/repo', we need '/repo/shop'
         let fullPath = url;
 
-        // Ensure relative paths are handled relative to root logic, not browser CWD
-        if (url.startsWith('/')) {
-            fullPath = this.basePath + url;
-        }
-
-        // Avoid double slashing if basePath is empty but url starts with /
-        if (this.basePath === '' && url.startsWith('/')) {
+        // Check if the URL already includes the base path
+        if (this.basePath && url.startsWith(this.basePath)) {
+            // URL already has base path, use as-is
             fullPath = url;
-        } else if (this.basePath !== '' && url.startsWith('/') && !url.startsWith(this.basePath)) {
+        } else if (url.startsWith('/')) {
+            // URL is absolute but without base path, add it
             fullPath = this.basePath + url;
         }
+        // For relative URLs or if basePath is empty, use as-is
 
         history.pushState(null, null, fullPath);
         this.loadRoute(fullPath);
     }
+
 
     async loadRoute(pathname) {
         // Normalize path by removing base path for matching
