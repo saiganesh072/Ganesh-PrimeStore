@@ -26,14 +26,17 @@ function renderWishlist(itemIds) {
 
     if (itemIds.length === 0) {
         container.innerHTML = `
-            <div class="empty-wishlist" style="grid-column: 1/-1; text-align: center; padding: 60px 0;">
-                <i class="far fa-heart" style="font-size: 48px; color: var(--gray-300); margin-bottom: 20px;"></i>
-                <h2>Your wishlist is empty</h2>
-                <p style="color: var(--gray-500); margin-bottom: 24px;">Browse our products and add your favorites to the list!</p>
-                <a href="/shop" class="btn btn-primary" data-link>Go to Shop</a>
+            <div class="empty-wishlist" style="grid-column: 1/-1; text-align: center; padding: 80px 0;">
+                <div class="empty-icon" style="width: 100px; height: 100px; background: var(--primary-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;">
+                    <i class="far fa-heart" style="font-size: 40px; color: var(--primary);"></i>
+                </div>
+                <h2 style="margin-bottom: 12px;">Your wishlist is empty</h2>
+                <p style="color: var(--text-muted); margin-bottom: 24px; max-width: 400px; margin-left: auto; margin-right: auto;">Browse our products and add your favorites to the list!</p>
+                <a href="/shop" class="btn btn-primary" data-link>
+                    <i class="fas fa-shopping-bag"></i> Start Shopping
+                </a>
             </div>
         `;
-        // We need to support 'data-link' which is handled by router. But since we inject HTML, the router's document click listener will catch it.
         return;
     }
 
@@ -47,16 +50,16 @@ function renderWishlist(itemIds) {
         }
 
         return `
-            <div class="product-card">
+            <div class="product-card wishlist-card">
                 <div class="product-image">
                     <a href="${basePath}/${product.name.replace(/\s+/g, '-').toLowerCase()}/p-${product.id}" data-link>
                         <img src="${imgPath}" alt="${product.name}">
                     </a>
                     <div class="product-overlay">
-                        <button class="btn-icon btn-wishlist active" data-id="${product.id}" onclick="wishlist.toggleItem('${product.id}')">
+                        <button class="btn-icon btn-wishlist active" data-id="${product.id}" onclick="wishlist.toggleItem('${product.id}')" title="Remove from Wishlist">
                             <i class="fas fa-heart"></i>
                         </button>
-                        <button class="btn-icon" onclick="cart.addItem('${product.id}')">
+                        <button class="btn-icon" onclick="cart.addItem('${product.id}')" title="Add to Cart">
                             <i class="fas fa-shopping-cart"></i>
                         </button>
                     </div>
@@ -67,6 +70,11 @@ function renderWishlist(itemIds) {
                         <h3 class="product-title">${product.name}</h3>
                     </a>
                     <div class="product-price">$${product.price.toFixed(2)}</div>
+                </div>
+                <div class="wishlist-actions">
+                    <button class="btn btn-primary btn-block" onclick="cart.addItem('${product.id}'); wishlist.removeItem('${product.id}');">
+                        <i class="fas fa-shopping-cart"></i> Move to Cart
+                    </button>
                 </div>
             </div>
         `;

@@ -40,6 +40,7 @@
         <a href="/features" class="nav-link" data-link>Features</a>
         <a href="/blog" class="nav-link" data-link>Blog</a>
         <a href="/about" class="nav-link" data-link>About</a>
+        <a href="/contact" class="nav-link" data-link>Contact</a>
       </div>
 
       <div class="nav-actions">
@@ -52,11 +53,45 @@
           <span class="cart-count">0</span>
         </a>
         <a href="/signin" class="btn btn-primary sign-in-btn" data-link>Sign In</a>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" id="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
       </div>
     </div>
   </nav>
 
-  <!-- Main Content -->
+  <!-- Mobile Menu Overlay -->
+  <div class="menu-overlay" id="menu-overlay"></div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-header">
+      <a href="/" class="logo" data-link>PRIME<span>STORE</span></a>
+      <button class="mobile-menu-close" id="mobile-menu-close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="mobile-menu-links">
+      <a href="/" data-link>Home</a>
+      <a href="/shop" data-link>Shop</a>
+      <a href="/features" data-link>Features</a>
+      <a href="/blog" data-link>Blog</a>
+      <a href="/about" data-link>About</a>
+      <a href="/contact" data-link>Contact</a>
+    </div>
+    <div class="mobile-menu-actions">
+      <a href="/wishlist" class="mobile-action-btn" data-link>
+        <i class="far fa-heart"></i> Wishlist
+      </a>
+      <a href="/cart" class="mobile-action-btn" data-link>
+        <i class="fas fa-shopping-bag"></i> Cart
+      </a>
+      <a href="/signin" class="btn btn-primary btn-block" data-link>Sign In</a>
+    </div>
+  </div>
+
   <!-- Main Content -->
   <main id="app">
     <!-- SPA Content will be injected here -->
@@ -64,8 +99,6 @@
 
   <!-- Toast Notifications -->
   <div class="toast-container" id="toast-container"></div>
-
-
 
   <!-- Footer -->
   <footer class="footer">
@@ -86,8 +119,8 @@
         <ul>
           <li><a href="/" data-link>Home</a></li>
           <li><a href="/about" data-link>About Us</a></li>
-          <li><a href="#" data-link>Contact</a></li>
-          <li><a href="#" data-link>FAQs</a></li>
+          <li><a href="/contact" data-link>Contact</a></li>
+          <li><a href="/features" data-link>Features</a></li>
         </ul>
       </div>
       <div class="footer-links">
@@ -102,8 +135,8 @@
       <div class="footer-newsletter">
         <h4>Newsletter</h4>
         <p>Subscribe to get special offers and updates.</p>
-        <form class="newsletter-form">
-          <input type="email" placeholder="Email Address">
+        <form class="newsletter-form" id="footer-newsletter-form">
+          <input type="email" placeholder="Email Address" required>
           <button type="submit"><i class="fas fa-paper-plane"></i></button>
         </form>
       </div>
@@ -123,6 +156,21 @@
 
   <!-- Scripts -->
   <script type="module" src="js/main.js"></script>
+  <script>
+    // Footer newsletter form handler
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('footer-newsletter-form');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          form.querySelector('input').value = '';
+          if (window.showToast) {
+            window.showToast('Thank you for subscribing!');
+          }
+        });
+      }
+    });
+  </script>
 </body>
 
 </html>

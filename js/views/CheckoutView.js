@@ -1,4 +1,5 @@
 import { CONFIG } from '../config.js';
+import { orderManager } from '../orders.js';
 
 export const view = () => `
     <main class="container checkout-main">
@@ -28,14 +29,28 @@ export const view = () => `
                             <textarea id="address" required placeholder="123 Shopping St, Fashion City" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-main); min-height: 100px;"></textarea>
                         </div>
                         
-                        <h2 style="margin-bottom: 1.5rem; margin-top: 2rem;">Payment Details (Mock)</h2>
+                        <h2 style="margin-bottom: 1.5rem; margin-top: 2rem;">Payment Details</h2>
+                        <div class="payment-methods" style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                            <label class="payment-option active" style="flex: 1; min-width: 150px; padding: 1rem; border: 2px solid var(--primary); border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; gap: 10px;">
+                                <input type="radio" name="payment" value="card" checked style="display: none;">
+                                <i class="fas fa-credit-card" style="font-size: 20px; color: var(--primary);"></i>
+                                <span>Credit Card</span>
+                            </label>
+                            <label class="payment-option" style="flex: 1; min-width: 150px; padding: 1rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; gap: 10px;">
+                                <input type="radio" name="payment" value="paypal" style="display: none;">
+                                <i class="fab fa-paypal" style="font-size: 20px;"></i>
+                                <span>PayPal</span>
+                            </label>
+                        </div>
                         <div class="form-group" style="margin-bottom: 1rem;">
                             <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Card Number</label>
-                            <input type="text" value="**** **** **** 4242" disabled style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-body); color: var(--text-muted); cursor: not-allowed;">
-                            <small style="color: var(--text-muted);">Use any card for this demo.</small>
+                            <input type="text" value="•••• •••• •••• 4242" disabled style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-body); color: var(--text-muted); cursor: not-allowed;">
+                            <small style="color: var(--text-muted);">Demo mode: Any card details accepted.</small>
                         </div>
                         
-                        <button type="submit" class="btn btn-primary btn-block" style="width: 100%; padding: 1rem; font-size: 1.1rem; margin-top: 1rem;">Place Order</button>
+                        <button type="submit" class="btn btn-primary btn-block" id="place-order-btn" style="width: 100%; padding: 1rem; font-size: 1.1rem; margin-top: 1rem;">
+                            <i class="fas fa-lock"></i> Place Order
+                        </button>
                     </form>
                 </div>
             </div>
@@ -62,6 +77,13 @@ export const view = () => `
                             <span id="checkout-total">$0.00</span>
                         </div>
                     </div>
+
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: var(--primary-light); border-radius: var(--radius-md);">
+                        <div style="display: flex; align-items: center; gap: 10px; color: var(--primary);">
+                            <i class="fas fa-shield-alt"></i>
+                            <span style="font-size: 14px; font-weight: 500;">Secure Checkout</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -80,25 +102,52 @@ export const onMounted = () => {
 
     renderSummary(items);
 
+    // Payment method selection
+    document.querySelectorAll('.payment-option').forEach(option => {
+        option.addEventListener('click', () => {
+            document.querySelectorAll('.payment-option').forEach(o => {
+                o.style.borderColor = 'var(--border-color)';
+                o.classList.remove('active');
+            });
+            option.style.borderColor = 'var(--primary)';
+            option.classList.add('active');
+            option.querySelector('input').checked = true;
+        });
+    });
+
     const form = document.getElementById('checkout-form');
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const btn = form.querySelector('button[type="submit"]');
-            const originalText = btn.textContent;
-            btn.textContent = 'Processing...';
+            const btn = document.getElementById('place-order-btn');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
             btn.disabled = true;
+
+            // Gather customer info
+            const customerInfo = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value
+            };
 
             // Simulate API call
             await new Promise(r => setTimeout(r, 2000));
 
-            window.cart.clear();
-            window.showToast('Order placed successfully! Redirecting...');
+            // Create order
+            const order = orderManager.createOrder(window.cart.items, customerInfo);
 
+            // Clear cart
+            window.cart.clear();
+
+            window.showToast('Order placed successfully!');
+
+            // Redirect to order confirmation
             setTimeout(() => {
-                window.router.navigateTo('/');
-            }, 1000);
+                window.router.navigateTo('/order-confirmation');
+            }, 500);
         });
     }
 };
