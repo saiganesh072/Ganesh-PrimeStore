@@ -1,90 +1,130 @@
-import { CONFIG } from './config.js';
+// Authentication Service - Supabase Integration
+import * as SupabaseAuth from './supabase.js';
 
 export class AuthService {
     constructor() {
-        this.user = JSON.parse(localStorage.getItem('prime_user')) || null;
+        this.user = null;
         this.listeners = [];
+        this.initialized = false;
+
+        // Initialize auth state
+        this.init();
+    }
+
+    async init() {
+        try {
+            // Check for existing session
+            const session = await SupabaseAuth.getSession();
+            if (session?.user) {
+                this.user = this.formatUser(session.user);
+                this.notifyListeners();
+            }
+
+            // Listen for auth state changes
+            SupabaseAuth.onAuthStateChange((event, session) => {
+                console.log('Auth state changed:', event);
+                if (session?.user) {
+                    this.user = this.formatUser(session.user);
+                } else {
+                    this.user = null;
+                }
+                this.notifyListeners();
+            });
+
+            this.initialized = true;
+        } catch (error) {
+            console.error('Auth init error:', error);
+            this.initialized = true;
+        }
+    }
+
+    formatUser(supabaseUser) {
+        return {
+            id: supabaseUser.id,
+            email: supabaseUser.email,
+            name: supabaseUser.user_metadata?.name || supabaseUser.email?.split('@')[0] || 'User',
+            avatar: supabaseUser.user_metadata?.avatar_url || null,
+            provider: supabaseUser.app_metadata?.provider || 'email'
+        };
+    }
+
+    async signUp(email, password, name = '') {
+        try {
+            const data = await SupabaseAuth.signUp(email, password, name);
+
+            // Note: Supabase may require email confirmation
+            if (data.user && !data.user.email_confirmed_at) {
+                return {
+                    success: true,
+                    requiresConfirmation: true,
+                    message: 'Please check your email to confirm your account'
+                };
+            }
+
+            this.user = this.formatUser(data.user);
+            this.notifyListeners();
+            return { success: true, user: this.user };
+        } catch (error) {
+            console.error('Sign up error:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async login(email, password) {
+        try {
+            const data = await SupabaseAuth.signIn(email, password);
+            this.user = this.formatUser(data.user);
+            this.notifyListeners();
+            return { success: true, user: this.user };
+        } catch (error) {
+            console.error('Login error:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async loginWithGoogle() {
+        try {
+            await SupabaseAuth.signInWithGoogle();
+            // Redirect will happen, no need to handle here
+            return { success: true };
+        } catch (error) {
+            console.error('Google login error:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async logout() {
+        try {
+            await SupabaseAuth.signOut();
+            this.user = null;
+            this.notifyListeners();
+            return { success: true };
+        } catch (error) {
+            console.error('Logout error:', error);
+            return { success: false, error: error.message };
+        }
     }
 
     isLoggedIn() {
-        return !!this.user;
+        return this.user !== null;
     }
 
     getUser() {
         return this.user;
     }
 
-    async login(email, password) {
-        // Mock Login Flow
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                this.user = {
-                    id: 'usr_' + Math.random().toString(36).substr(2, 9),
-                    email: email || 'user@example.com',
-                    name: 'Demo User',
-                    avatar: 'https://ui-avatars.com/api/?name=Demo+User&background=2563eb&color=fff'
-                };
-                this.save();
-                this.notify();
-                resolve(this.user);
-            }, 800);
-        });
-    }
-
-    async loginWithGitHub() {
-        // Simulated OAuth Flow
-        return new Promise((resolve) => {
-            // In a real app, this would window.location.href = 'https://github.com/login/...'
-            // Here we simulate the popup/redirect delay
-            const width = 600, height = 700;
-            const left = (window.innerWidth - width) / 2;
-            const top = (window.innerHeight - height) / 2;
-
-            // For a static demo, opening a popup to a blank page might be confusing.
-            // We'll just show a toast and simulate success.
-            window.showToast("Redirecting to GitHub...");
-
-            setTimeout(() => {
-                this.user = {
-                    id: 'gh_' + Math.floor(Math.random() * 10000),
-                    email: 'github_user@example.com',
-                    name: 'GitHub User',
-                    provider: 'github',
-                    avatar: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'
-                };
-                this.save();
-                this.notify();
-                resolve(this.user);
-            }, 1500);
-        });
-    }
-
-    logout() {
-        this.user = null;
-        this.save();
-        this.notify();
-
-        // Redirect to home if needed
-        const basePath = CONFIG.getBasePath();
-        const homePath = basePath === '' ? '/' : basePath + '/';
-        window.location.href = homePath;
-    }
-
-    save() {
-        if (this.user) {
-            localStorage.setItem('prime_user', JSON.stringify(this.user));
-        } else {
-            localStorage.removeItem('prime_user');
-        }
-    }
-
     subscribe(callback) {
         this.listeners.push(callback);
-        // Immediate callback with current state
-        callback(this.user);
+        // Immediately call with current state
+        if (this.initialized) {
+            callback(this.user);
+        }
+        return () => {
+            this.listeners = this.listeners.filter(l => l !== callback);
+        };
     }
 
-    notify() {
-        this.listeners.forEach(cb => cb(this.user));
+    notifyListeners() {
+        this.listeners.forEach(callback => callback(this.user));
     }
 }

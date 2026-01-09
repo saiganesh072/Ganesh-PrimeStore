@@ -1,94 +1,182 @@
-import { CONFIG } from '../config.js';
-
 export const view = () => `
-    <main class="container" style="display: flex; justify-content: center; align-items: center; min-height: 70vh;">
-        <div class="signin-card" style="width: 100%; max-width: 450px; background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
-            <div style="text-align: center; margin-bottom: 30px;">
-                <h2 style="font-size: 28px; margin-bottom: 10px;">Welcome Back</h2>
-                <p style="color: var(--gray-500);">Sign in to your PrimeStore account</p>
+    <main class="signin-container">
+        <div class="signin-card">
+            <div class="signin-header">
+                <a href="/" class="logo" data-link>PRIME<span>STORE</span></a>
+                <h1 id="form-title">Welcome Back</h1>
+                <p id="form-subtitle">Sign in to access your account and orders</p>
             </div>
-            
-            <form id="signin-form">
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Email Address</label>
-                    <input type="email" id="email" placeholder="name@example.com" value="demo@example.com" required style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-family: inherit;">
+
+            <div class="signin-tabs">
+                <button class="tab-btn active" data-tab="login">Sign In</button>
+                <button class="tab-btn" data-tab="signup">Create Account</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="signin-form active">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" placeholder="you@example.com" required>
                 </div>
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Password</label>
-                    <input type="password" id="password" placeholder="••••••••" value="password" required style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-family: inherit;">
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="••••••••" required minlength="6">
                 </div>
-                <button type="submit" class="btn btn-primary btn-block" style="width: 100%; height: 50px;">
-                    <span id="btn-text">Sign In</span>
-                    <span id="btn-loader" style="display: none;"><i class="fas fa-spinner fa-spin"></i></span>
+                <div id="login-error" class="form-error" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary btn-block" id="login-btn">
+                    <span>Sign In</span>
                 </button>
             </form>
 
-            <div class="divider" style="margin: 24px 0; text-align: center; border-bottom: 1px solid #eee; line-height: 0.1em; color: #999;">
-                <span style="background: #fff; padding: 0 10px;">or</span>
+            <!-- Signup Form -->
+            <form id="signup-form" class="signin-form" style="display: none;">
+                <div class="form-group">
+                    <label for="signup-name">Full Name</label>
+                    <input type="text" id="signup-name" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" placeholder="••••••••" required minlength="6">
+                </div>
+                <div id="signup-error" class="form-error" style="display: none;"></div>
+                <div id="signup-success" class="form-success" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary btn-block" id="signup-btn">
+                    <span>Create Account</span>
+                </button>
+            </form>
+
+            <div class="signin-divider">
+                <span>or continue with</span>
             </div>
 
-            <button id="gh-login-btn" class="btn btn-outline btn-block" style="width: 100%; height: 50px; display: flex; align-items: center; justify-content: center; gap: 10px;">
-                <i class="fab fa-github" style="font-size: 20px;"></i> Continue with GitHub
+            <button class="btn btn-outline btn-block btn-google" id="google-login-btn">
+                <i class="fab fa-google"></i>
+                <span>Google</span>
             </button>
         </div>
     </main>
 `;
 
 export const onMounted = () => {
-    const form = document.getElementById('signin-form');
-    const ghBtn = document.getElementById('gh-login-btn');
+    // Tab switching
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    const formTitle = document.getElementById('form-title');
+    const formSubtitle = document.getElementById('form-subtitle');
 
-    if (form) {
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
 
-            setLoading(true);
-            await window.auth.login(email, password);
-            setLoading(false);
-
-            window.showToast("Successfully signed in!");
-            // Redirect to Home or Shop
-            // window.router.navigateTo('/') is difficult to access comfortably without Global Router
-            // But main.js didn't expose router globally yet.
-            // We'll use window.location traversal or history API manually for now, 
-            // OR best practice: expose router in main.js
-
-            navigateHome();
+            if (btn.dataset.tab === 'login') {
+                loginForm.style.display = 'flex';
+                signupForm.style.display = 'none';
+                formTitle.textContent = 'Welcome Back';
+                formSubtitle.textContent = 'Sign in to access your account and orders';
+            } else {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'flex';
+                formTitle.textContent = 'Create Account';
+                formSubtitle.textContent = 'Join us to start shopping';
+            }
         });
-    }
+    });
 
-    if (ghBtn) {
-        ghBtn.addEventListener('click', async () => {
-            await window.auth.loginWithGitHub();
-            window.showToast("GitHub Auth Successful!");
-            navigateHome();
-        });
-    }
+    // Login form
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const btn = document.getElementById('login-btn');
+        const errorEl = document.getElementById('login-error');
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+        btn.disabled = true;
+        errorEl.style.display = 'none';
+
+        try {
+            const result = await window.auth.login(email, password);
+
+            if (result.success) {
+                window.showToast('Welcome back, ' + result.user.name + '!');
+                window.router.navigateTo('/');
+            } else {
+                errorEl.textContent = result.error || 'Invalid credentials';
+                errorEl.style.display = 'block';
+                btn.innerHTML = '<span>Sign In</span>';
+                btn.disabled = false;
+            }
+        } catch (error) {
+            errorEl.textContent = 'An error occurred. Please try again.';
+            errorEl.style.display = 'block';
+            btn.innerHTML = '<span>Sign In</span>';
+            btn.disabled = false;
+        }
+    });
+
+    // Signup form
+    signupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const btn = document.getElementById('signup-btn');
+        const errorEl = document.getElementById('signup-error');
+        const successEl = document.getElementById('signup-success');
+        const name = document.getElementById('signup-name').value;
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+        btn.disabled = true;
+        errorEl.style.display = 'none';
+        successEl.style.display = 'none';
+
+        try {
+            const result = await window.auth.signUp(email, password, name);
+
+            if (result.success) {
+                if (result.requiresConfirmation) {
+                    successEl.textContent = result.message;
+                    successEl.style.display = 'block';
+                    btn.innerHTML = '<span>Create Account</span>';
+                    btn.disabled = false;
+                } else {
+                    window.showToast('Account created! Welcome, ' + result.user.name + '!');
+                    window.router.navigateTo('/');
+                }
+            } else {
+                errorEl.textContent = result.error || 'Could not create account';
+                errorEl.style.display = 'block';
+                btn.innerHTML = '<span>Create Account</span>';
+                btn.disabled = false;
+            }
+        } catch (error) {
+            errorEl.textContent = 'An error occurred. Please try again.';
+            errorEl.style.display = 'block';
+            btn.innerHTML = '<span>Create Account</span>';
+            btn.disabled = false;
+        }
+    });
+
+    // Google login
+    document.getElementById('google-login-btn').addEventListener('click', async () => {
+        const btn = document.getElementById('google-login-btn');
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
+        btn.disabled = true;
+
+        try {
+            await window.auth.loginWithGoogle();
+            // Redirect will happen automatically
+        } catch (error) {
+            window.showToast('Google login failed. Please try again.');
+            btn.innerHTML = '<i class="fab fa-google"></i><span>Google</span>';
+            btn.disabled = false;
+        }
+    });
 };
-
-function setLoading(isLoading) {
-    const btnText = document.getElementById('btn-text');
-    const btnLoader = document.getElementById('btn-loader');
-    if (isLoading) {
-        btnText.style.display = 'none';
-        btnLoader.style.display = 'inline-block';
-    } else {
-        btnText.style.display = 'inline-block';
-        btnLoader.style.display = 'none';
-    }
-}
-
-function navigateHome() {
-    const basePath = CONFIG.getBasePath();
-    // Use pushState to navigate without reload
-    const target = basePath === '' ? '/' : basePath + '/';
-    history.pushState(null, null, target);
-    // Trigger popstate so router catches it? 
-    // Router listens to popstate (back/fwd).
-    // It does NOT listen to pushState.
-    // We need to call the router's load function.
-    // Or dispatch a custom event.
-    window.dispatchEvent(new PopStateEvent('popstate'));
-}
