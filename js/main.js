@@ -14,16 +14,18 @@ import BlogView from './views/BlogView.js';
 import AboutView from './views/AboutView.js';
 import * as SignInPage from './views/SignInView.js';
 import { analytics } from './analytics.js';
-import { products } from './products.js';
+import { products as localProducts } from './products.js';
 import { Cart } from './cart.js';
 import { Wishlist } from './wishlist.js';
+import { getProducts, getProductsByCategory, searchProducts } from './api/products.js';
 
 // Global Instances
 let cart;
 let wishlist;
 let auth;
+let products = []; // Will be loaded from Supabase
 
-// Expose products
+// Expose products globally
 window.productsData = products;
 
 // Global Toast 
@@ -175,28 +177,72 @@ function initMobileMenu() {
 
 // --- Page Initializers ---
 
-function initShopPage() {
+async function initShopPage() {
     console.log("Shop Mounted");
-    renderProducts(products);
+
+    // Show loading state
+    const container = document.getElementById('products-container');
+    if (container) {
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px;"><i class="fas fa-spinner fa-spin fa-2x"></i><p style="margin-top: 16px; color: var(--text-muted);">Loading products...</p></div>';
+    }
+
+    // Fetch products from Supabase
+    try {
+        products = await getProducts();
+        window.productsData = products; // Update global reference
+        console.log(`Loaded ${products.length} products from Supabase`);
+        renderProducts(products);
+    } catch (error) {
+        console.error('Failed to fetch products from Supabase, falling back to local:', error);
+        products = localProducts;
+        window.productsData = products;
+        renderProducts(products);
+    }
 
     // Category Filter
     document.querySelectorAll('.cat-link').forEach(link => {
-        link.addEventListener('click', (e) => {
+        link.addEventListener('click', async (e) => {
             e.preventDefault();
             document.querySelectorAll('.cat-link').forEach(l => l.classList.remove('active'));
             e.target.classList.add('active');
             const cat = e.target.dataset.category;
-            filterProducts(cat);
+
+            if (cat === 'all') {
+                renderProducts(products);
+            } else {
+                try {
+                    const filtered = await getProductsByCategory(cat);
+                    renderProducts(filtered);
+                } catch (error) {
+                    const filtered = products.filter(p => p.category === cat);
+                    renderProducts(filtered);
+                }
+            }
         });
     });
 
     // Search
     const searchInput = document.getElementById('search-input-shop');
     if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            const filtered = products.filter(p => p.name.toLowerCase().includes(term));
-            renderProducts(filtered);
+        let searchTimeout;
+        searchInput.addEventListener('input', async (e) => {
+            const term = e.target.value.trim();
+
+            // Debounce search
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(async () => {
+                if (term.length === 0) {
+                    renderProducts(products);
+                } else {
+                    try {
+                        const results = await searchProducts(term);
+                        renderProducts(results);
+                    } catch (error) {
+                        const filtered = products.filter(p => p.name.toLowerCase().includes(term.toLowerCase()));
+                        renderProducts(filtered);
+                    }
+                }
+            }, 300);
         });
     }
 

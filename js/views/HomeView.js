@@ -1,7 +1,9 @@
 import { CONFIG } from '../config.js';
+import { getProducts } from '../api/products.js';
+import { products as localProducts } from '../products.js';
 
 export default function HomeView() {
-  return `
+    return `
     <!-- Hero Section -->
     <section class="hero" id="home-section">
       <div class="container hero-content">
@@ -160,23 +162,37 @@ export default function HomeView() {
     `;
 }
 
-export const onMounted = () => {
-  // Render featured products
-  const container = document.getElementById('featured-products-container');
-  if (container && window.productsData) {
-    const basePath = CONFIG.getBasePath();
-    // Get first 4 products as featured
-    const featuredProducts = window.productsData.slice(0, 4);
+export const onMounted = async () => {
+    // Render featured products
+    const container = document.getElementById('featured-products-container');
+    if (container) {
+        // Show loading
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px;"><i class="fas fa-spinner fa-spin fa-2x"></i></div>';
 
-    container.innerHTML = featuredProducts.map(product => {
-      let imgPath = product.image;
-      if (!imgPath.startsWith('/') && !imgPath.startsWith('http')) {
-        imgPath = `${basePath}/${imgPath}`;
-      }
+        let productsToShow = [];
 
-      const isWishlisted = window.wishlist && window.wishlist.isInWishlist(product.id);
+        // Try to fetch from Supabase
+        try {
+            productsToShow = await getProducts();
+            window.productsData = productsToShow; // Update global
+        } catch (error) {
+            console.log('Falling back to local products for home page');
+            productsToShow = localProducts;
+        }
 
-      return `
+        const basePath = CONFIG.getBasePath();
+        // Get first 4 products as featured
+        const featuredProducts = productsToShow.slice(0, 4);
+
+        container.innerHTML = featuredProducts.map(product => {
+            let imgPath = product.image;
+            if (!imgPath.startsWith('/') && !imgPath.startsWith('http')) {
+                imgPath = `${basePath}/${imgPath}`;
+            }
+
+            const isWishlisted = window.wishlist && window.wishlist.isInWishlist(product.id);
+
+            return `
             <div class="product-card">
                 <div class="product-image">
                     <a href="${basePath}/${product.name.replace(/\s+/g, '-').toLowerCase()}/p-${product.id}" data-link>
@@ -202,17 +218,17 @@ export const onMounted = () => {
                 </div>
             </div>
             `;
-    }).join('');
-  }
+        }).join('');
+    }
 
-  // Newsletter form
-  const newsletterForm = document.getElementById('newsletter-form');
-  if (newsletterForm) {
-    newsletterForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email = newsletterForm.querySelector('input').value;
-      newsletterForm.querySelector('input').value = '';
-      window.showToast('Thank you for subscribing!');
-    });
-  }
+    // Newsletter form
+    const newsletterForm = document.getElementById('newsletter-form');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = newsletterForm.querySelector('input').value;
+            newsletterForm.querySelector('input').value = '';
+            window.showToast('Thank you for subscribing!');
+        });
+    }
 };
