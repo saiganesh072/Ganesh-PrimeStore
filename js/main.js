@@ -17,6 +17,7 @@ import { analytics } from './analytics.js';
 import { products as localProducts } from './products.js';
 import { Cart } from './cart.js';
 import { Wishlist } from './wishlist.js';
+import { syncWishlistToCloud } from './api/wishlist.js';
 import { getProducts, getProductsByCategory, searchProducts } from './api/products.js';
 
 // Global Instances
@@ -75,10 +76,24 @@ document.addEventListener('DOMContentLoaded', () => {
     window.auth = auth;
 
     // Handle Auth UI Updates
-    auth.subscribe(user => {
+    auth.subscribe(async (user) => {
         const signinBtn = document.querySelector('.sign-in-btn');
         if (signinBtn) {
             if (user) {
+                // Sync Wishlist on Login
+                if (wishlist && wishlist.items.length > 0) {
+                    try {
+                        const mergedItems = await syncWishlistToCloud(wishlist.items);
+                        if (mergedItems) {
+                            wishlist.items = mergedItems;
+                            wishlist.save();
+                            wishlist.notify();
+                        }
+                    } catch (e) {
+                        console.error('Failed to sync wishlist on login', e);
+                    }
+                }
+
                 // If user has a name, show it, else show generic
                 signinBtn.textContent = user.name || 'Account';
                 signinBtn.href = '/profile'; // Placeholder

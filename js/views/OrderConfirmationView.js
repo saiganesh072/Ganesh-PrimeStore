@@ -1,5 +1,5 @@
 import { CONFIG } from '../config.js';
-import { orderManager } from '../orders.js';
+import { getOrderById } from '../api/orders.js';
 
 export const view = () => `
     <main class="container order-confirm-main">
@@ -25,27 +25,41 @@ export const view = () => `
     </main>
 `;
 
-export const onMounted = () => {
-    const order = orderManager.getLastOrder();
+export const onMounted = async () => {
+    // Get Order ID from URL
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get('id');
     const detailsContainer = document.getElementById('order-details');
 
-    if (!order) {
+    if (!orderId) {
         detailsContainer.innerHTML = `
-            <p style="text-align: center; color: var(--text-muted);">No order details found.</p>
+            <p style="text-align: center; color: var(--text-muted);">No order ID found.</p>
         `;
         return;
     }
 
+    try {
+        const order = await getOrderById(orderId);
+        renderOrderDetails(order, detailsContainer);
+    } catch (error) {
+        console.error('Error fetching order:', error);
+        detailsContainer.innerHTML = `
+             <p style="text-align: center; color: var(--danger);">Failed to load order details. Please contact support.</p>
+        `;
+    }
+};
+
+function renderOrderDetails(order, container) {
     const basePath = CONFIG.getBasePath();
 
-    detailsContainer.innerHTML = `
+    container.innerHTML = `
         <div class="order-info-row">
             <span>Order ID</span>
-            <strong>${order.id}</strong>
+            <strong style="font-family: monospace;">${order.id.split('-')[0]}...</strong>
         </div>
         <div class="order-info-row">
             <span>Date</span>
-            <strong>${new Date(order.createdAt).toLocaleDateString('en-US', {
+            <strong>${new Date(order.created_at).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
@@ -55,21 +69,23 @@ export const onMounted = () => {
         </div>
         <div class="order-info-row">
             <span>Status</span>
-            <strong class="status-badge">${order.status.toUpperCase()}</strong>
+            <strong class="status-badge success">${order.status.toUpperCase()}</strong>
         </div>
         
         <div class="order-items-section">
             <h3>Items Ordered</h3>
-            ${order.items.map(item => {
-        let imgPath = item.image;
-        if (!imgPath.startsWith('/') && !imgPath.startsWith('http')) {
+            ${order.order_items.map(item => {
+        // Handle nested product data if available, or fallback
+        const product = item.products || { name: 'Product', image: 'images/placeholder.jpg' };
+        let imgPath = product.image;
+        if (imgPath && !imgPath.startsWith('/') && !imgPath.startsWith('http')) {
             imgPath = `${basePath}/${imgPath}`;
         }
         return `
                 <div class="order-item-row">
-                    <img src="${imgPath}" alt="${item.name}">
+                    <img src="${imgPath || ''}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/50'">
                     <div class="order-item-info">
-                        <h4>${item.name}</h4>
+                        <h4>${product.name}</h4>
                         <p>Qty: ${item.quantity}</p>
                     </div>
                     <div class="order-item-price">$${(item.price * item.quantity).toFixed(2)}</div>
@@ -80,14 +96,6 @@ export const onMounted = () => {
 
         <div class="order-summary-section">
             <div class="order-info-row">
-                <span>Subtotal</span>
-                <span>$${order.subtotal.toFixed(2)}</span>
-            </div>
-            <div class="order-info-row">
-                <span>Shipping</span>
-                <span class="text-success">Free</span>
-            </div>
-            <div class="order-info-row total">
                 <span>Total Paid</span>
                 <strong>$${order.total.toFixed(2)}</strong>
             </div>
@@ -95,9 +103,9 @@ export const onMounted = () => {
 
         <div class="shipping-info">
             <h3>Shipping To</h3>
-            <p><strong>${order.customer.name}</strong></p>
-            <p>${order.customer.email}</p>
-            <p>${order.customer.address}</p>
+            <p><strong>${order.shipping_address.name}</strong></p>
+            <p>${order.shipping_address.email}</p>
+            <p>${order.shipping_address.address}</p>
         </div>
     `;
-};
+}

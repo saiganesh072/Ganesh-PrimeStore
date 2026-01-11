@@ -1,4 +1,6 @@
 import { products } from './products.js';
+import { addToWishlist, removeFromWishlist, getUserWishlist } from './api/wishlist.js';
+import { auth } from './main.js';
 
 export class Wishlist {
     constructor() {
@@ -6,26 +8,41 @@ export class Wishlist {
         setTimeout(() => this.notify(), 0);
     }
 
-    toggleItem(productId) {
+    async toggleItem(productId) {
         const index = this.items.findIndex(id => id === productId);
-        const product = products.find(p => p.id === productId);
+        const product = window.productsData ? window.productsData.find(p => p.id === productId) : null;
+        const productName = product ? product.name : 'Item';
 
         if (index > -1) {
+            // Remove
             this.items.splice(index, 1);
-            showToast(`Removed ${product ? product.name : 'item'} from wishlist`);
+            window.showToast(`Removed ${productName} from wishlist`);
+
+            if (auth && auth.isLoggedIn()) {
+                removeFromWishlist(productId).catch(err => console.error('Wishlist sync error:', err));
+            }
         } else {
+            // Add
             this.items.push(productId);
-            showToast(`Added ${product ? product.name : 'item'} to wishlist`);
+            window.showToast(`Added ${productName} to wishlist`);
+
+            if (auth && auth.isLoggedIn()) {
+                addToWishlist(productId).catch(err => console.error('Wishlist sync error:', err));
+            }
         }
 
         this.save();
         this.notify();
     }
 
-    removeItem(productId) {
+    async removeItem(productId) {
         this.items = this.items.filter(id => id !== productId);
         this.save();
         this.notify();
+
+        if (auth && auth.isLoggedIn()) {
+            removeFromWishlist(productId).catch(err => console.error('Wishlist sync error:', err));
+        }
     }
 
     save() {

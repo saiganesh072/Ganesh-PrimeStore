@@ -1,5 +1,6 @@
 import { CONFIG } from '../config.js';
-import { orderManager } from '../orders.js';
+import { createOrder } from '../api/orders.js';
+import { auth } from '../main.js'; // We need to check auth status
 
 export const view = () => `
     <main class="container checkout-main">
@@ -133,14 +134,39 @@ export const onMounted = () => {
                 address: document.getElementById('address').value
             };
 
-            // Simulate API call
-            await new Promise(r => setTimeout(r, 2000));
+            // Perform Order Creation
+            try {
+                // Check if user is logged in
+                if (!auth.isLoggedIn()) {
+                    window.showToast('Please sign in to complete your order');
+                    // Save checkout state if needed, or just redirect
+                    window.location.hash = '/signin?redirect=/checkout';
+                    return;
+                }
 
-            // Create order
-            const order = orderManager.createOrder(window.cart.items, customerInfo);
+                // Create order in Supabase
+                const order = await createOrder(window.cart.items, customerInfo);
 
-            // Clear cart
-            window.cart.clear();
+                console.log('Order created:', order);
+
+                // Clear cart locally and in UI
+                window.cart.clear();
+
+                window.showToast('Order placed successfully!');
+
+                // Redirect to order confirmation with Order ID
+                setTimeout(() => {
+                    window.router.navigateTo(`/order-confirmation?id=${order.id}`);
+                }, 500);
+
+            } catch (error) {
+                console.error('Checkout error:', error);
+                window.showToast(error.message || 'Failed to place order. Please try again.');
+
+                // Reset button
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+            }
 
             window.showToast('Order placed successfully!');
 
