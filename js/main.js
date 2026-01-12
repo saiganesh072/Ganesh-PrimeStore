@@ -66,14 +66,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // -----------------------------------------
 
-    // Initialize Business Logic
-    cart = new Cart();
-    wishlist = new Wishlist();
-    auth = new AuthService();
+    // Initialize Business Logic with error handling
+    try {
+        cart = new Cart();
+        wishlist = new Wishlist();
+        auth = new AuthService();
 
-    window.cart = cart;
-    window.wishlist = wishlist;
-    window.auth = auth;
+        window.cart = cart;
+        window.wishlist = wishlist;
+        window.auth = auth;
+    } catch (error) {
+        console.error('Failed to initialize services:', error);
+        // Continue anyway with fallbacks
+        window.cart = window.cart || { addItem: () => { }, items: [] };
+        window.wishlist = window.wishlist || { toggleItem: () => { }, items: [] };
+    }
+
+    // Force hide loader after 3 seconds no matter what
+    setTimeout(() => {
+        const loader = document.getElementById('loader');
+        if (loader) {
+            loader.style.display = 'none';
+        }
+    }, 3000);
 
     // Handle Auth UI Updates
     auth.subscribe(async (user) => {
@@ -127,9 +142,24 @@ document.addEventListener('DOMContentLoaded', () => {
         { path: '/:slug/p-:id', view: ProductDetailView, name: 'pdp', onMounted: initPDP }
     ];
 
-    // Initialize Router
-    const router = new Router(routes);
-    window.router = router;
+    // Initialize Router with error handling
+    try {
+        const router = new Router(routes);
+        window.router = router;
+    } catch (error) {
+        console.error('Router initialization failed:', error);
+        // Show error message to user
+        const app = document.getElementById('app');
+        if (app) {
+            app.innerHTML = `
+                <div style="padding: 60px 20px; text-align: center;">
+                    <h2>Unable to load application</h2>
+                    <p>Please refresh the page or try again later.</p>
+                    <button onclick="location.reload()" class="btn btn-primary" style="margin-top: 20px;">Reload Page</button>
+                </div>
+            `;
+        }
+    }
 
     // Initialize Global UI
     initGlobalUI();
@@ -141,24 +171,28 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- UI Logic ---
 
 function initGlobalUI() {
+    // Hide loader immediately if DOM is ready
     const loader = document.getElementById('loader');
     if (loader) {
+        // Shorter timeout for better UX
         setTimeout(() => {
             loader.style.opacity = '0';
             setTimeout(() => {
                 loader.style.display = 'none';
-            }, 500);
-        }, 800);
+            }, 300);
+        }, 500);
     }
 
     const navbar = document.querySelector('.navbar');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
+    if (navbar) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    }
 }
 
 function initMobileMenu() {
