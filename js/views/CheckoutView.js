@@ -1,6 +1,6 @@
 import { CONFIG } from '../config.js';
 import { createOrder } from '../api/orders.js';
-import { auth } from '../main.js'; // We need to check auth status
+// Auth is available globally as window.auth
 
 export const view = () => `
     <main class="container checkout-main">
