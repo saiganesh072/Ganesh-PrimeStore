@@ -12,6 +12,10 @@ export default function ProductDetailView(params) {
                 <div class="main-image-card">
                     <img id="pdp-image" src="" alt="">
                 </div>
+                <!-- Gallery Thumbnails -->
+                <div class="pdp-thumbnails" id="pdp-thumbnails">
+                    <!-- Thumbnails injected here -->
+                </div>
             </div>
             <div class="pdp-info-section">
                 <span class="badge" id="pdp-category">Category</span>

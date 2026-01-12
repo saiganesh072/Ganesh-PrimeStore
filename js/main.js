@@ -355,6 +355,42 @@ function initPDP(params) {
 
         // Update main product info
         document.getElementById('pdp-image').src = imgPath;
+
+        // Render Gallery if multiple images exist
+        const thumbContainer = document.getElementById('pdp-thumbnails');
+        const hasGallery = product.images && Array.isArray(product.images) && product.images.length > 0;
+
+        if (thumbContainer) {
+            if (hasGallery) {
+                // Combine main image (fallback/primary) with images array if needed, 
+                // or just use the images array. 
+                // Assumption: product.images contains ALL images including the main one.
+
+                thumbContainer.innerHTML = product.images.map((img, i) => {
+                    let thumbPath = img;
+                    if (!thumbPath.startsWith('/') && !thumbPath.startsWith('http')) {
+                        thumbPath = `${basePath}/${thumbPath}`;
+                    }
+                    return `
+                        <div class="thumb-card ${i === 0 ? 'active' : ''}" onclick="changeMainImage(this, '${thumbPath}')">
+                            <img src="${thumbPath}" alt="${product.name} view ${i + 1}">
+                        </div>
+                    `;
+                }).join('');
+
+                // Expose helper function globally so onclick works (or use addEventListener)
+                window.changeMainImage = (el, src) => {
+                    document.getElementById('pdp-image').src = src;
+                    document.querySelectorAll('.thumb-card').forEach(t => t.classList.remove('active'));
+                    el.classList.add('active');
+                };
+
+                // Show container
+                thumbContainer.style.display = 'flex';
+            } else {
+                thumbContainer.style.display = 'none';
+            }
+        }
         document.getElementById('pdp-name').textContent = product.name;
         document.getElementById('pdp-price').textContent = `$${product.price.toFixed(2)}`;
         document.getElementById('pdp-category').textContent = product.category;
