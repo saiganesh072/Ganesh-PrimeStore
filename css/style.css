@@ -1948,3 +1948,36 @@ img {
 .btn-google i {
     font-size: 18px;
 }
+/* Product Gallery */
+.pdp-thumbnails {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+
+.thumb-card {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.thumb-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumb-card.active {
+    border-color: var(--primary);
+}
+
+.thumb-card:hover {
+    border-color: var(--primary-light, #60a5fa);
+}

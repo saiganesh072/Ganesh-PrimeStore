@@ -171,12 +171,15 @@ export const onMounted = async () => {
 
         let productsToShow = [];
 
-        // Try to fetch from Supabase
+        // Try to fetch from Supabase with timeout
         try {
-            productsToShow = await getProducts();
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Fetch timeout')), 5000)
+            );
+            productsToShow = await Promise.race([getProducts(), timeoutPromise]);
             window.productsData = productsToShow; // Update global
         } catch (error) {
-            console.log('Falling back to local products for home page');
+            console.log('Falling back to local products for home page:', error.message);
             productsToShow = localProducts;
         }
 

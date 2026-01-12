@@ -201,14 +201,17 @@ async function initShopPage() {
         container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px;"><i class="fas fa-spinner fa-spin fa-2x"></i><p style="margin-top: 16px; color: var(--text-muted);">Loading products...</p></div>';
     }
 
-    // Fetch products from Supabase
+    // Fetch products from Supabase with timeout
     try {
-        products = await getProducts();
+        const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Fetch timeout')), 5000)
+        );
+        products = await Promise.race([getProducts(), timeoutPromise]);
         window.productsData = products; // Update global reference
         console.log(`Loaded ${products.length} products from Supabase`);
         renderProducts(products);
     } catch (error) {
-        console.error('Failed to fetch products from Supabase, falling back to local:', error);
+        console.error('Failed to fetch products from Supabase, falling back to local:', error.message);
         products = localProducts;
         window.productsData = products;
         renderProducts(products);
