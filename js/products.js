@@ -174,5 +174,49 @@ export const products = [
         "tags": ["Fashion", "Top"],
         "colors": ["#3498db", "#e74c3c"],
         "sizes": ["S", "M", "L"]
+    },
+    {
+        "id": "sai_f_002",
+        "name": "High-Performance Running Shoes",
+        "price": 95.00,
+        "image": "images/products/footwear_running_shoes_front.png",
+        "category": "shoes",
+        "description": "Professional-grade running shoes with advanced cushioning technology. Features breathable mesh upper and responsive midsole for maximum performance.",
+        "tags": ["shoes", "running", "athletic", "performance"],
+        "colors": ["#00BFFF", "#FF8C00", "#000000"],
+        "sizes": ["7", "8", "9", "10", "11", "12"]
+    },
+    {
+        "id": "sai_f_003",
+        "name": "Classic Black Stiletto Heels",
+        "price": 110.00,
+        "image": "images/products/footwear_stiletto_heels_front.png",
+        "category": "shoes",
+        "description": "Timeless black patent leather stiletto heels. Features a pointed toe and ultra-high heel for elegant evening wear. Red sole accent.",
+        "tags": ["heels", "stiletto", "formal", "luxury"],
+        "colors": ["#000000", "#8B0000"],
+        "sizes": ["6", "7", "8", "9", "10"]
+    },
+    {
+        "id": "sai_f_004",
+        "name": "Casual Canvas Slip-Ons",
+        "price": 48.00,
+        "image": "images/products/footwear_canvas_slip_ons_front.png",
+        "category": "shoes",
+        "description": "Comfortable canvas slip-on shoes perfect for everyday wear. Features elastic side panels for easy on/off and a cushioned insole.",
+        "tags": ["shoes", "casual", "canvas", "slip-on"],
+        "colors": ["#D3D3D3", "#000000", "#F5F5DC"],
+        "sizes": ["7", "8", "9", "10", "11", "12"]
+    },
+    {
+        "id": "sai_f_005",
+        "name": "Rugged Outdoor Hiking Boots",
+        "price": 135.00,
+        "image": "images/products/footwear_hiking_boots_front.png",
+        "category": "shoes",
+        "description": "Durable hiking boots built for tough terrain. Features waterproof leather construction, ankle support, and aggressive tread pattern for superior grip.",
+        "tags": ["boots", "hiking", "outdoor", "waterproof"],
+        "colors": ["#D2691E", "#8B4513"],
+        "sizes": ["7", "8", "9", "10", "11", "12", "13"]
     }
 ];
