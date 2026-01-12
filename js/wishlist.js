@@ -1,6 +1,6 @@
 import { products } from './products.js';
 import { addToWishlist, removeFromWishlist, getUserWishlist } from './api/wishlist.js';
-import { auth } from './main.js';
+// Auth is available globally as window.auth
 
 export class Wishlist {
     constructor() {
@@ -18,7 +18,7 @@ export class Wishlist {
             this.items.splice(index, 1);
             window.showToast(`Removed ${productName} from wishlist`);
 
-            if (auth && auth.isLoggedIn()) {
+            if (window.auth && window.auth.isLoggedIn()) {
                 removeFromWishlist(productId).catch(err => console.error('Wishlist sync error:', err));
             }
         } else {
@@ -26,7 +26,7 @@ export class Wishlist {
             this.items.push(productId);
             window.showToast(`Added ${productName} to wishlist`);
 
-            if (auth && auth.isLoggedIn()) {
+            if (window.auth && window.auth.isLoggedIn()) {
                 addToWishlist(productId).catch(err => console.error('Wishlist sync error:', err));
             }
         }
@@ -40,7 +40,7 @@ export class Wishlist {
         this.save();
         this.notify();
 
-        if (auth && auth.isLoggedIn()) {
+        if (window.auth && window.auth.isLoggedIn()) {
             removeFromWishlist(productId).catch(err => console.error('Wishlist sync error:', err));
         }
     }
