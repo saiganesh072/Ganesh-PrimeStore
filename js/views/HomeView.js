@@ -4,37 +4,36 @@ import { products as localProducts } from '../products.js';
 
 export default function HomeView() {
     return `
-    <!-- Hero Section - Full Width Background -->
+    <!-- Hero Section - Premium -->
     <section class="hero" id="home-section">
       <div class="hero-bg">
-        <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1920&auto=format&fit=crop" alt="Fashion Store">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=1920&auto=format&fit=crop" alt="Premium Fashion">
       </div>
       <div class="container hero-content">
         <div class="hero-text">
           <div class="hero-badge">
-            <i class="fas fa-sparkles"></i>
-            <span>New Collection 2024</span>
+            <span>New Season Collection</span>
           </div>
-          <h1>Discover Your <span>Perfect</span> Style</h1>
-          <p>Explore our curated collection of premium fashion pieces. Quality meets elegance in every stitch.</p>
+          <h1>Define Your <span>Signature</span> Style</h1>
+          <p>Curated pieces for those who appreciate the art of exceptional fashion. Premium quality, timeless design.</p>
           <div class="hero-btns">
             <a href="/shop" class="btn btn-primary btn-lg" data-link>
               <i class="fas fa-shopping-bag"></i>
-              Shop Collection
+              Explore Collection
             </a>
-            <a href="#featured" class="btn btn-outline btn-lg" style="border-color: rgba(255,255,255,0.3); color: #fff;">Explore</a>
+            <a href="#featured" class="btn btn-outline btn-lg">View Lookbook</a>
           </div>
           <div class="hero-stats">
             <div class="stat-item">
               <span class="stat-value">15K+</span>
-              <span class="stat-label">Happy Customers</span>
+              <span class="stat-label">Customers</span>
             </div>
             <div class="stat-item">
               <span class="stat-value">500+</span>
               <span class="stat-label">Products</span>
             </div>
             <div class="stat-item">
-              <span class="stat-value">4.9</span>
+              <span class="stat-value">4.9★</span>
               <span class="stat-label">Rating</span>
             </div>
           </div>
