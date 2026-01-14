@@ -697,6 +697,8 @@ img {
 ============================================ */
 .hero {
     min-height: 100vh;
+    margin-top: -1px;
+    /* Remove any gap from navbar */
     position: relative;
     overflow: hidden;
     display: flex;
