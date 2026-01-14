@@ -3639,16 +3639,15 @@ img {
 .btn-luxury {
     padding: var(--space-5) var(--space-10);
     font-size: 13px;
-    font-weight: 500;
-    border-radius: var(--radius-xs);
-    background: var(--luxury-gradient);
-    background-size: 200% 200%;
-    color: #0A0A0A;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    background: var(--primary-gradient);
+    color: var(--text-primary);
     border: none;
     cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 2px;
-    box-shadow: 0 8px 32px rgba(212, 175, 55, 0.25);
+    box-shadow: 0 4px 16px rgba(255, 184, 0, 0.3);
     transition: all 0.4s var(--ease-out);
     text-decoration: none;
     display: inline-flex;
@@ -3658,8 +3657,7 @@ img {
 
 .btn-luxury:hover {
     transform: translateY(-3px);
-    box-shadow: 0 16px 48px rgba(212, 175, 55, 0.35);
-    animation: premiumShimmer 1.5s ease-in-out infinite;
+    box-shadow: 0 8px 32px rgba(255, 184, 0, 0.4), var(--shadow-glow);
 }
 
 .btn-luxury-outline {
