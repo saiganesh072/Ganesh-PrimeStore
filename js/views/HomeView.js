@@ -125,6 +125,79 @@ export default function HomeView() {
         </div>
     </section>
 
+    <!-- Trust Badges Section -->
+    <section class="trust-badges">
+        <div class="container">
+            <div class="trust-grid">
+                <div class="trust-item">
+                    <div class="trust-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="trust-info">
+                        <h4>Free Shipping</h4>
+                        <p>On orders over $50</p>
+                    </div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="trust-info">
+                        <h4>Secure Payment</h4>
+                        <p>SSL encrypted checkout</p>
+                    </div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">
+                        <i class="fas fa-undo"></i>
+                    </div>
+                    <div class="trust-info">
+                        <h4>Easy Returns</h4>
+                        <p>30-day money back</p>
+                    </div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="trust-info">
+                        <h4>24/7 Support</h4>
+                        <p>Dedicated help center</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flash Deals Section -->
+    <section class="flash-deals" id="flash-deals">
+        <div class="container">
+            <div class="flash-header">
+                <div class="flash-title">
+                    <i class="fas fa-bolt"></i>
+                    <h2>Flash Deals</h2>
+                </div>
+                <div class="countdown" id="countdown">
+                    <div class="countdown-item">
+                        <span id="countdown-hours">23</span>
+                        <small>Hours</small>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="countdown-minutes">45</span>
+                        <small>Min</small>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="countdown-seconds">30</span>
+                        <small>Sec</small>
+                    </div>
+                </div>
+            </div>
+            <div class="flash-grid" id="flash-deals-grid">
+                <!-- Flash deal products will be injected here -->
+            </div>
+        </div>
+    </section>
+
     <!-- Featured Products Section -->
     <section class="featured-section" id="featured">
         <div class="container">
@@ -139,6 +212,69 @@ export default function HomeView() {
                 <!-- Products will be injected here -->
                 <div class="loader-container" style="position: relative; height: 200px; opacity: 1; grid-column: 1/-1;">
                     <div class="loader"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2>What Our Customers Say</h2>
+                <p>Real reviews from real customers</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Amazing quality! The clothes fit perfectly and the fabric is so soft. Best online shopping experience I've ever had."</p>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah M." class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h4>Sarah M.</h4>
+                            <span>Verified Buyer</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Fast shipping and excellent customer service. The watch I ordered looks even better in person. Highly recommend!"</p>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="James K." class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h4>James K.</h4>
+                            <span>Verified Buyer</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Love the premium feel of everything I've purchased. The attention to detail is impressive. Will definitely shop again!"</p>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Emily R." class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h4>Emily R.</h4>
+                            <span>Verified Buyer</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -311,5 +447,72 @@ export const onMounted = async () => {
         carousel.addEventListener('mouseleave', () => {
             autoRotate = setInterval(nextSlide, 5000);
         });
+    }
+
+    // Countdown Timer for Flash Deals
+    const updateCountdown = () => {
+        const now = new Date();
+        // Set end time to midnight
+        const endOfDay = new Date();
+        endOfDay.setHours(23, 59, 59, 999);
+        const diff = endOfDay - now;
+
+        if (diff > 0) {
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            const hoursEl = document.getElementById('countdown-hours');
+            const minutesEl = document.getElementById('countdown-minutes');
+            const secondsEl = document.getElementById('countdown-seconds');
+
+            if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+            if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+            if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+        }
+    };
+
+    // Start countdown
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // Render Flash Deals
+    const flashGrid = document.getElementById('flash-deals-grid');
+    if (flashGrid) {
+        const basePath = CONFIG.getBasePath();
+        let productsData = window.productsData || localProducts;
+
+        // Create flash deals with discounts
+        const flashDeals = productsData.slice(0, 4).map(product => ({
+            ...product,
+            originalPrice: product.price,
+            salePrice: (product.price * 0.7).toFixed(2), // 30% off
+            discount: 30
+        }));
+
+        flashGrid.innerHTML = flashDeals.map(product => {
+            let imgPath = product.image;
+            if (!imgPath.startsWith('/') && !imgPath.startsWith('http')) {
+                imgPath = `${basePath}/${imgPath}`;
+            }
+
+            return `
+            <div class="flash-card">
+                <span class="flash-badge">-${product.discount}%</span>
+                <div class="flash-card-image">
+                    <a href="${basePath}/${product.name.replace(/\s+/g, '-').toLowerCase()}/p-${product.id}" data-link>
+                        <img src="${imgPath}" alt="${product.name}">
+                    </a>
+                </div>
+                <div class="flash-card-info">
+                    <h4>${product.name}</h4>
+                    <div class="flash-prices">
+                        <span class="flash-price-old">$${product.originalPrice.toFixed(2)}</span>
+                        <span class="flash-price-new">$${product.salePrice}</span>
+                    </div>
+                </div>
+            </div>
+            `;
+        }).join('');
     }
 };

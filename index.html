@@ -30,12 +30,39 @@
     <div class="loader"></div>
   </div>
 
+  <!-- Announcement Bar -->
+  <div class="announcement-bar" id="announcement-bar">
+    <div class="container announcement-content">
+      <div class="announcement-text" id="announcement-text">
+        <i class="fas fa-truck"></i>
+        <span>Free shipping on orders over $50!</span>
+      </div>
+      <button class="announcement-close" id="announcement-close" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
   <!-- Navigation -->
   <nav class="navbar">
     <div class="container nav-content">
       <a href="/" class="logo" data-link>
         PRIME<span>STORE</span>
       </a>
+
+      <!-- Search Bar -->
+      <div class="nav-search" id="nav-search">
+        <button class="search-toggle" id="search-toggle" aria-label="Search">
+          <i class="fas fa-search"></i>
+        </button>
+        <div class="search-box" id="search-box">
+          <input type="text" id="search-input" placeholder="Search products..." autocomplete="off">
+          <button class="search-submit" id="search-submit">
+            <i class="fas fa-search"></i>
+          </button>
+          <div class="search-results" id="search-results"></div>
+        </div>
+      </div>
 
       <div class="nav-links">
         <a href="/" class="nav-link active" data-link>Home</a>
@@ -157,11 +184,31 @@
     </div>
   </footer>
 
+  <!-- Live Chat Button -->
+  <button class="live-chat-btn" id="live-chat-btn" aria-label="Live Chat">
+    <i class="fas fa-comments"></i>
+  </button>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="back-to-top" aria-label="Back to Top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- Live Activity Feed -->
+  <div class="live-activity" id="live-activity">
+    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100" alt="Product"
+      class="live-activity-img">
+    <div class="live-activity-info">
+      <p><strong>Sarah</strong> just purchased <strong>Premium Watch</strong></p>
+      <span class="live-activity-time">Just now</span>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script type="module" src="js/main.js"></script>
   <script>
-    // Footer newsletter form handler
     document.addEventListener('DOMContentLoaded', () => {
+      // Footer newsletter form handler
       const form = document.getElementById('footer-newsletter-form');
       if (form) {
         form.addEventListener('submit', (e) => {
@@ -169,6 +216,99 @@
           form.querySelector('input').value = '';
           if (window.showToast) {
             window.showToast('Thank you for subscribing!');
+          }
+        });
+      }
+
+      // Announcement bar close
+      const announcementClose = document.getElementById('announcement-close');
+      const announcementBar = document.getElementById('announcement-bar');
+      if (announcementClose && announcementBar) {
+        announcementClose.addEventListener('click', () => {
+          announcementBar.classList.add('hidden');
+        });
+
+        // Rotate announcement messages
+        const messages = [
+          { icon: 'fa-truck', text: 'Free shipping on orders over $50!' },
+          { icon: 'fa-tag', text: 'Use code SAVE10 for 10% off!' },
+          { icon: 'fa-gift', text: 'New arrivals just dropped!' }
+        ];
+        let msgIndex = 0;
+        setInterval(() => {
+          msgIndex = (msgIndex + 1) % messages.length;
+          const textEl = document.getElementById('announcement-text');
+          if (textEl) {
+            textEl.innerHTML = `<i class="fas ${messages[msgIndex].icon}"></i><span>${messages[msgIndex].text}</span>`;
+          }
+        }, 5000);
+      }
+
+      // Search toggle
+      const searchToggle = document.getElementById('search-toggle');
+      const searchBox = document.getElementById('search-box');
+      if (searchToggle && searchBox) {
+        searchToggle.addEventListener('click', () => {
+          searchBox.classList.toggle('active');
+          if (searchBox.classList.contains('active')) {
+            searchBox.querySelector('input').focus();
+          }
+        });
+        // Close search on click outside
+        document.addEventListener('click', (e) => {
+          if (!e.target.closest('.nav-search')) {
+            searchBox.classList.remove('active');
+          }
+        });
+      }
+
+      // Back to top button
+      const backToTop = document.getElementById('back-to-top');
+      if (backToTop) {
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 300) {
+            backToTop.classList.add('visible');
+          } else {
+            backToTop.classList.remove('visible');
+          }
+        });
+        backToTop.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      // Live activity feed
+      const liveActivity = document.getElementById('live-activity');
+      if (liveActivity) {
+        const activities = [
+          { name: 'Sarah', product: 'Premium Watch', img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100' },
+          { name: 'Michael', product: 'Classic Bag', img: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=100' },
+          { name: 'Emma', product: 'Summer Dress', img: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=100' },
+          { name: 'David', product: 'Sneakers', img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100' }
+        ];
+        let actIndex = 0;
+        const showActivity = () => {
+          const act = activities[actIndex];
+          liveActivity.querySelector('.live-activity-img').src = act.img;
+          liveActivity.querySelector('.live-activity-info p').innerHTML =
+            `<strong>${act.name}</strong> just purchased <strong>${act.product}</strong>`;
+          liveActivity.classList.add('show');
+          setTimeout(() => {
+            liveActivity.classList.remove('show');
+          }, 4000);
+          actIndex = (actIndex + 1) % activities.length;
+        };
+        // Show first after 3s, then every 8s
+        setTimeout(showActivity, 3000);
+        setInterval(showActivity, 8000);
+      }
+
+      // Live chat button
+      const liveChatBtn = document.getElementById('live-chat-btn');
+      if (liveChatBtn) {
+        liveChatBtn.addEventListener('click', () => {
+          if (window.showToast) {
+            window.showToast('Chat feature coming soon!');
           }
         });
       }
