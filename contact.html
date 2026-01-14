@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | PrimeStore</title>
+    <meta name="description" content="Get in touch with PrimeStore. We'd love to hear from you.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="/" class="logo">PRIME<span>STORE</span></a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/Ganesh-PrimeStore/shop" class="nav-link">Shop</a>
+                <a href="/Ganesh-PrimeStore/features.html" class="nav-link">Features</a>
+                <a href="/Ganesh-PrimeStore/blog.html" class="nav-link">Blog</a>
+                <a href="/Ganesh-PrimeStore/about.html" class="nav-link">About</a>
+                <a href="/Ganesh-PrimeStore/contact.html" class="nav-link active">Contact</a>
+            </div>
+            <div class="nav-actions">
+                <a href="/Ganesh-PrimeStore/shop" class="nav-icon"><i class="far fa-heart"></i></a>
+                <a href="/Ganesh-PrimeStore/shop" class="nav-icon"><i class="fas fa-shopping-bag"></i></a>
+                <a href="/Ganesh-PrimeStore/" class="btn btn-primary sign-in-btn">Shop Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <main id="app" style="padding-top: var(--header-height);">
+        <section class="container" style="padding: 80px 0;">
+            <div class="section-header text-center" style="margin-bottom: 60px;">
+                <h1 style="font-size: 48px; margin-bottom: 16px;">Get in Touch</h1>
+                <p style="font-size: 18px; color: var(--text-secondary);">Have questions? We'd love to hear from you.
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1100px; margin: 0 auto;">
+                <div>
+                    <form id="contact-form" style="display: flex; flex-direction: column; gap: 24px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Full Name</label>
+                                <input type="text" placeholder="John Doe" required
+                                    style="width: 100%; padding: 14px 18px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 15px;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Email
+                                    Address</label>
+                                <input type="email" placeholder="john@example.com" required
+                                    style="width: 100%; padding: 14px 18px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 15px;">
+                            </div>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500;">Subject</label>
+                            <input type="text" placeholder="How can we help?" required
+                                style="width: 100%; padding: 14px 18px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 15px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500;">Message</label>
+                            <textarea rows="6" placeholder="Write your message here..." required
+                                style="width: 100%; padding: 14px 18px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 15px; resize: vertical;"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 24px;">
+                    <div
+                        style="padding: 28px; background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                        <div
+                            style="width: 50px; height: 50px; background: var(--primary-light); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                            <i class="fas fa-map-marker-alt" style="color: var(--primary); font-size: 20px;"></i>
+                        </div>
+                        <h3 style="margin-bottom: 8px;">Visit Us</h3>
+                        <p style="color: var(--text-secondary); line-height: 1.7;">123 Fashion Street<br>New York, NY
+                            10001<br>United States</p>
+                    </div>
+
+                    <div
+                        style="padding: 28px; background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                        <div
+                            style="width: 50px; height: 50px; background: var(--primary-light); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                            <i class="fas fa-envelope" style="color: var(--primary); font-size: 20px;"></i>
+                        </div>
+                        <h3 style="margin-bottom: 8px;">Email Us</h3>
+                        <p style="color: var(--text-secondary); line-height: 1.7;">
+                            support@primestore.com<br>sales@primestore.com</p>
+                    </div>
+
+                    <div
+                        style="padding: 28px; background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                        <div
+                            style="width: 50px; height: 50px; background: var(--primary-light); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                            <i class="fas fa-phone" style="color: var(--primary); font-size: 20px;"></i>
+                        </div>
+                        <h3 style="margin-bottom: 8px;">Call Us</h3>
+                        <p style="color: var(--text-secondary); line-height: 1.7;">+1 (555) 123-4567<br>Mon-Fri: 9AM -
+                            6PM EST</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-about">
+                <a href="/" class="logo">PRIME<span>STORE</span></a>
+                <p>Providing the best quality fashion essentials since 2024.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/Ganesh-PrimeStore/">Home</a></li>
+                    <li><a href="/Ganesh-PrimeStore/shop">Shop</a></li>
+                    <li><a href="/Ganesh-PrimeStore/about.html">About</a></li>
+                    <li><a href="/Ganesh-PrimeStore/contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2024 PrimeStore. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            this.reset();
+            alert('Message sent successfully! We will get back to you soon.');
+        });
+    </script>
+</body>
+
+</html>
