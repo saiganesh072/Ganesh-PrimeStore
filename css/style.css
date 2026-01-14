@@ -674,56 +674,61 @@ img {
 }
 
 /* ============================================
-   HERO SECTION - Premium with Gradients
+   HERO SECTION - Full Width Modern Dark
 ============================================ */
 .hero {
-    padding-top: calc(var(--header-height) + var(--space-20));
-    padding-bottom: var(--space-24);
+    min-height: 100vh;
+    padding-top: var(--header-height);
     position: relative;
     overflow: hidden;
-    background: linear-gradient(180deg, var(--cream-50) 0%, var(--cream-100) 100%);
+    display: flex;
+    align-items: center;
+    background: var(--secondary);
 }
 
-/* Decorative Gradient Orbs */
-.hero::before {
-    content: '';
+/* Background Image Container */
+.hero-bg {
     position: absolute;
-    width: 800px;
-    height: 800px;
-    background: radial-gradient(circle, rgba(245, 197, 99, 0.12) 0%, transparent 60%);
-    border-radius: 50%;
-    top: -300px;
-    right: -200px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     z-index: 0;
-    pointer-events: none;
 }
 
-.hero::after {
+.hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.4;
+}
+
+.hero-bg::after {
     content: '';
     position: absolute;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(245, 197, 99, 0.08) 0%, transparent 70%);
-    border-radius: 50%;
-    bottom: -200px;
-    left: -100px;
-    z-index: 0;
-    pointer-events: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(31, 31, 31, 0.95) 0%, rgba(31, 31, 31, 0.6) 50%, rgba(31, 31, 31, 0.3) 100%);
 }
 
 .hero-content {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-12);
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    padding: var(--space-20) 0;
+    min-height: calc(100vh - var(--header-height) - 40px);
 }
 
-@media (min-width: 992px) {
+@media (max-width: 992px) {
     .hero-content {
-        grid-template-columns: 1fr 1fr;
-        gap: var(--space-16);
+        align-items: center;
+        text-align: center;
+        padding: var(--space-12) 0;
     }
 }
 
@@ -732,26 +737,31 @@ img {
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
-    background: var(--secondary);
-    color: var(--text-inverse);
+    background: rgba(245, 197, 99, 0.15);
+    border: 1px solid var(--primary);
+    color: var(--primary);
     padding: var(--space-2) var(--space-4);
     border-radius: var(--radius-full);
     font-size: 12px;
     font-weight: 600;
     margin-bottom: var(--space-6);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
 }
 
 .hero-badge i {
     color: var(--primary);
 }
 
+.hero-text {
+    max-width: 650px;
+}
+
 .hero-text h1 {
     font-size: 48px;
     line-height: 1.1;
-    margin-bottom: var(--space-5);
-    color: var(--text-primary);
+    margin-bottom: var(--space-6);
+    color: var(--text-inverse);
     font-weight: 800;
 }
 
@@ -770,16 +780,16 @@ img {
 
 @media (min-width: 1200px) {
     .hero-text h1 {
-        font-size: 72px;
+        font-size: 80px;
     }
 }
 
 .hero-text p {
-    font-size: 17px;
+    font-size: 18px;
     line-height: 1.8;
-    color: var(--text-secondary);
-    margin-bottom: var(--space-8);
-    max-width: 480px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: var(--space-10);
+    max-width: 520px;
 }
 
 .hero-btns {
@@ -803,12 +813,12 @@ img {
 .stat-value {
     font-size: 28px;
     font-weight: 800;
-    color: var(--text-primary);
+    color: var(--primary);
 }
 
 .stat-label {
     font-size: 13px;
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.6);
     font-weight: 500;
 }
 

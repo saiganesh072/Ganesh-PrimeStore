@@ -4,22 +4,25 @@ import { products as localProducts } from '../products.js';
 
 export default function HomeView() {
     return `
-    <!-- Hero Carousel Section -->
+    <!-- Hero Section - Full Width Background -->
     <section class="hero" id="home-section">
+      <div class="hero-bg">
+        <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1920&auto=format&fit=crop" alt="Fashion Store">
+      </div>
       <div class="container hero-content">
         <div class="hero-text">
           <div class="hero-badge">
             <i class="fas fa-sparkles"></i>
             <span>New Collection 2024</span>
           </div>
-          <h1>Elevate Your Style With <span>Premium</span> Essentials</h1>
-          <p>Discover our curated collection of high-quality fashion pieces designed for those who value both comfort and sophistication.</p>
+          <h1>Discover Your <span>Perfect</span> Style</h1>
+          <p>Explore our curated collection of premium fashion pieces. Quality meets elegance in every stitch.</p>
           <div class="hero-btns">
             <a href="/shop" class="btn btn-primary btn-lg" data-link>
               <i class="fas fa-shopping-bag"></i>
-              Shop Now
+              Shop Collection
             </a>
-            <a href="#features" class="btn btn-outline btn-lg">Learn More</a>
+            <a href="#featured" class="btn btn-outline btn-lg" style="border-color: rgba(255,255,255,0.3); color: #fff;">Explore</a>
           </div>
           <div class="hero-stats">
             <div class="stat-item">
@@ -33,44 +36,6 @@ export default function HomeView() {
             <div class="stat-item">
               <span class="stat-value">4.9</span>
               <span class="stat-label">Rating</span>
-            </div>
-          </div>
-        </div>
-        <div class="hero-carousel" id="hero-carousel">
-          <div class="carousel-container">
-            <div class="carousel-slide active">
-              <div class="image-card">
-                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1000&auto=format&fit=crop" alt="Fashion Collection">
-              </div>
-            </div>
-            <div class="carousel-slide">
-              <div class="image-card">
-                <img src="https://images.unsplash.com/photo-1558171813-4c088753af8f?q=80&w=1000&auto=format&fit=crop" alt="New Arrivals">
-              </div>
-            </div>
-            <div class="carousel-slide">
-              <div class="image-card">
-                <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=1000&auto=format&fit=crop" alt="Premium Quality">
-              </div>
-            </div>
-          </div>
-          <div class="carousel-dots">
-            <button class="dot active" data-slide="0"></button>
-            <button class="dot" data-slide="1"></button>
-            <button class="dot" data-slide="2"></button>
-          </div>
-          <div class="floating-card c1">
-            <i class="fas fa-star"></i>
-            <div>
-              <h4>Top Rated</h4>
-              <p>4.9/5 Rating</p>
-            </div>
-          </div>
-          <div class="floating-card c2">
-            <i class="fas fa-truck"></i>
-            <div>
-              <h4>Fast Delivery</h4>
-              <p>Free for orders > $50</p>
             </div>
           </div>
         </div>
