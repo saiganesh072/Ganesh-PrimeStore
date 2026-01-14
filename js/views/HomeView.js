@@ -4,96 +4,100 @@ import { products as localProducts } from '../products.js';
 
 export default function HomeView() {
     return `
-    <!-- Hero Section - Premium -->
-    <section class="hero" id="home-section">
+    <!-- Hero Section - Premium Luxury -->
+    <section class="hero premium-hero" id="home-section">
       <div class="hero-bg">
-        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=1920&auto=format&fit=crop" alt="Premium Fashion">
+        <img src="images/hero-luxury.png" alt="Luxury Collection">
       </div>
       <div class="container hero-content">
         <div class="hero-text">
-          <div class="hero-badge">
-            <span>New Season Collection</span>
+          <div class="premium-badge">
+            <span>Exclusive Collection 2025</span>
           </div>
-          <h1>Define Your <span>Signature</span> Style</h1>
-          <p>Curated pieces for those who appreciate the art of exceptional fashion. Premium quality, timeless design.</p>
+          <h1>Discover Timeless <span class="hero-highlight">Elegance</span></h1>
+          <p>Curated luxury pieces for the discerning individual. Experience the art of exceptional craftsmanship and premium quality.</p>
           <div class="hero-btns">
-            <a href="/shop" class="btn btn-primary btn-lg" data-link>
-              <i class="fas fa-shopping-bag"></i>
+            <a href="/shop" class="btn-luxury" data-link>
+              <i class="fas fa-gem"></i>
               Explore Collection
             </a>
-            <a href="#featured" class="btn btn-outline btn-lg">View Lookbook</a>
+            <a href="#featured" class="btn-luxury-outline">View Lookbook</a>
           </div>
-          <div class="hero-stats">
-            <div class="stat-item">
-              <span class="stat-value">15K+</span>
-              <span class="stat-label">Customers</span>
+          <div class="premium-stats">
+            <div class="premium-stat">
+              <span class="premium-stat-value">15K+</span>
+              <span class="premium-stat-label">Happy Clients</span>
             </div>
-            <div class="stat-item">
-              <span class="stat-value">500+</span>
-              <span class="stat-label">Products</span>
+            <div class="premium-stat">
+              <span class="premium-stat-value">500+</span>
+              <span class="premium-stat-label">Products</span>
             </div>
-            <div class="stat-item">
-              <span class="stat-value">4.9★</span>
-              <span class="stat-label">Rating</span>
+            <div class="premium-stat">
+              <span class="premium-stat-value">4.9★</span>
+              <span class="premium-stat-label">Rating</span>
             </div>
           </div>
         </div>
       </div>
+      <div class="scroll-indicator">
+        <span>Scroll</span>
+        <i class="fas fa-chevron-down"></i>
+      </div>
     </section>
 
-    <!-- Categories Section -->
-    <section class="categories-section" id="categories">
+    <!-- Categories Section - Premium -->
+    <section class="categories-section premium-categories" id="categories">
         <div class="container">
-            <div class="section-header text-center">
+            <div class="section-header text-center reveal">
                 <h2>Shop by Category</h2>
-                <p>Explore our diverse collection of fashion essentials</p>
+                <p>Explore our curated collection of luxury essentials</p>
             </div>
             <div class="categories-grid">
-                <a href="/shop" class="category-card" data-link data-category="women">
+                <a href="/shop" class="category-card premium-card reveal reveal-delay-1" data-link data-category="women">
                     <div class="category-image">
                         <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&auto=format&fit=crop" alt="Women">
                     </div>
                     <div class="category-info">
                         <h3>Women</h3>
-                        <span>Explore Collection</span>
+                        <span>Explore Collection <i class="fas fa-arrow-right"></i></span>
                     </div>
                 </a>
-                <a href="/shop" class="category-card" data-link data-category="men">
+                <a href="/shop" class="category-card premium-card reveal reveal-delay-2" data-link data-category="men">
                     <div class="category-image">
                         <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?w=400&auto=format&fit=crop" alt="Men">
                     </div>
                     <div class="category-info">
                         <h3>Men</h3>
-                        <span>Explore Collection</span>
+                        <span>Explore Collection <i class="fas fa-arrow-right"></i></span>
                     </div>
                 </a>
-                <a href="/shop" class="category-card" data-link data-category="bag">
+                <a href="/shop" class="category-card premium-card reveal reveal-delay-3" data-link data-category="bag">
                     <div class="category-image">
                         <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&auto=format&fit=crop" alt="Bags">
                     </div>
                     <div class="category-info">
                         <h3>Bags</h3>
-                        <span>Explore Collection</span>
+                        <span>Explore Collection <i class="fas fa-arrow-right"></i></span>
                     </div>
                 </a>
-                <a href="/shop" class="category-card" data-link data-category="watches">
+                <a href="/shop" class="category-card premium-card reveal reveal-delay-4" data-link data-category="watches">
                     <div class="category-image">
                         <img src="https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=400&auto=format&fit=crop" alt="Watches">
                     </div>
                     <div class="category-info">
                         <h3>Watches</h3>
-                        <span>Explore Collection</span>
+                        <span>Explore Collection <i class="fas fa-arrow-right"></i></span>
                     </div>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- Trust Badges Section -->
-    <section class="trust-badges">
+    <!-- Trust Badges Section - Premium -->
+    <section class="trust-badges premium-trust">
         <div class="container">
             <div class="trust-grid">
-                <div class="trust-item">
+                <div class="trust-item reveal">
                     <div class="trust-icon">
                         <i class="fas fa-truck"></i>
                     </div>
@@ -102,7 +106,7 @@ export default function HomeView() {
                         <p>On orders over $50</p>
                     </div>
                 </div>
-                <div class="trust-item">
+                <div class="trust-item reveal reveal-delay-1">
                     <div class="trust-icon">
                         <i class="fas fa-shield-alt"></i>
                     </div>
@@ -111,7 +115,7 @@ export default function HomeView() {
                         <p>SSL encrypted checkout</p>
                     </div>
                 </div>
-                <div class="trust-item">
+                <div class="trust-item reveal reveal-delay-2">
                     <div class="trust-icon">
                         <i class="fas fa-undo"></i>
                     </div>
@@ -120,7 +124,7 @@ export default function HomeView() {
                         <p>30-day money back</p>
                     </div>
                 </div>
-                <div class="trust-item">
+                <div class="trust-item reveal reveal-delay-3">
                     <div class="trust-icon">
                         <i class="fas fa-headset"></i>
                     </div>
@@ -133,13 +137,13 @@ export default function HomeView() {
         </div>
     </section>
 
-    <!-- Flash Deals Section -->
-    <section class="flash-deals" id="flash-deals">
+    <!-- Flash Deals Section - Premium -->
+    <section class="flash-deals premium-flash" id="flash-deals">
         <div class="container">
-            <div class="flash-header">
+            <div class="flash-header reveal">
                 <div class="flash-title">
                     <i class="fas fa-bolt"></i>
-                    <h2>Flash Deals</h2>
+                    <h2>Limited Time Offers</h2>
                 </div>
                 <div class="countdown" id="countdown">
                     <div class="countdown-item">
@@ -162,13 +166,13 @@ export default function HomeView() {
         </div>
     </section>
 
-    <!-- Featured Products Section -->
-    <section class="featured-section" id="featured">
+    <!-- Featured Products Section - Premium -->
+    <section class="featured-section premium-featured" id="featured">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header reveal">
                 <div class="header-left">
-                    <h2>Featured Products</h2>
-                    <p>Handpicked styles just for you</p>
+                    <h2>Featured Collection</h2>
+                    <p>Handpicked luxury pieces just for you</p>
                 </div>
                 <a href="/shop" class="btn btn-outline" data-link>View All Products</a>
             </div>
@@ -181,15 +185,15 @@ export default function HomeView() {
         </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section class="testimonials-section">
+    <!-- Testimonials Section - Premium -->
+    <section class="testimonials-section premium-testimonials">
         <div class="container">
-            <div class="section-header text-center">
-                <h2>What Our Customers Say</h2>
-                <p>Real reviews from real customers</p>
+            <div class="section-header text-center reveal">
+                <h2>What Our Clients Say</h2>
+                <p>Trusted by luxury enthusiasts worldwide</p>
             </div>
             <div class="testimonials-grid">
-                <div class="testimonial-card">
+                <div class="testimonial-card premium-testimonial reveal reveal-delay-1">
                     <div class="testimonial-stars">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -197,16 +201,16 @@ export default function HomeView() {
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                     </div>
-                    <p class="testimonial-text">"Amazing quality! The clothes fit perfectly and the fabric is so soft. Best online shopping experience I've ever had."</p>
+                    <p class="testimonial-text">The quality exceeded my expectations. Every detail speaks of luxury and the craftsmanship is impeccable. A truly premium experience.</p>
                     <div class="testimonial-author">
                         <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah M." class="testimonial-avatar">
                         <div class="testimonial-info">
-                            <h4>Sarah M.</h4>
+                            <h4>Sarah Mitchell</h4>
                             <span>Verified Buyer</span>
                         </div>
                     </div>
                 </div>
-                <div class="testimonial-card">
+                <div class="testimonial-card premium-testimonial reveal reveal-delay-2">
                     <div class="testimonial-stars">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -214,16 +218,16 @@ export default function HomeView() {
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                     </div>
-                    <p class="testimonial-text">"Fast shipping and excellent customer service. The watch I ordered looks even better in person. Highly recommend!"</p>
+                    <p class="testimonial-text">Fast shipping and white-glove service. The watch I ordered is stunning—even more beautiful in person. Highly recommend!</p>
                     <div class="testimonial-author">
                         <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="James K." class="testimonial-avatar">
                         <div class="testimonial-info">
-                            <h4>James K.</h4>
+                            <h4>James Kennedy</h4>
                             <span>Verified Buyer</span>
                         </div>
                     </div>
                 </div>
-                <div class="testimonial-card">
+                <div class="testimonial-card premium-testimonial reveal reveal-delay-3">
                     <div class="testimonial-stars">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -231,11 +235,11 @@ export default function HomeView() {
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                     </div>
-                    <p class="testimonial-text">"Love the premium feel of everything I've purchased. The attention to detail is impressive. Will definitely shop again!"</p>
+                    <p class="testimonial-text">The attention to detail is remarkable. From packaging to product, everything feels premium. This is how luxury should be.</p>
                     <div class="testimonial-author">
                         <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Emily R." class="testimonial-avatar">
                         <div class="testimonial-info">
-                            <h4>Emily R.</h4>
+                            <h4>Emily Richardson</h4>
                             <span>Verified Buyer</span>
                         </div>
                     </div>
@@ -244,49 +248,49 @@ export default function HomeView() {
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features-home" id="features">
+    <!-- Features Section - Premium -->
+    <section class="features-home premium-features" id="features">
         <div class="container">
             <div class="features-grid-home">
-                <div class="feature-item">
+                <div class="feature-item reveal">
                     <div class="feature-icon">
-                        <i class="fas fa-shipping-fast"></i>
+                        <i class="fas fa-gem"></i>
                     </div>
-                    <h3>Free Shipping</h3>
-                    <p>Free shipping on all orders over $50</p>
+                    <h3>Premium Quality</h3>
+                    <p>Only the finest materials and craftsmanship</p>
                 </div>
-                <div class="feature-item">
+                <div class="feature-item reveal reveal-delay-1">
                     <div class="feature-icon">
-                        <i class="fas fa-undo-alt"></i>
+                        <i class="fas fa-certificate"></i>
                     </div>
-                    <h3>Easy Returns</h3>
-                    <p>30-day hassle-free return policy</p>
+                    <h3>Authenticity</h3>
+                    <p>100% genuine products guaranteed</p>
                 </div>
-                <div class="feature-item">
+                <div class="feature-item reveal reveal-delay-2">
                     <div class="feature-icon">
-                        <i class="fas fa-headset"></i>
+                        <i class="fas fa-concierge-bell"></i>
                     </div>
-                    <h3>24/7 Support</h3>
-                    <p>Round the clock customer support</p>
+                    <h3>VIP Service</h3>
+                    <p>Personal styling assistance available</p>
                 </div>
-                <div class="feature-item">
+                <div class="feature-item reveal reveal-delay-3">
                     <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
+                        <i class="fas fa-gift"></i>
                     </div>
-                    <h3>Secure Payment</h3>
-                    <p>100% secure payment processing</p>
+                    <h3>Luxury Packaging</h3>
+                    <p>Elegant presentation for every order</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Newsletter Section -->
-    <section class="newsletter-section">
+    <!-- Newsletter Section - Premium -->
+    <section class="newsletter-section premium-newsletter">
         <div class="container">
-            <div class="newsletter-content">
+            <div class="newsletter-content reveal">
                 <div class="newsletter-text">
-                    <h2>Stay in the Loop</h2>
-                    <p>Subscribe to our newsletter for exclusive offers, new arrivals, and style inspiration.</p>
+                    <h2>Join the Inner Circle</h2>
+                    <p>Subscribe for exclusive access to new arrivals, private sales, and curated style inspiration.</p>
                 </div>
                 <form class="newsletter-form-home" id="newsletter-form">
                     <input type="email" placeholder="Enter your email address" required>
@@ -478,5 +482,24 @@ export const onMounted = async () => {
             </div>
             `;
         }).join('');
+    }
+
+    // Premium Scroll Reveal Animations
+    const revealElements = document.querySelectorAll('.reveal');
+
+    if (revealElements.length > 0) {
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
     }
 };
