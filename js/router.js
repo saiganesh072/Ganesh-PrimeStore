@@ -124,6 +124,40 @@ export class Router {
                 path: pathname,
                 params: routeParams
             });
+
+            // Update navigation active state
+            this.updateNavActive(path);
         }
+    }
+
+    updateNavActive(currentPath) {
+        const navLinks = document.querySelectorAll('.nav-links .nav-link');
+        const mobileLinks = document.querySelectorAll('.mobile-menu-links a');
+
+        // Normalize path
+        let path = currentPath || '/';
+        if (path === '' || path === '/index.html') path = '/';
+
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            // Check if link matches current path
+            if (href === path || (href === '/' && path === '/') ||
+                (href !== '/' && path.startsWith(href))) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+
+        // Also update mobile menu links
+        mobileLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === path || (href === '/' && path === '/') ||
+                (href !== '/' && path.startsWith(href))) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
     }
 }
