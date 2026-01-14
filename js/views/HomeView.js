@@ -4,27 +4,63 @@ import { products as localProducts } from '../products.js';
 
 export default function HomeView() {
     return `
-    <!-- Hero Section -->
+    <!-- Hero Carousel Section -->
     <section class="hero" id="home-section">
       <div class="container hero-content">
         <div class="hero-text">
-          <span class="badge">New Collection 2024</span>
+          <div class="hero-badge">
+            <i class="fas fa-sparkles"></i>
+            <span>New Collection 2024</span>
+          </div>
           <h1>Elevate Your Style With <span>Premium</span> Essentials</h1>
-          <p>Discover our curated collection of high-quality fashion pieces designed for those who value both comfort
-            and sophistication.</p>
+          <p>Discover our curated collection of high-quality fashion pieces designed for those who value both comfort and sophistication.</p>
           <div class="hero-btns">
-            <a href="/shop" class="btn btn-primary" data-link>Shop Now</a>
-            <a href="#features" class="btn btn-outline">Learn More</a>
+            <a href="/shop" class="btn btn-primary btn-lg" data-link>
+              <i class="fas fa-shopping-bag"></i>
+              Shop Now
+            </a>
+            <a href="#features" class="btn btn-outline btn-lg">Learn More</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="stat-value">15K+</span>
+              <span class="stat-label">Happy Customers</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">500+</span>
+              <span class="stat-label">Products</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">4.9</span>
+              <span class="stat-label">Rating</span>
+            </div>
           </div>
         </div>
-        <div class="hero-image">
-          <div class="image-card">
-            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1000&auto=format&fit=crop"
-              alt="Hero Model">
-            <div class="image-overlay"></div>
+        <div class="hero-carousel" id="hero-carousel">
+          <div class="carousel-container">
+            <div class="carousel-slide active">
+              <div class="image-card">
+                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1000&auto=format&fit=crop" alt="Fashion Collection">
+              </div>
+            </div>
+            <div class="carousel-slide">
+              <div class="image-card">
+                <img src="https://images.unsplash.com/photo-1558171813-4c088753af8f?q=80&w=1000&auto=format&fit=crop" alt="New Arrivals">
+              </div>
+            </div>
+            <div class="carousel-slide">
+              <div class="image-card">
+                <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=1000&auto=format&fit=crop" alt="Premium Quality">
+              </div>
+            </div>
+          </div>
+          <div class="carousel-dots">
+            <button class="dot active" data-slide="0"></button>
+            <button class="dot" data-slide="1"></button>
+            <button class="dot" data-slide="2"></button>
           </div>
           <div class="floating-card c1">
-            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-star"></i>
             <div>
               <h4>Top Rated</h4>
               <p>4.9/5 Rating</p>
@@ -232,6 +268,48 @@ export const onMounted = async () => {
             const email = newsletterForm.querySelector('input').value;
             newsletterForm.querySelector('input').value = '';
             window.showToast('Thank you for subscribing!');
+        });
+    }
+
+    // Hero Carousel
+    const carousel = document.getElementById('hero-carousel');
+    if (carousel) {
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        const dots = carousel.querySelectorAll('.dot');
+        let currentSlide = 0;
+        let autoRotate;
+
+        const showSlide = (index) => {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            currentSlide = index;
+        };
+
+        const nextSlide = () => {
+            const next = (currentSlide + 1) % slides.length;
+            showSlide(next);
+        };
+
+        // Auto-rotate every 5 seconds
+        autoRotate = setInterval(nextSlide, 5000);
+
+        // Dot click handlers
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                clearInterval(autoRotate);
+                showSlide(index);
+                autoRotate = setInterval(nextSlide, 5000);
+            });
+        });
+
+        // Pause on hover
+        carousel.addEventListener('mouseenter', () => clearInterval(autoRotate));
+        carousel.addEventListener('mouseleave', () => {
+            autoRotate = setInterval(nextSlide, 5000);
         });
     }
 };
