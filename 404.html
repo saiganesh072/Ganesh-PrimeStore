@@ -5,22 +5,35 @@
   <meta charset="utf-8">
   <title>Redirecting...</title>
   <script type="text/javascript">
-    // Single Page Apps for GitHub Pages
-    // MIT License
-    // https://github.com/rafrex/spa-github-pages
-    // This script takes the current url and converts the path and query
-    // string into just a query string, and then redirects the browser
-    // to the new url with a special query param.
-    var pathSegmentsToKeep = 1;
+    // Selective SPA Redirect for GitHub Pages
+    // Only redirect /shop and /product routes to SPA
+    // Other routes get normal 404 behavior
 
+    var pathSegmentsToKeep = 1; // Keep /Ganesh-PrimeStore
     var l = window.location;
-    l.replace(
-      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-      l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?p=/' +
-      l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-      (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-      l.hash
-    );
+    var path = l.pathname;
+
+    // Extract the route part (after /Ganesh-PrimeStore)
+    var routePath = path.replace('/Ganesh-PrimeStore', '').replace(/^\/+/, '/');
+
+    // Define which routes should use SPA behavior
+    var spaRoutes = ['/shop', '/cart', '/checkout', '/wishlist', '/signin', '/order-confirmation'];
+    var isSpaRoute = spaRoutes.some(function (r) { return routePath.startsWith(r); });
+    var isProductRoute = routePath.includes('/p-'); // Product detail pages like /product-name/p-123
+
+    if (isSpaRoute || isProductRoute) {
+      // Redirect to index with query param for SPA to handle
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?p=/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    } else {
+      // Show 404 page for non-SPA routes
+      document.body.innerHTML = '<div style="text-align: center; padding: 100px 20px; font-family: sans-serif;"><h1 style="font-size: 72px; margin-bottom: 20px;">404</h1><h2>Page Not Found</h2><p style="color: #666; margin: 20px 0;">The page you are looking for doesnt exist.</p><a href="/Ganesh-PrimeStore/" style="color: #F5C563; text-decoration: none; font-weight: bold;">← Go back Home</a></div>';
+    }
   </script>
 </head>
 
