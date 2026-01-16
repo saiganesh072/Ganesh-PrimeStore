@@ -1,116 +1,118 @@
 :root {
     /* ============================================
-       REFINED PREMIUM DESIGN SYSTEM
-       Inspired by Crextio Dashboard References
+       LUXURY MINIMALIST DESIGN SYSTEM
+       Premium Typography + Sophisticated Palette
     ============================================ */
 
-    /* Primary - Rich Vibrant Yellow */
-    --primary: #FFB800;
-    --primary-hover: #E5A500;
-    --primary-light: #FFF8E6;
-    --primary-dark: #CC9200;
-    --primary-gradient: linear-gradient(135deg, #FFB800 0%, #FF9500 100%);
+    /* Primary - Sophisticated Copper/Amber Accent */
+    --primary: #C4956A;
+    --primary-hover: #B08456;
+    --primary-light: #F5EDE6;
+    --primary-dark: #9A7550;
+    --primary-gradient: linear-gradient(135deg, #C4956A 0%, #D4A574 50%, #C4956A 100%);
 
-    /* Secondary - Deep Dark */
-    --secondary: #1F1F1F;
+    /* Secondary - Deep Charcoal */
+    --secondary: #1C1C1C;
     --secondary-light: #2D2D2D;
-    --secondary-hover: #151515;
+    --secondary-hover: #0F0F0F;
 
-    /* Accent Colors */
-    --accent-green: #4ADE80;
-    --accent-blue: #60A5FA;
-    --accent-red: #F87171;
+    /* Accent Colors - Muted Sophistication */
+    --accent-green: #5A8F7B;
+    --accent-blue: #6B8FAD;
+    --accent-red: #B85A5A;
 
-    /* Cream Palette - Core Backgrounds */
-    --cream-50: #FEFDFB;
-    --cream-100: #FBF9F6;
-    --cream-200: #F7F5F0;
-    --cream-300: #F0EDE6;
-    --cream-400: #E8E5DD;
+    /* Luxury Cream Palette - Core Backgrounds */
+    --cream-50: #FDFBF7;
+    --cream-100: #FAF8F3;
+    --cream-200: #F5F2EB;
+    --cream-300: #EBE7DE;
+    --cream-400: #E0DCD3;
 
-    /* Backgrounds */
-    --bg-body: #FBF9F6;
-    --bg-surface: #F7F5F0;
+    /* Backgrounds - Off-White Luxury */
+    --bg-body: #FDFBF7;
+    --bg-surface: #F5F2EB;
     --bg-card: #FFFFFF;
     --bg-elevated: #FFFFFF;
-    --bg-dark: #1F1F1F;
-    --bg-dark-card: #2A2A2A;
+    --bg-dark: #1C1C1C;
+    --bg-dark-card: #262626;
 
-    /* Text Colors */
-    --text-primary: #1A1A1A;
-    --text-secondary: #5C5C5C;
-    --text-muted: #8A8A8A;
-    --text-light: #ABABAB;
-    --text-inverse: #FFFFFF;
+    /* Text Colors - Charcoal Focus */
+    --text-primary: #1C1C1C;
+    --text-secondary: #4A4A4A;
+    --text-muted: #7A7A7A;
+    --text-light: #9A9A9A;
+    --text-inverse: #FDFBF7;
 
     /* Borders - Ultra Subtle */
-    --border-color: rgba(0, 0, 0, 0.06);
-    --border-light: rgba(0, 0, 0, 0.04);
-    --border-dark: rgba(0, 0, 0, 0.10);
-    --border-glass: rgba(255, 255, 255, 0.2);
+    --border-color: rgba(28, 28, 28, 0.06);
+    --border-light: rgba(28, 28, 28, 0.03);
+    --border-dark: rgba(28, 28, 28, 0.12);
+    --border-glass: rgba(255, 255, 255, 0.15);
 
-    /* Semantic Colors */
-    --success: #34D399;
-    --danger: #F87171;
-    --warning: #FBBF24;
-    --info: #60A5FA;
+    /* Semantic Colors - Muted Luxury */
+    --success: #5A8F7B;
+    --danger: #B85A5A;
+    --warning: #C4956A;
+    --info: #6B8FAD;
 
-    /* Shadows - Ultra Soft for Premium Feel */
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.05);
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.06);
-    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.08);
-    --shadow-glow: 0 0 40px rgba(245, 197, 99, 0.15);
-    --shadow-dark: 0 8px 32px rgba(0, 0, 0, 0.20);
+    /* Shadows - Soft Luxury */
+    --shadow-xs: 0 1px 3px rgba(28, 28, 28, 0.02);
+    --shadow-sm: 0 2px 10px rgba(28, 28, 28, 0.03);
+    --shadow-md: 0 4px 20px rgba(28, 28, 28, 0.04);
+    --shadow-lg: 0 10px 40px rgba(28, 28, 28, 0.06);
+    --shadow-xl: 0 20px 60px rgba(28, 28, 28, 0.08);
+    --shadow-glow: 0 0 60px rgba(196, 149, 106, 0.12);
+    --shadow-dark: 0 12px 40px rgba(28, 28, 28, 0.25);
 
     /* Glassmorphism Effects */
-    --glass-bg: rgba(255, 255, 255, 0.8);
-    --glass-bg-dark: rgba(31, 31, 31, 0.85);
-    --glass-blur: blur(20px);
-    --glass-blur-light: blur(12px);
-    --glass-border: 1px solid rgba(255, 255, 255, 0.3);
+    --glass-bg: rgba(253, 251, 247, 0.85);
+    --glass-bg-dark: rgba(28, 28, 28, 0.9);
+    --glass-blur: blur(24px);
+    --glass-blur-light: blur(16px);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.2);
 
     /* Dark Mode Elements */
-    --bg-dark-card: rgba(45, 45, 45, 0.9);
-    --text-light: rgba(255, 255, 255, 0.7);
+    --bg-dark-card: rgba(38, 38, 38, 0.95);
+    --text-light: rgba(253, 251, 247, 0.7);
 
     /* Layout */
     --container-width: 1320px;
-    --header-height: 72px;
+    --header-height: 80px;
 
-    /* Border Radius - Generous Rounding */
-    --radius-xs: 8px;
-    --radius-sm: 12px;
-    --radius-md: 16px;
-    --radius-lg: 20px;
-    --radius-xl: 28px;
-    --radius-2xl: 36px;
+    /* Border Radius - Refined Rounding */
+    --radius-xs: 6px;
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 18px;
+    --radius-xl: 24px;
+    --radius-2xl: 32px;
     --radius-full: 9999px;
 
-    /* Transitions - Smooth & Premium */
+    /* Transitions - Apple-like Snappy Yet Smooth */
+    --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
     --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-    --transition: all 0.3s var(--ease-out);
-    --transition-fast: all 0.15s var(--ease-out);
-    --transition-slow: all 0.5s var(--ease-out);
+    --ease-magnetic: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition: all 0.4s var(--ease-luxury);
+    --transition-fast: all 0.2s var(--ease-luxury);
+    --transition-slow: all 0.6s var(--ease-luxury);
 
-    /* Spacing Scale (8px base) */
+    /* Spacing Scale - Doubled for Luxury Feel */
     --space-0: 0;
     --space-1: 4px;
     --space-2: 8px;
     --space-3: 12px;
     --space-4: 16px;
-    --space-5: 20px;
-    --space-6: 24px;
-    --space-7: 28px;
-    --space-8: 32px;
-    --space-10: 40px;
-    --space-12: 48px;
-    --space-14: 56px;
-    --space-16: 64px;
-    --space-20: 80px;
-    --space-24: 96px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 40px;
+    --space-8: 48px;
+    --space-10: 64px;
+    --space-12: 80px;
+    --space-14: 96px;
+    --space-16: 112px;
+    --space-20: 140px;
+    --space-24: 180px;
 }
 
 /* Base Styles */
@@ -127,15 +129,16 @@ html {
 }
 
 body {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background-color: var(--bg-body);
-    color: var(--text-main);
-    line-height: 1.7;
+    color: var(--text-primary);
+    line-height: 1.6;
     font-weight: 400;
     overflow-x: hidden;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    letter-spacing: -0.01em;
 }
 
 h1,
@@ -145,11 +148,11 @@ h4,
 h5,
 h6,
 .logo {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 700;
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    font-weight: 600;
     color: var(--secondary);
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
 }
 
 a {
@@ -558,60 +561,63 @@ img {
 }
 
 /* ============================================
-   BUTTONS - Premium with Gradients
+   BUTTONS - Luxury Magnetic Hover Effects
 ============================================ */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: var(--space-3) var(--space-6);
-    border-radius: var(--radius-md);
-    font-weight: 600;
+    padding: var(--space-4) var(--space-7);
+    border-radius: var(--radius-sm);
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
     font-size: 14px;
     cursor: pointer;
     border: none;
-    transition: var(--transition);
+    transition: all 0.5s var(--ease-luxury);
     gap: var(--space-2);
-    font-family: inherit;
     text-decoration: none;
     white-space: nowrap;
+    letter-spacing: 0.02em;
+    position: relative;
+    overflow: hidden;
 }
 
-/* Primary Button - Golden Gradient */
+/* Primary Button - Copper Accent with Magnetic Effect */
 .btn-primary {
-    background: var(--primary-gradient);
-    color: var(--text-primary);
-    box-shadow: 0 4px 16px rgba(245, 197, 99, 0.3);
+    background: var(--primary);
+    color: var(--cream-50);
+    box-shadow: 0 4px 20px rgba(196, 149, 106, 0.25);
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(245, 197, 99, 0.4), var(--shadow-glow);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 36px rgba(196, 149, 106, 0.35), var(--shadow-glow);
 }
 
 .btn-primary:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(245, 197, 99, 0.3);
+    transform: translateY(-1px) scale(0.99);
+    box-shadow: 0 4px 16px rgba(196, 149, 106, 0.3);
 }
 
-/* Secondary Button - Dark Pill */
+/* Secondary Button - Dark Elegant */
 .btn-secondary {
     background: var(--secondary);
     color: var(--text-inverse);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md);
 }
 
 .btn-secondary:hover {
     background: var(--secondary-hover);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--shadow-lg);
 }
 
 /* Dark Pill Style (for Tags, Nav, etc.) */
 .btn-dark {
     background: var(--secondary);
     color: var(--text-inverse);
-    padding: var(--space-2) var(--space-5);
+    padding: var(--space-3) var(--space-6);
     border-radius: var(--radius-full);
     font-size: 13px;
     font-weight: 500;
@@ -619,20 +625,21 @@ img {
 
 .btn-dark:hover {
     background: var(--secondary-hover);
-    transform: scale(1.02);
+    transform: scale(1.03);
 }
 
-/* Outline/Ghost Button */
+/* Outline/Ghost Button - Minimal */
 .btn-outline {
     background: transparent;
-    border: 1.5px solid var(--border-dark);
-    color: var(--text-primary);
+    border: 1.5px solid var(--secondary);
+    color: var(--secondary);
 }
 
 .btn-outline:hover {
     background: var(--secondary);
-    border-color: var(--secondary);
     color: var(--text-inverse);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
 }
 
 /* Light Outline */
@@ -643,92 +650,90 @@ img {
 
 .btn-ghost:hover {
     background: var(--cream-200);
-    color: var(--text-primary);
+    color: var(--secondary);
 }
 
 /* Button Sizes */
 .btn-sm {
-    padding: var(--space-2) var(--space-4);
+    padding: var(--space-2) var(--space-5);
     font-size: 13px;
 }
 
 .btn-lg {
-    padding: var(--space-4) var(--space-8);
-    font-size: 16px;
+    padding: var(--space-5) var(--space-10);
+    font-size: 15px;
+    letter-spacing: 0.03em;
 }
 
 .btn-block {
     width: 100%;
 }
 
-/* Icon Buttons */
+/* Icon Buttons - Refined */
 .btn-icon {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     padding: 0;
     border-radius: var(--radius-sm);
     background: var(--bg-card);
-    border: 1px solid var(--border-light);
-    color: var(--text-primary);
+    border: none;
+    color: var(--secondary);
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    box-shadow: var(--shadow-xs);
-    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.4s var(--ease-luxury);
 }
 
 .btn-icon:hover {
     background: var(--primary);
-    border-color: var(--primary);
-    color: var(--text-primary);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    color: var(--cream-50);
+    transform: translateY(-4px) scale(1.08);
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
 }
 
 .btn-icon.active {
     background: var(--primary);
-    border-color: var(--primary);
-    color: var(--text-primary);
+    color: var(--cream-50);
 }
 
 /* ============================================
-   HERO SECTION - Premium Apple/Stripe Level
+   HERO SECTION - Luxury Minimalist
 ============================================ */
 .hero {
     min-height: 100vh;
     margin-top: -1px;
-    /* Remove any gap from navbar */
     position: relative;
     overflow: hidden;
     display: flex;
     align-items: center;
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+    background: linear-gradient(135deg, #1C1C1C 0%, #252520 50%, #1C1C1C 100%);
 }
 
-/* Ambient Light Effects */
+/* Ambient Light Effects - Copper Tones */
 .hero::before {
     content: '';
     position: absolute;
-    width: 800px;
-    height: 800px;
-    background: radial-gradient(circle, rgba(255, 184, 0, 0.1) 0%, transparent 70%);
-    top: -200px;
-    right: -200px;
+    width: 900px;
+    height: 900px;
+    background: radial-gradient(circle, rgba(196, 149, 106, 0.08) 0%, transparent 70%);
+    top: -250px;
+    right: -250px;
     pointer-events: none;
-    animation: ambientFloat 8s ease-in-out infinite;
+    animation: ambientFloat 12s ease-in-out infinite;
 }
 
 .hero::after {
     content: '';
     position: absolute;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(99, 179, 245, 0.06) 0%, transparent 70%);
-    bottom: -100px;
-    left: -150px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(253, 251, 247, 0.03) 0%, transparent 70%);
+    bottom: -150px;
+    left: -200px;
     pointer-events: none;
-    animation: ambientFloat 10s ease-in-out infinite reverse;
+    animation: ambientFloat 15s ease-in-out infinite reverse;
 }
 
 @keyframes ambientFloat {
@@ -739,7 +744,7 @@ img {
     }
 
     50% {
-        transform: translate(30px, -20px) scale(1.1);
+        transform: translate(20px, -15px) scale(1.08);
     }
 }
 
@@ -1165,7 +1170,7 @@ img {
 }
 
 /* ============================================
-   PRODUCT CARDS - Premium Minimal
+   PRODUCT CARDS - Gallery Exhibit Style
 ============================================ */
 .products-section {
     padding: var(--space-24) 0;
@@ -1173,150 +1178,120 @@ img {
 
 .product-card {
     background: var(--bg-card);
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    transition: var(--transition);
-    border: 1px solid var(--border-light);
+    transition: all 0.5s var(--ease-luxury);
+    border: none;
     display: flex;
     flex-direction: column;
+    box-shadow: var(--shadow-sm);
 }
 
 .product-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-    border-color: transparent;
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
 }
 
 .product-image {
     position: relative;
-    height: 300px;
+    height: 360px;
     overflow: hidden;
-    background: var(--cream-200);
+    background: var(--cream-100);
 }
 
 .product-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s var(--ease-out);
+    transition: transform 0.8s var(--ease-luxury);
 }
 
 .product-card:hover .product-image img {
-    transform: scale(1.03);
+    transform: scale(1.05);
 }
 
-/* Product Quick Actions */
+/* Product Quick Actions - Slide Up */
 .product-overlay {
     position: absolute;
-    bottom: -60px;
+    bottom: 0;
     left: 0;
     width: 100%;
-    padding: var(--space-4);
+    padding: var(--space-5);
     display: flex;
     justify-content: center;
-    gap: var(--space-2);
-    transition: bottom 0.3s var(--ease-out);
+    gap: var(--space-3);
+    background: linear-gradient(to top, rgba(28, 28, 28, 0.6), transparent);
+    transform: translateY(100%);
+    opacity: 0;
+    transition: all 0.5s var(--ease-luxury);
 }
 
 .product-card:hover .product-overlay {
-    bottom: 0;
+    transform: translateY(0);
+    opacity: 1;
 }
 
 .product-info {
-    padding: var(--space-5);
+    padding: var(--space-6) var(--space-5);
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
 .product-cat {
-    font-size: 11px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
     color: var(--text-muted);
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: var(--space-2);
-    letter-spacing: 0.8px;
+    letter-spacing: 1.5px;
 }
 
 .product-title {
-    font-size: 16px;
-    font-weight: 600;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 500;
     margin-bottom: var(--space-3);
     flex: 1;
-    color: var(--text-primary);
-    line-height: 1.4;
+    color: var(--secondary);
+    line-height: 1.35;
 }
 
 .product-price {
+    font-family: 'Inter', sans-serif;
     font-size: 20px;
-    font-weight: 700;
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-weight: 600;
+    color: var(--primary);
+    letter-spacing: -0.02em;
 }
 
-.product-card:hover .product-overlay {
-    bottom: 0;
-}
-
+/* Icon Buttons - Gallery Style */
 .btn-icon {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     border-radius: var(--radius-sm);
     background: var(--bg-card);
-    border: 1px solid var(--border-light);
+    border: none;
     color: var(--secondary);
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
+    box-shadow: var(--shadow-md);
+    transition: all 0.4s var(--ease-luxury);
 }
 
 .btn-icon:hover {
     background: var(--primary);
-    border-color: var(--primary);
-    color: var(--secondary);
-    transform: translateY(-2px);
+    color: var(--cream-50);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
 }
 
 .btn-icon.active {
     background: var(--primary);
-    border-color: var(--primary);
-    color: var(--secondary);
-}
-
-.product-info {
-    padding: var(--space-6);
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.product-cat {
-    font-size: 11px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    font-weight: 700;
-    margin-bottom: var(--space-2);
-    letter-spacing: 0.8px;
-}
-
-.product-title {
-    font-size: 17px;
-    font-weight: 600;
-    margin-bottom: var(--space-3);
-    flex: 1;
-    color: var(--secondary);
-    line-height: 1.4;
-}
-
-.product-price {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--primary);
+    color: var(--cream-50);
 }
 
 /* Main Content Area (padding for fixed nav) */
@@ -4377,15 +4352,17 @@ img {
 }
 
 /* ============================================
-   SCROLL REVEAL ANIMATIONS
+   SCROLL REVEAL ANIMATIONS - Luxury
 ============================================ */
-.reveal {
+.reveal,
+.product-card {
     opacity: 0;
-    transform: translateY(40px);
-    transition: all 0.8s var(--ease-out);
+    transform: translateY(50px);
+    transition: opacity 0.8s var(--ease-luxury), transform 0.8s var(--ease-luxury);
 }
 
-.reveal.active {
+.reveal.active,
+.product-card.active {
     opacity: 1;
     transform: translateY(0);
 }
@@ -4406,38 +4383,56 @@ img {
     transition-delay: 0.4s;
 }
 
+/* Lenis Smooth Scroll Overrides */
+html.lenis,
+html.lenis body {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
+
 /* ============================================
    PREMIUM FOOTER DARK THEME
 ============================================ */
 .footer.premium-footer {
-    background: #0A0A0A;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: #0F0F0F;
+    border-top: 1px solid rgba(253, 251, 247, 0.05);
 }
 
 .premium-footer .footer-about p {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(253, 251, 247, 0.5);
 }
 
 .premium-footer .footer-links h4,
 .premium-footer .footer-newsletter h4 {
-    font-family: var(--font-serif);
-    color: #fff;
+    font-family: 'Playfair Display', serif;
+    color: var(--cream-50);
 }
 
 .premium-footer .footer-links a {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(253, 251, 247, 0.5);
 }
 
 .premium-footer .footer-links a:hover {
-    color: var(--luxury-gold);
+    color: var(--primary);
 }
 
 .premium-footer .social-links a {
-    background: rgba(255, 255, 255, 0.05);
-    color: rgba(255, 255, 255, 0.6);
+    background: rgba(253, 251, 247, 0.05);
+    color: rgba(253, 251, 247, 0.6);
 }
 
 .premium-footer .social-links a:hover {
-    background: var(--luxury-gold);
-    color: #0A0A0A;
+    background: var(--primary);
+    color: var(--secondary);
 }

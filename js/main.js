@@ -171,6 +171,29 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- UI Logic ---
 
 function initGlobalUI() {
+    // Initialize Lenis Smooth Scroll
+    if (typeof Lenis !== 'undefined') {
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        // RAF loop for Lenis
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // Expose globally for potential use
+        window.lenis = lenis;
+    }
+
     // Hide loader immediately if DOM is ready
     const loader = document.getElementById('loader');
     if (loader) {
@@ -192,6 +215,33 @@ function initGlobalUI() {
                 navbar.classList.remove('scrolled');
             }
         });
+    }
+
+    // Enhanced Staggered Reveal Animations
+    initStaggeredAnimations();
+}
+
+// Premium Staggered Reveal Animations
+function initStaggeredAnimations() {
+    const revealElements = document.querySelectorAll('.reveal, .product-card');
+
+    if (revealElements.length > 0) {
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    // Add staggered delay based on element position
+                    const delay = index * 0.08;
+                    entry.target.style.transitionDelay = `${delay}s`;
+                    entry.target.classList.add('active');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
     }
 }
 
