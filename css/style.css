@@ -1178,7 +1178,7 @@ img {
    PRODUCT CARDS - Gallery Exhibit Style
 ============================================ */
 .products-section {
-    padding: var(--space-24) 0;
+    padding: var(--space-10) 0;
 }
 
 .product-card {
@@ -1912,12 +1912,12 @@ img {
 
 /* Categories Section - Premium */
 .categories-section {
-    padding: var(--space-20) 0;
+    padding: var(--space-10) 0;
     background: var(--bg-body);
 }
 
 .section-header {
-    margin-bottom: var(--space-12);
+    margin-bottom: var(--space-6);
 }
 
 .section-header.text-center {
@@ -2015,16 +2015,16 @@ img {
 
 /* Featured Section - Premium */
 .featured-section {
-    padding: var(--space-20) 0;
+    padding: var(--space-10) 0;
 }
 
 .featured-section .section-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: var(--space-12);
+    margin-bottom: var(--space-6);
     flex-wrap: wrap;
-    gap: var(--space-5);
+    gap: var(--space-4);
 }
 
 .header-left h2 {
@@ -2219,8 +2219,8 @@ img {
 .sub-navbar {
     background: var(--bg-card);
     border-bottom: 1px solid var(--border-color);
-    padding: 16px 0;
-    margin-bottom: 40px;
+    padding: 12px 0;
+    margin-bottom: 16px;
 }
 
 .category-links {
