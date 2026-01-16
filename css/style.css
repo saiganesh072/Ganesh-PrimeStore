@@ -97,22 +97,22 @@
     --transition-fast: all 0.2s var(--ease-luxury);
     --transition-slow: all 0.6s var(--ease-luxury);
 
-    /* Spacing Scale - Doubled for Luxury Feel */
+    /* Spacing Scale - Balanced */
     --space-0: 0;
     --space-1: 4px;
     --space-2: 8px;
     --space-3: 12px;
     --space-4: 16px;
-    --space-5: 24px;
-    --space-6: 32px;
-    --space-7: 40px;
-    --space-8: 48px;
-    --space-10: 64px;
-    --space-12: 80px;
-    --space-14: 96px;
-    --space-16: 112px;
-    --space-20: 140px;
-    --space-24: 180px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-7: 28px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-14: 56px;
+    --space-16: 64px;
+    --space-20: 80px;
+    --space-24: 96px;
 }
 
 /* Base Styles */
