@@ -31,6 +31,15 @@ export const onMounted = async () => {
     const orderId = params.get('id');
     const detailsContainer = document.getElementById('order-details');
 
+    // ADOBE LAUNCH: Set page-level data for confirmation page
+    if (window.DataLayer) {
+        window.DataLayer.setPageData({
+            pageName: 'PrimeStore | Order Confirmation',
+            pageType: 'confirmation',
+            siteSection: 'checkout'
+        });
+    }
+
     if (!orderId) {
         detailsContainer.innerHTML = `
             <p style="text-align: center; color: var(--text-muted);">No order ID found.</p>
@@ -41,6 +50,23 @@ export const onMounted = async () => {
     try {
         const order = await getOrderById(orderId);
         renderOrderDetails(order, detailsContainer);
+
+        // ADOBE LAUNCH: Track purchase_complete event
+        // Hook into this for conversion tracking and revenue reporting
+        if (window.DataLayer) {
+            window.DataLayer.trackPurchaseComplete({
+                transactionId: order.id,
+                revenue: order.total,
+                tax: 0,
+                shipping: 0,
+                items: order.order_items.map(item => ({
+                    productId: item.product_id,
+                    productName: item.products?.name || 'Product',
+                    price: item.price,
+                    quantity: item.quantity
+                }))
+            });
+        }
     } catch (error) {
         console.error('Error fetching order:', error);
         detailsContainer.innerHTML = `

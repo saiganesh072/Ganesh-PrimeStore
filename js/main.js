@@ -577,6 +577,26 @@ function initPDP(params) {
             product_id: product.id,
             price: product.price
         });
+
+        // ADOBE LAUNCH: Track product_view event
+        // Hook into this for product detail page tracking rules
+        if (window.DataLayer) {
+            // Set page-level data for product page
+            window.DataLayer.setPageData({
+                pageName: `PrimeStore | ${product.name}`,
+                pageType: 'product',
+                siteSection: 'shop'
+            });
+
+            // Track product view with full product details
+            window.DataLayer.trackProductView({
+                productId: product.id,
+                productName: product.name,
+                category: product.category,
+                price: product.price,
+                stockStatus: 'in_stock'
+            });
+        }
     }
 }
 

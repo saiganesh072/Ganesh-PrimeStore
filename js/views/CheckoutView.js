@@ -103,6 +103,29 @@ export const onMounted = () => {
 
     renderSummary(items);
 
+    // ADOBE LAUNCH: Track checkout_start event
+    // Hook into this for checkout funnel tracking rules
+    if (window.DataLayer) {
+        // Set page-level data for checkout page
+        window.DataLayer.setPageData({
+            pageName: 'PrimeStore | Checkout',
+            pageType: 'checkout',
+            siteSection: 'checkout'
+        });
+
+        // Track checkout start with cart state
+        window.DataLayer.trackCheckoutStart({
+            items: items.map(item => ({
+                productId: item.id,
+                productName: item.name,
+                price: item.price,
+                quantity: item.quantity
+            })),
+            itemCount: items.reduce((sum, item) => sum + item.quantity, 0),
+            subtotal: window.cart.getTotal()
+        });
+    }
+
     // Payment method selection
     document.querySelectorAll('.payment-option').forEach(option => {
         option.addEventListener('click', () => {

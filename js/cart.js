@@ -24,12 +24,29 @@ export class Cart {
         this.save();
         this.notify();
         window.showToast(`Added ${product.name} to cart!`);
+
+        // ADOBE LAUNCH: Track add_to_cart event
+        // Hook into this event for cart addition rules
+        if (window.DataLayer) {
+            window.DataLayer.trackAddToCart(product, quantity);
+            window.DataLayer.updateCart(this.items, this.getTotal());
+        }
     }
 
     removeItem(productId) {
+        // Get product info before removal for tracking
+        const removedItem = this.items.find(item => item.id === productId);
+
         this.items = this.items.filter(item => item.id !== productId);
         this.save();
         this.notify();
+
+        // ADOBE LAUNCH: Track remove_from_cart event
+        // Hook into this event for cart removal rules
+        if (window.DataLayer && removedItem) {
+            window.DataLayer.trackRemoveFromCart(productId, removedItem.name);
+            window.DataLayer.updateCart(this.items, this.getTotal());
+        }
     }
 
     updateQuantity(productId, delta) {

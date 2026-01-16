@@ -303,6 +303,16 @@ export default function HomeView() {
 }
 
 export const onMounted = async () => {
+    // ADOBE LAUNCH: Set page-level data for home page
+    // Hook into this for home page specific rules
+    if (window.DataLayer) {
+        window.DataLayer.setPageData({
+            pageName: 'PrimeStore | Home',
+            pageType: 'home',
+            siteSection: 'main'
+        });
+    }
+
     // Render featured products
     const container = document.getElementById('featured-products-container');
     if (container) {
