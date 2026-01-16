@@ -1,15 +1,15 @@
 :root {
     /* ============================================
-       LUXURY DESIGN SYSTEM - Vibrant Orange
-       Premium Typography + Original Palette
+       LUXURY DESIGN SYSTEM - Rich Orange
+       Premium Typography + Refined Palette
     ============================================ */
 
-    /* Primary - Rich Vibrant Yellow/Orange */
-    --primary: #FFB800;
-    --primary-hover: #E5A500;
-    --primary-light: #FFF8E6;
-    --primary-dark: #CC9200;
-    --primary-gradient: linear-gradient(135deg, #FFB800 0%, #FF9500 100%);
+    /* Primary - Rich Warm Orange (less yellow, more orange) */
+    --primary: #F5A623;
+    --primary-hover: #E09000;
+    --primary-light: #FDF4E3;
+    --primary-dark: #D48A00;
+    --primary-gradient: linear-gradient(135deg, #F5A623 0%, #E67E22 100%);
 
     /* Secondary - Deep Dark */
     --secondary: #1C1C1C;
@@ -561,20 +561,21 @@ img {
 }
 
 /* ============================================
-   BUTTONS - Luxury Magnetic Hover Effects
+   BUTTONS - Curved Pill Style
 ============================================ */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: var(--space-4) var(--space-7);
-    border-radius: var(--radius-sm);
+    padding: var(--space-4) var(--space-8);
+    border-radius: var(--radius-full);
+    /* Pill shape */
     font-family: 'Inter', sans-serif;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 14px;
     cursor: pointer;
     border: none;
-    transition: all 0.5s var(--ease-luxury);
+    transition: all 0.4s var(--ease-luxury);
     gap: var(--space-2);
     text-decoration: none;
     white-space: nowrap;
@@ -583,24 +584,25 @@ img {
     overflow: hidden;
 }
 
-/* Primary Button - Copper Accent with Magnetic Effect */
+/* Primary Button - Orange Gradient with Curve */
 .btn-primary {
-    background: var(--primary);
-    color: var(--cream-50);
-    box-shadow: 0 4px 20px rgba(196, 149, 106, 0.25);
+    background: var(--primary-gradient);
+    color: var(--secondary);
+    /* Dark text for contrast */
+    box-shadow: 0 4px 20px rgba(245, 166, 35, 0.3);
 }
 
 .btn-primary:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 12px 36px rgba(196, 149, 106, 0.35), var(--shadow-glow);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(245, 166, 35, 0.4), var(--shadow-glow);
 }
 
 .btn-primary:active {
     transform: translateY(-1px) scale(0.99);
-    box-shadow: 0 4px 16px rgba(196, 149, 106, 0.3);
+    box-shadow: 0 4px 16px rgba(245, 166, 35, 0.3);
 }
 
-/* Secondary Button - Dark Elegant */
+/* Secondary Button - Dark Pill */
 .btn-secondary {
     background: var(--secondary);
     color: var(--text-inverse);
@@ -609,7 +611,7 @@ img {
 
 .btn-secondary:hover {
     background: var(--secondary-hover);
-    transform: translateY(-4px) scale(1.02);
+    transform: translateY(-3px) scale(1.02);
     box-shadow: var(--shadow-lg);
 }
 
@@ -628,11 +630,12 @@ img {
     transform: scale(1.03);
 }
 
-/* Outline/Ghost Button - Minimal */
+/* Outline Button - Curved */
 .btn-outline {
     background: transparent;
-    border: 1.5px solid var(--secondary);
+    border: 2px solid var(--secondary);
     color: var(--secondary);
+    border-radius: var(--radius-full);
 }
 
 .btn-outline:hover {
@@ -646,6 +649,7 @@ img {
 .btn-ghost {
     background: transparent;
     color: var(--text-secondary);
+    border-radius: var(--radius-full);
 }
 
 .btn-ghost:hover {
@@ -669,12 +673,13 @@ img {
     width: 100%;
 }
 
-/* Icon Buttons - Refined */
+/* Icon Buttons - Circular */
 .btn-icon {
     width: 48px;
     height: 48px;
     padding: 0;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-full);
+    /* Fully circular */
     background: var(--bg-card);
     border: none;
     color: var(--secondary);
@@ -688,14 +693,14 @@ img {
 
 .btn-icon:hover {
     background: var(--primary);
-    color: var(--cream-50);
-    transform: translateY(-4px) scale(1.08);
+    color: var(--secondary);
+    transform: translateY(-3px) scale(1.05);
     box-shadow: var(--shadow-lg), var(--shadow-glow);
 }
 
 .btn-icon.active {
     background: var(--primary);
-    color: var(--cream-50);
+    color: var(--secondary);
 }
 
 /* ============================================
