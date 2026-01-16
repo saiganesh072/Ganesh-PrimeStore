@@ -24,9 +24,21 @@
   <!-- Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- Adobe Data Layer - Initialize before other scripts -->
-  <!-- ADOBE LAUNCH: This script creates window.digitalData for Tag Manager integration -->
-  <script src="js/datalayer.js" type="module"></script>
+  <!-- Adobe Data Layer - Initialize IMMEDIATELY before other scripts -->
+  <!-- ADOBE LAUNCH: This creates window.digitalData for Tag Manager integration -->
+  <script>
+    // Initialize data layer object immediately
+    window.digitalData = window.digitalData || {
+      page: { pageName: document.title, pageType: 'home', siteSection: 'main', language: navigator.language || 'en-US' },
+      user: { userId: '', loginStatus: 'guest', userType: 'visitor' },
+      product: {},
+      cart: { items: [], itemCount: 0, subtotal: 0 },
+      transaction: {},
+      events: []
+    };
+  </script>
+  <!-- Data Layer Helper Functions -->
+  <script src="/js/datalayer.js" type="module"></script>
 
   <!-- Lenis Smooth Scroll -->
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
