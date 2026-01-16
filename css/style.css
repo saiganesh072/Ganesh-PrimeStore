@@ -1,25 +1,25 @@
 :root {
     /* ============================================
-       LUXURY MINIMALIST DESIGN SYSTEM
-       Premium Typography + Sophisticated Palette
+       LUXURY DESIGN SYSTEM - Vibrant Orange
+       Premium Typography + Original Palette
     ============================================ */
 
-    /* Primary - Sophisticated Copper/Amber Accent */
-    --primary: #C4956A;
-    --primary-hover: #B08456;
-    --primary-light: #F5EDE6;
-    --primary-dark: #9A7550;
-    --primary-gradient: linear-gradient(135deg, #C4956A 0%, #D4A574 50%, #C4956A 100%);
+    /* Primary - Rich Vibrant Yellow/Orange */
+    --primary: #FFB800;
+    --primary-hover: #E5A500;
+    --primary-light: #FFF8E6;
+    --primary-dark: #CC9200;
+    --primary-gradient: linear-gradient(135deg, #FFB800 0%, #FF9500 100%);
 
-    /* Secondary - Deep Charcoal */
+    /* Secondary - Deep Dark */
     --secondary: #1C1C1C;
     --secondary-light: #2D2D2D;
     --secondary-hover: #0F0F0F;
 
-    /* Accent Colors - Muted Sophistication */
-    --accent-green: #5A8F7B;
-    --accent-blue: #6B8FAD;
-    --accent-red: #B85A5A;
+    /* Accent Colors */
+    --accent-green: #4ADE80;
+    --accent-blue: #60A5FA;
+    --accent-red: #F87171;
 
     /* Luxury Cream Palette - Core Backgrounds */
     --cream-50: #FDFBF7;
@@ -49,11 +49,11 @@
     --border-dark: rgba(28, 28, 28, 0.12);
     --border-glass: rgba(255, 255, 255, 0.15);
 
-    /* Semantic Colors - Muted Luxury */
-    --success: #5A8F7B;
-    --danger: #B85A5A;
-    --warning: #C4956A;
-    --info: #6B8FAD;
+    /* Semantic Colors */
+    --success: #4ADE80;
+    --danger: #F87171;
+    --warning: #FBBF24;
+    --info: #60A5FA;
 
     /* Shadows - Soft Luxury */
     --shadow-xs: 0 1px 3px rgba(28, 28, 28, 0.02);
@@ -61,7 +61,7 @@
     --shadow-md: 0 4px 20px rgba(28, 28, 28, 0.04);
     --shadow-lg: 0 10px 40px rgba(28, 28, 28, 0.06);
     --shadow-xl: 0 20px 60px rgba(28, 28, 28, 0.08);
-    --shadow-glow: 0 0 60px rgba(196, 149, 106, 0.12);
+    --shadow-glow: 0 0 60px rgba(255, 184, 0, 0.2);
     --shadow-dark: 0 12px 40px rgba(28, 28, 28, 0.25);
 
     /* Glassmorphism Effects */
@@ -4352,35 +4352,40 @@ img {
 }
 
 /* ============================================
-   SCROLL REVEAL ANIMATIONS - Luxury
+   SCROLL REVEAL ANIMATIONS
 ============================================ */
-.reveal,
-.product-card {
+/* Reveal elements - only animated, products always visible */
+.reveal {
     opacity: 0;
-    transform: translateY(50px);
-    transition: opacity 0.8s var(--ease-luxury), transform 0.8s var(--ease-luxury);
+    transform: translateY(30px);
+    transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
 }
 
-.reveal.active,
-.product-card.active {
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Product cards - ALWAYS visible, subtle animation only */
+.product-card {
     opacity: 1;
     transform: translateY(0);
 }
 
 .reveal-delay-1 {
-    transition-delay: 0.1s;
+    transition-delay: 0.05s;
 }
 
 .reveal-delay-2 {
-    transition-delay: 0.2s;
+    transition-delay: 0.1s;
 }
 
 .reveal-delay-3 {
-    transition-delay: 0.3s;
+    transition-delay: 0.15s;
 }
 
 .reveal-delay-4 {
-    transition-delay: 0.4s;
+    transition-delay: 0.2s;
 }
 
 /* Lenis Smooth Scroll Overrides */

@@ -171,16 +171,17 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- UI Logic ---
 
 function initGlobalUI() {
-    // Initialize Lenis Smooth Scroll
+    // Initialize Lenis Smooth Scroll - Optimized for speed
     if (typeof Lenis !== 'undefined') {
         const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            duration: 0.6,  // Reduced from 1.2 for faster scrolling
+            easing: (t) => 1 - Math.pow(1 - t, 3),  // Simpler cubic easing
             direction: 'vertical',
             gestureDirection: 'vertical',
             smooth: true,
             smoothTouch: false,
             touchMultiplier: 2,
+            wheelMultiplier: 1.2,  // Faster wheel response
         });
 
         // RAF loop for Lenis
