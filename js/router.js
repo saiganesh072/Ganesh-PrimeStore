@@ -119,6 +119,15 @@ export class Router {
             // Scroll to top
             window.scrollTo(0, 0);
 
+            // Update Data Layer on every route change
+            if (window.DataLayer) {
+                window.DataLayer.setPageData({
+                    pageName: `PrimeStore | ${match.name ? match.name.charAt(0).toUpperCase() + match.name.slice(1) : 'Page'}`,
+                    pageType: match.name || 'page',
+                    siteSection: match.name === 'home' ? 'main' : match.name
+                });
+            }
+
             // Analytics
             analytics.trackPageView(match.name || 'unknown', {
                 path: pathname,
