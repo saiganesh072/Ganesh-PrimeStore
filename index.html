@@ -25,14 +25,33 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- Adobe Data Layer - Initialize IMMEDIATELY before other scripts -->
-  <!-- ADOBE LAUNCH: This creates window.digitalData for Tag Manager integration -->
   <script>
-    // Initialize data layer object immediately
+    // Initialize data layer object immediately with all necessary fields
     window.digitalData = window.digitalData || {
-      page: { pageName: document.title, pageType: 'home', siteSection: 'main', language: navigator.language || 'en-US' },
-      user: { userId: '', loginStatus: 'guest', userType: 'visitor' },
+      page: {
+        pageName: document.title,
+        pageType: 'home',
+        siteSection: 'main',
+        url: window.location.href,
+        path: window.location.pathname,
+        referrer: document.referrer || 'direct',
+        language: navigator.language || 'en-US',
+        timestamp: new Date().toISOString()
+      },
+      user: {
+        userId: '',
+        email: '',
+        loginStatus: 'guest',
+        userType: 'visitor'
+      },
+      device: {
+        type: /Mobile|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+        screenWidth: window.screen.width,
+        screenHeight: window.screen.height,
+        userAgent: navigator.userAgent
+      },
       product: {},
-      cart: { items: [], itemCount: 0, subtotal: 0 },
+      cart: { items: [], itemCount: 0, subtotal: 0, currency: 'USD' },
       transaction: {},
       events: []
     };

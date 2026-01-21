@@ -1,327 +1,216 @@
 /**
- * ============================================
- * ADOBE DATA LAYER - PrimeStore
- * ============================================
- * 
- * This module implements a standardized data layer (window.digitalData)
- * for Adobe Experience Cloud integrations (Launch, Target, Analytics, AEP).
- * 
- * ADOBE LAUNCH HOOK POINTS:
- * - Data Layer initialization: Ready on page load
- * - Event pushes: Available in digitalData.events array
- * - Real-time updates: Listen for 'digitalData:event' custom events
- * 
- * Usage:
- *   - DataLayer.setPageData({ pageName, pageType, ... })
- *   - DataLayer.setUserData({ userId, loginStatus, ... })
- *   - DataLayer.setProductData({ productId, productName, ... })
- *   - DataLayer.pushEvent('event_name', { ...payload })
- *   - DataLayer.updateCart(items, total)
+ * PrimeStore Data Layer
+ * Simplified Adobe/Analytics data layer implementation
  */
 
-// ============================================
-// INITIALIZE GLOBAL DATA LAYER
-// ============================================
+// Ensure digitalData is initialized (fallback if inline script didn't run)
 window.digitalData = window.digitalData || {
-    // Page-level data - Updated on each page/view change
-    page: {
-        pageName: document.title || 'PrimeStore',
-        pageType: 'home', // home, category, product, cart, checkout, confirmation
-        siteSection: 'main',
-        language: navigator.language || 'en-US',
-        url: window.location.href,
-        path: window.location.pathname
-    },
-
-    // User-level data - Updated on auth state changes
-    user: {
-        userId: '',
-        loginStatus: 'guest', // guest, authenticated
-        userType: 'visitor', // visitor, member, vip
-        email: '' // Hashed or empty for privacy
-    },
-
-    // Product-level data - Populated on product pages
-    product: {
-        productId: '',
-        productName: '',
-        category: '',
-        subcategory: '',
-        price: 0,
-        originalPrice: 0,
-        currency: 'USD',
-        stockStatus: 'in_stock', // in_stock, out_of_stock, low_stock
-        brand: 'PrimeStore'
-    },
-
-    // Cart data - Updated in real-time
-    cart: {
-        items: [],
-        itemCount: 0,
-        subtotal: 0,
-        currency: 'USD'
-    },
-
-    // Transaction data - Populated on purchase
-    transaction: {
-        transactionId: '',
-        revenue: 0,
-        tax: 0,
-        shipping: 0,
-        currency: 'USD'
-    },
-
-    // Events array - Push events here for Tag Manager scraping
-    // ADOBE LAUNCH: Create rules that listen for events pushed to this array
+    page: {},
+    user: {},
+    device: {},
+    product: {},
+    cart: { items: [], itemCount: 0, subtotal: 0, currency: 'USD' },
+    transaction: {},
     events: []
 };
 
-// ============================================
-// DATA LAYER HELPER FUNCTIONS
-// ============================================
 const DataLayer = {
     /**
-     * Set page-level data
-     * ADOBE LAUNCH: Hook into this for page load rules
-     * @param {Object} pageData - Page information
+     * Update page data - call on every page/route change
      */
-    setPageData: function (pageData) {
+    setPageData: function (data) {
         window.digitalData.page = {
             ...window.digitalData.page,
-            ...pageData,
+            ...data,
             url: window.location.href,
             path: window.location.pathname,
+            hash: window.location.hash,
+            queryString: window.location.search,
+            referrer: document.referrer || 'direct',
             timestamp: new Date().toISOString()
         };
 
-        // Dispatch custom event for real-time listeners
-        window.dispatchEvent(new CustomEvent('digitalData:pageUpdate', {
-            detail: window.digitalData.page
-        }));
-
-        console.log('[DataLayer] Page data updated:', window.digitalData.page);
+        this._dispatch('digitalData:pageUpdate', window.digitalData.page);
     },
 
     /**
-     * Set user-level data
-     * ADOBE LAUNCH: Hook into this for user identification
-     * @param {Object} userData - User information
+     * Update user data - call on login/logout
      */
-    setUserData: function (userData) {
+    setUserData: function (data) {
         window.digitalData.user = {
             ...window.digitalData.user,
-            ...userData
+            ...data,
+            lastUpdated: new Date().toISOString()
         };
 
-        window.dispatchEvent(new CustomEvent('digitalData:userUpdate', {
-            detail: window.digitalData.user
-        }));
-
-        console.log('[DataLayer] User data updated:', window.digitalData.user);
+        this._dispatch('digitalData:userUpdate', window.digitalData.user);
     },
 
     /**
-     * Set product-level data (for product detail pages)
-     * ADOBE LAUNCH: Hook into this for product view tracking
-     * @param {Object} productData - Product information
+     * Update product data - call on product page views
      */
-    setProductData: function (productData) {
+    setProductData: function (data) {
         window.digitalData.product = {
-            ...window.digitalData.product,
-            ...productData,
-            currency: 'USD'
+            productId: data.productId || data.id || '',
+            productName: data.productName || data.name || '',
+            category: data.category || '',
+            price: data.price || 0,
+            originalPrice: data.originalPrice || data.price || 0,
+            currency: 'USD',
+            stockStatus: data.stockStatus || 'in_stock',
+            imageUrl: data.image || data.imageUrl || '',
+            url: window.location.href
         };
 
-        window.dispatchEvent(new CustomEvent('digitalData:productUpdate', {
-            detail: window.digitalData.product
-        }));
-
-        console.log('[DataLayer] Product data updated:', window.digitalData.product);
+        this._dispatch('digitalData:productUpdate', window.digitalData.product);
     },
 
     /**
-     * Update cart data
-     * ADOBE LAUNCH: Hook into this for cart state tracking
-     * @param {Array} items - Cart items
-     * @param {Number} subtotal - Cart subtotal
+     * Update cart data - call when cart changes
      */
     updateCart: function (items, subtotal) {
         window.digitalData.cart = {
             items: items.map(item => ({
                 productId: item.id,
                 productName: item.name,
-                category: item.category,
+                category: item.category || '',
                 price: item.price,
-                quantity: item.quantity
+                quantity: item.quantity,
+                imageUrl: item.image || ''
             })),
             itemCount: items.reduce((sum, item) => sum + item.quantity, 0),
-            subtotal: subtotal,
+            subtotal: subtotal || 0,
             currency: 'USD'
         };
 
-        window.dispatchEvent(new CustomEvent('digitalData:cartUpdate', {
-            detail: window.digitalData.cart
-        }));
-
-        console.log('[DataLayer] Cart updated:', window.digitalData.cart);
+        this._dispatch('digitalData:cartUpdate', window.digitalData.cart);
     },
 
     /**
-     * Push an event to the data layer
-     * ADOBE LAUNCH: Create rules that trigger on these event names
-     * 
-     * Supported events:
-     * - product_view: User views a product detail page
-     * - add_to_cart: User adds item to cart
-     * - remove_from_cart: User removes item from cart
-     * - checkout_start: User begins checkout process
-     * - purchase_complete: User completes a purchase
-     * 
-     * @param {String} eventName - Name of the event
-     * @param {Object} eventData - Event payload
+     * Set transaction data - call on order confirmation
+     */
+    setTransaction: function (data) {
+        window.digitalData.transaction = {
+            transactionId: data.transactionId || data.id || '',
+            orderId: data.orderId || data.id || '',
+            revenue: data.revenue || data.total || 0,
+            tax: data.tax || 0,
+            shipping: data.shipping || 0,
+            currency: 'USD',
+            paymentMethod: data.paymentMethod || '',
+            items: data.items || []
+        };
+
+        this._dispatch('digitalData:transactionUpdate', window.digitalData.transaction);
+    },
+
+    /**
+     * Push a custom event
      */
     pushEvent: function (eventName, eventData = {}) {
         const event = {
             event: eventName,
             timestamp: new Date().toISOString(),
+            page: window.location.href,
             ...eventData
         };
 
-        // Push to events array for Tag Manager scraping
         window.digitalData.events.push(event);
-
-        // Dispatch custom event for real-time listeners
-        // ADOBE LAUNCH: Listen for 'digitalData:event' in your rules
-        window.dispatchEvent(new CustomEvent('digitalData:event', {
-            detail: event
-        }));
-
-        console.log(`[DataLayer] Event pushed: ${eventName}`, event);
+        this._dispatch('digitalData:event', event);
 
         return event;
     },
 
-    // ============================================
-    // PREDEFINED EVENT HELPERS
-    // ============================================
-
-    /**
-     * Track product view event
-     * ADOBE LAUNCH: Use for product detail page tracking
-     * @param {Object} product - Product data
-     */
+    // Convenience methods for common events
     trackProductView: function (product) {
         this.setProductData(product);
-        this.pushEvent('product_view', {
-            product: {
-                productId: product.productId || product.id,
-                productName: product.productName || product.name,
-                category: product.category,
-                price: product.price,
-                stockStatus: product.stockStatus || 'in_stock'
-            }
-        });
+        this.pushEvent('product_view', { product: window.digitalData.product });
     },
 
-    /**
-     * Track add to cart event
-     * ADOBE LAUNCH: Use for cart addition tracking
-     * @param {Object} product - Product added
-     * @param {Number} quantity - Quantity added
-     */
     trackAddToCart: function (product, quantity = 1) {
         this.pushEvent('add_to_cart', {
-            product: {
-                productId: product.id,
-                productName: product.name,
-                category: product.category,
-                price: product.price
-            },
-            quantity: quantity,
-            cartTotal: window.digitalData.cart.subtotal
+            productId: product.id,
+            productName: product.name,
+            price: product.price,
+            quantity: quantity
         });
     },
 
-    /**
-     * Track remove from cart event
-     * ADOBE LAUNCH: Use for cart removal tracking
-     * @param {String} productId - Product ID removed
-     * @param {String} productName - Product name
-     */
     trackRemoveFromCart: function (productId, productName) {
-        this.pushEvent('remove_from_cart', {
-            productId: productId,
-            productName: productName
-        });
+        this.pushEvent('remove_from_cart', { productId, productName });
     },
 
-    /**
-     * Track checkout start event
-     * ADOBE LAUNCH: Use for checkout funnel tracking
-     * @param {Object} cart - Cart state at checkout start
-     */
-    trackCheckoutStart: function (cart) {
-        this.pushEvent('checkout_start', {
-            cart: {
-                items: cart.items,
-                itemCount: cart.itemCount,
-                subtotal: cart.subtotal
-            }
-        });
+    trackCheckoutStart: function (cartData) {
+        this.pushEvent('checkout_start', { cart: cartData });
     },
 
-    /**
-     * Track purchase complete event
-     * ADOBE LAUNCH: Use for conversion tracking
-     * @param {Object} transaction - Transaction details
-     */
-    trackPurchaseComplete: function (transaction) {
-        window.digitalData.transaction = {
-            transactionId: transaction.transactionId || transaction.id,
-            revenue: transaction.revenue || transaction.total,
-            tax: transaction.tax || 0,
-            shipping: transaction.shipping || 0,
-            currency: 'USD',
-            items: transaction.items || []
-        };
-
-        this.pushEvent('purchase_complete', {
-            transaction: window.digitalData.transaction
-        });
+    trackPurchaseComplete: function (transactionData) {
+        this.setTransaction(transactionData);
+        this.pushEvent('purchase_complete', { transaction: window.digitalData.transaction });
     },
 
-    /**
-     * Clear events array (useful for SPA navigation)
-     */
+    // Utility methods
     clearEvents: function () {
         window.digitalData.events = [];
-        console.log('[DataLayer] Events cleared');
     },
 
-    /**
-     * Get current data layer state
-     * Useful for debugging in console
-     */
     getState: function () {
         return JSON.parse(JSON.stringify(window.digitalData));
+    },
+
+    _dispatch: function (eventName, detail) {
+        window.dispatchEvent(new CustomEvent(eventName, { detail }));
     }
 };
 
-// Expose DataLayer globally
+// Expose globally
 window.DataLayer = DataLayer;
 
-// ============================================
-// AUTO-INITIALIZATION
-// ============================================
-// Set initial page data on load
+// Auto-sync with auth state when auth service is ready
 document.addEventListener('DOMContentLoaded', function () {
+    // Update page data on load
     DataLayer.setPageData({
         pageName: document.title,
         pageType: 'home'
     });
 
-    console.log('[DataLayer] Initialized. Access via window.digitalData or window.DataLayer');
+    // Listen for auth changes to sync user data
+    if (window.auth) {
+        window.auth.subscribe(function (user) {
+            if (user) {
+                DataLayer.setUserData({
+                    userId: user.id || '',
+                    email: user.email || '',
+                    name: user.name || '',
+                    loginStatus: 'authenticated',
+                    userType: 'member'
+                });
+            } else {
+                DataLayer.setUserData({
+                    userId: '',
+                    email: '',
+                    name: '',
+                    loginStatus: 'guest',
+                    userType: 'visitor'
+                });
+            }
+        });
+    }
+
+    // Listen for cart updates
+    window.addEventListener('cart-updated', function () {
+        if (window.cart) {
+            DataLayer.updateCart(window.cart.items, window.cart.getTotal());
+        }
+    });
+
+    // Update page data on route changes (SPA navigation)
+    window.addEventListener('popstate', function () {
+        DataLayer.setPageData({
+            url: window.location.href,
+            path: window.location.pathname
+        });
+    });
 });
 
-// Export for module usage
 export { DataLayer };
