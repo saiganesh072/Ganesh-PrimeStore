@@ -190,13 +190,6 @@ export const onMounted = () => {
                 btn.innerHTML = originalContent;
                 btn.disabled = false;
             }
-
-            window.showToast('Order placed successfully!');
-
-            // Redirect to order confirmation
-            setTimeout(() => {
-                window.router.navigateTo('/order-confirmation');
-            }, 500);
         });
     }
 };
