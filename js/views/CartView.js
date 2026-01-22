@@ -46,6 +46,16 @@ export const onMounted = () => {
     const listContainer = document.getElementById('cart-list-container');
     const checkoutBtn = document.getElementById('checkout-btn');
 
+    // DATA LAYER: Push page and cart data for cart page
+    if (window.DataLayerManager) {
+        window.DataLayerManager.pushPageData('cart', 'PrimeStore | Cart', 'cart');
+        window.DataLayerManager.pushCartData({
+            items: window.cart.items,
+            subtotal: window.cart.getTotal(),
+            total: window.cart.getTotal()
+        });
+    }
+
     // Initial Render
     renderCart(window.cart.items);
 

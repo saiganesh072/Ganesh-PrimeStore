@@ -302,6 +302,19 @@ async function initShopPage() {
         renderProducts(products);
     }
 
+    // DATA LAYER: Push page and productList data for shop/PLP
+    if (window.DataLayerManager) {
+        window.DataLayerManager.pushPageData('plp', 'PrimeStore | Shop', 'shop');
+        window.DataLayerManager.pushProductList({
+            listId: 'all_products',
+            listName: 'All Products',
+            totalResults: products.length,
+            currentPage: 1,
+            sortBy: 'default',
+            filters: []
+        });
+    }
+
     // Category Filter
     document.querySelectorAll('.cat-link').forEach(link => {
         link.addEventListener('click', async (e) => {
@@ -337,12 +350,18 @@ async function initShopPage() {
                 if (term.length === 0) {
                     renderProducts(products);
                 } else {
+                    let results;
                     try {
-                        const results = await searchProducts(term);
+                        results = await searchProducts(term);
                         renderProducts(results);
                     } catch (error) {
-                        const filtered = products.filter(p => p.name.toLowerCase().includes(term.toLowerCase()));
-                        renderProducts(filtered);
+                        results = products.filter(p => p.name.toLowerCase().includes(term.toLowerCase()));
+                        renderProducts(results);
+                    }
+
+                    // DATA LAYER: Push search data
+                    if (window.DataLayerManager) {
+                        window.DataLayerManager.pushSearchData(term, results.length);
                     }
                 }
             }, 300);
@@ -579,23 +598,30 @@ function initPDP(params) {
             price: product.price
         });
 
-        // ADOBE LAUNCH: Track product_view event
-        // Hook into this for product detail page tracking rules
-        if (window.DataLayer) {
-            // Set page-level data for product page
-            window.DataLayer.setPageData({
-                pageName: `PrimeStore | ${product.name}`,
-                pageType: 'product',
-                siteSection: 'shop'
-            });
+        // DATA LAYER: Push page, product, and view_item event for PDP
+        if (window.DataLayerManager) {
+            // Push page data for product page
+            window.DataLayerManager.pushPageData('pdp', `PrimeStore | ${product.name}`, 'product');
 
-            // Track product view with full product details
-            window.DataLayer.trackProductView({
+            // Push product data
+            window.DataLayerManager.pushProductData({
                 productId: product.id,
                 productName: product.name,
-                category: product.category,
+                brand: product.brand || 'PrimeStore',
+                categoryLevel1: product.category,
                 price: product.price,
-                stockStatus: 'in_stock'
+                salePrice: product.salePrice || product.price,
+                availability: 'in_stock',
+                rating: product.rating,
+                reviewCount: product.reviewCount
+            });
+
+            // Push view_item event
+            window.DataLayerManager.pushViewItem({
+                id: product.id,
+                name: product.name,
+                category: product.category,
+                price: product.price
             });
         }
     }

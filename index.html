@@ -24,37 +24,39 @@
   <!-- Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- Adobe Data Layer - Initialize IMMEDIATELY before other scripts -->
+  <!-- Google Tag Manager Data Layer - Initialize IMMEDIATELY before other scripts -->
   <script>
-    // Initialize data layer object immediately with all necessary fields
-    window.digitalData = window.digitalData || {
+    // Initialize data layer array
+    window.dataLayer = window.dataLayer || [];
+
+    // Push initial page load data
+    window.dataLayer.push({
       page: {
-        pageName: document.title,
         pageType: 'home',
-        siteSection: 'main',
+        pageName: document.title,
+        pageCategory: 'main',
         url: window.location.href,
-        path: window.location.pathname,
-        referrer: document.referrer || 'direct',
-        language: navigator.language || 'en-US',
-        timestamp: new Date().toISOString()
+        referrer: document.referrer || null,
+        language: navigator.language?.split('-')[0] || 'en',
+        country: 'US',
+        currency: 'USD'
       },
       user: {
-        userId: '',
-        email: '',
-        loginStatus: 'guest',
-        userType: 'visitor'
+        loginStatus: 'logged_out',
+        userType: 'guest'
       },
       device: {
-        type: /Mobile|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
-        screenWidth: window.screen.width,
-        screenHeight: window.screen.height,
-        userAgent: navigator.userAgent
-      },
-      product: {},
-      cart: { items: [], itemCount: 0, subtotal: 0, currency: 'USD' },
-      transaction: {},
-      events: []
-    };
+        deviceType: /Mobile|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+        os: /Windows/i.test(navigator.userAgent) ? 'Windows' :
+          /Mac OS/i.test(navigator.userAgent) ? 'MacOS' :
+            /Android/i.test(navigator.userAgent) ? 'Android' :
+              /iOS|iPhone/i.test(navigator.userAgent) ? 'iOS' : 'Unknown',
+        browser: /Chrome/i.test(navigator.userAgent) && !/Edge/i.test(navigator.userAgent) ? 'Chrome' :
+          /Safari/i.test(navigator.userAgent) && !/Chrome/i.test(navigator.userAgent) ? 'Safari' :
+            /Firefox/i.test(navigator.userAgent) ? 'Firefox' :
+              /Edge/i.test(navigator.userAgent) ? 'Edge' : 'Unknown'
+      }
+    });
   </script>
   <!-- Data Layer Helper Functions -->
   <script src="js/datalayer.js" type="module"></script>

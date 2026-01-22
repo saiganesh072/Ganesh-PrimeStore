@@ -31,13 +31,9 @@ export const onMounted = async () => {
     const orderId = params.get('id');
     const detailsContainer = document.getElementById('order-details');
 
-    // ADOBE LAUNCH: Set page-level data for confirmation page
-    if (window.DataLayer) {
-        window.DataLayer.setPageData({
-            pageName: 'PrimeStore | Order Confirmation',
-            pageType: 'confirmation',
-            siteSection: 'checkout'
-        });
+    // DATA LAYER: Push page data for order confirmation
+    if (window.DataLayerManager) {
+        window.DataLayerManager.pushPageData('thank_you', 'PrimeStore | Order Confirmation', 'checkout');
     }
 
     if (!orderId) {
@@ -51,20 +47,25 @@ export const onMounted = async () => {
         const order = await getOrderById(orderId);
         renderOrderDetails(order, detailsContainer);
 
-        // ADOBE LAUNCH: Track purchase_complete event
-        // Hook into this for conversion tracking and revenue reporting
-        if (window.DataLayer) {
-            window.DataLayer.trackPurchaseComplete({
-                transactionId: order.id,
-                revenue: order.total,
+        // DATA LAYER: Push order data and purchase event
+        if (window.DataLayerManager) {
+            // Push order/transaction data
+            window.DataLayerManager.pushOrderData({
+                id: order.id,
+                total: order.total,
+                totalRevenue: order.total,
                 tax: 0,
                 shipping: 0,
-                items: order.order_items.map(item => ({
-                    productId: item.product_id,
-                    productName: item.products?.name || 'Product',
-                    price: item.price,
-                    quantity: item.quantity
-                }))
+                items: order.order_items
+            });
+
+            // Push purchase event
+            window.DataLayerManager.pushPurchase({
+                id: order.id,
+                transactionId: order.id,
+                total: order.total,
+                totalRevenue: order.total,
+                items: order.order_items
             });
         }
     } catch (error) {

@@ -25,11 +25,9 @@ export class Cart {
         this.notify();
         window.showToast(`Added ${product.name} to cart!`);
 
-        // ADOBE LAUNCH: Track add_to_cart event
-        // Hook into this event for cart addition rules
-        if (window.DataLayer) {
-            window.DataLayer.trackAddToCart(product, quantity);
-            window.DataLayer.updateCart(this.items, this.getTotal());
+        // DATA LAYER: Push add_to_cart event
+        if (window.DataLayerManager) {
+            window.DataLayerManager.pushAddToCart(product, quantity);
         }
     }
 
@@ -41,11 +39,9 @@ export class Cart {
         this.save();
         this.notify();
 
-        // ADOBE LAUNCH: Track remove_from_cart event
-        // Hook into this event for cart removal rules
-        if (window.DataLayer && removedItem) {
-            window.DataLayer.trackRemoveFromCart(productId, removedItem.name);
-            window.DataLayer.updateCart(this.items, this.getTotal());
+        // DATA LAYER: Push remove_from_cart event
+        if (window.DataLayerManager && removedItem) {
+            window.DataLayerManager.pushRemoveFromCart(removedItem, removedItem.quantity);
         }
     }
 

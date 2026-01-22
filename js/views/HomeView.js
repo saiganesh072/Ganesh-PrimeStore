@@ -303,14 +303,10 @@ export default function HomeView() {
 }
 
 export const onMounted = async () => {
-    // ADOBE LAUNCH: Set page-level data for home page
-    // Hook into this for home page specific rules
-    if (window.DataLayer) {
-        window.DataLayer.setPageData({
-            pageName: 'PrimeStore | Home',
-            pageType: 'home',
-            siteSection: 'main'
-        });
+    // DATA LAYER: Push page and user data for home page
+    if (window.DataLayerManager) {
+        window.DataLayerManager.pushPageData('home', 'PrimeStore | Home', 'main');
+        // User data will be pushed automatically by auth subscriber
     }
 
     // Render featured products

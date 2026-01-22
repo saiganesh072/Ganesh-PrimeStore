@@ -62,6 +62,11 @@ export const view = () => `
 `;
 
 export const onMounted = () => {
+    // DATA LAYER: Push page data for login page
+    if (window.DataLayerManager) {
+        window.DataLayerManager.pushPageData('login', 'PrimeStore | Sign In', 'account');
+    }
+
     // Tab switching
     const tabBtns = document.querySelectorAll('.tab-btn');
     const loginForm = document.getElementById('login-form');

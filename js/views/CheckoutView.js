@@ -103,26 +103,27 @@ export const onMounted = () => {
 
     renderSummary(items);
 
-    // ADOBE LAUNCH: Track checkout_start event
-    // Hook into this for checkout funnel tracking rules
-    if (window.DataLayer) {
-        // Set page-level data for checkout page
-        window.DataLayer.setPageData({
-            pageName: 'PrimeStore | Checkout',
-            pageType: 'checkout',
-            siteSection: 'checkout'
+    // DATA LAYER: Push page, cart, checkout, and begin_checkout event
+    if (window.DataLayerManager) {
+        // Push page data for checkout
+        window.DataLayerManager.pushPageData('checkout', 'PrimeStore | Checkout', 'checkout');
+
+        // Push cart data
+        window.DataLayerManager.pushCartData({
+            items: items,
+            subtotal: window.cart.getTotal(),
+            total: window.cart.getTotal()
         });
 
-        // Track checkout start with cart state
-        window.DataLayer.trackCheckoutStart({
-            items: items.map(item => ({
-                productId: item.id,
-                productName: item.name,
-                price: item.price,
-                quantity: item.quantity
-            })),
-            itemCount: items.reduce((sum, item) => sum + item.quantity, 0),
-            subtotal: window.cart.getTotal()
+        // Push checkout step data
+        window.DataLayerManager.pushCheckoutData(1, 'shipping', {
+            shippingMethod: 'standard'
+        });
+
+        // Push begin_checkout event
+        window.DataLayerManager.pushBeginCheckout({
+            items: items,
+            total: window.cart.getTotal()
         });
     }
 
