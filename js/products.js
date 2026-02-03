@@ -218,5 +218,241 @@ export const products = [
         "tags": ["boots", "hiking", "outdoor", "waterproof"],
         "colors": ["#D2691E", "#8B4513"],
         "sizes": ["7", "8", "9", "10", "11", "12", "13"]
+    },
+    // Men's Clothing
+    {
+        "id": "sai1001",
+        "name": "Slim Fit Oxford Shirt",
+        "price": 59.99,
+        "image": "images/products/mens_oxford_shirt.png",
+        "category": "men",
+        "description": "Premium white Oxford shirt in slim fit. Crisp cotton fabric with button-down collar. Perfect for business or smart casual occasions.",
+        "tags": ["formal", "shirt", "oxford", "cotton"],
+        "colors": ["#FFFFFF", "#87CEEB", "#FFB6C1"],
+        "sizes": ["S", "M", "L", "XL", "XXL"]
+    },
+    {
+        "id": "sai1002",
+        "name": "Classic Polo Shirt",
+        "price": 45.00,
+        "image": "images/products/mens_polo.png",
+        "category": "men",
+        "description": "Premium navy blue polo with pique cotton texture. Embroidered logo detail. Timeless style for any occasion.",
+        "tags": ["casual", "polo", "cotton", "classic"],
+        "colors": ["#000080", "#DC143C", "#228B22"],
+        "sizes": ["S", "M", "L", "XL"]
+    },
+    {
+        "id": "sai1003",
+        "name": "Classic Denim Jacket",
+        "price": 89.99,
+        "image": "images/products/mens_denim_jacket.png",
+        "category": "men",
+        "description": "Authentic denim jacket in medium blue wash. Metal buttons and timeless design. Essential layering piece for any wardrobe.",
+        "tags": ["denim", "jacket", "casual", "classic"],
+        "colors": ["#4169E1", "#000000", "#87CEEB"],
+        "sizes": ["S", "M", "L", "XL"]
+    },
+    {
+        "id": "sai1004",
+        "name": "Premium Wool Blazer",
+        "price": 189.00,
+        "image": "images/products/mens_wool_blazer.png",
+        "category": "men",
+        "description": "Sophisticated charcoal gray wool blazer with two-button design. Notch lapel and fine tailoring for a refined look.",
+        "tags": ["formal", "blazer", "wool", "tailored"],
+        "colors": ["#2F4F4F", "#000080", "#2F2F2F"],
+        "sizes": ["38", "40", "42", "44", "46"]
+    },
+    {
+        "id": "sai1005",
+        "name": "Slim Fit Chinos",
+        "price": 65.00,
+        "image": "images/products/mens_chinos.png",
+        "category": "men",
+        "description": "Modern slim fit chinos in classic khaki. Premium cotton twill with stretch for comfort. Versatile everyday essential.",
+        "tags": ["pants", "chinos", "slim-fit", "cotton"],
+        "colors": ["#D2B48C", "#2F4F4F", "#000080"],
+        "sizes": ["28", "30", "32", "34", "36"]
+    },
+    {
+        "id": "sai1006",
+        "name": "Casual Linen Shirt",
+        "price": 55.00,
+        "image": "images/products/mens_linen_shirt.png",
+        "category": "men",
+        "description": "Light blue linen shirt with relaxed fit. Natural breathable fabric perfect for warm weather. Button-down collar styling.",
+        "tags": ["casual", "linen", "summer", "breathable"],
+        "colors": ["#87CEEB", "#FFFFFF", "#F5F5DC"],
+        "sizes": ["S", "M", "L", "XL"]
+    },
+    {
+        "id": "sai1007",
+        "name": "Athletic Hoodie",
+        "price": 69.99,
+        "image": "images/products/mens_hoodie.png",
+        "category": "men",
+        "description": "Premium heather gray athletic hoodie. Soft fleece interior with kangaroo pocket. Perfect for workouts or casual wear.",
+        "tags": ["athletic", "hoodie", "casual", "fleece"],
+        "colors": ["#808080", "#000000", "#2F4F4F"],
+        "sizes": ["S", "M", "L", "XL", "XXL"]
+    },
+    {
+        "id": "sai1008",
+        "name": "V-Neck Cashmere Sweater",
+        "price": 149.00,
+        "image": "images/products/mens_cashmere_sweater.png",
+        "category": "men",
+        "description": "Luxurious burgundy V-neck cashmere sweater. Fine knit texture with elegant finish. The ultimate in comfort and style.",
+        "tags": ["luxury", "cashmere", "knitwear", "winter"],
+        "colors": ["#800020", "#2F4F4F", "#000080"],
+        "sizes": ["S", "M", "L", "XL"]
+    },
+    {
+        "id": "sai1009",
+        "name": "Tailored Dress Pants",
+        "price": 95.00,
+        "image": "images/products/mens_dress_pants.png",
+        "category": "men",
+        "description": "Elegant charcoal gray dress pants in wool blend. Tailored fit with pressed crease. Essential for the modern professional.",
+        "tags": ["formal", "pants", "tailored", "wool"],
+        "colors": ["#2F4F4F", "#000000", "#2F2F2F"],
+        "sizes": ["28", "30", "32", "34", "36", "38"]
+    },
+    {
+        "id": "sai1010",
+        "name": "Bomber Jacket",
+        "price": 125.00,
+        "image": "images/products/mens_bomber_jacket.png",
+        "category": "men",
+        "description": "Classic olive green bomber jacket. Ribbed cuffs and hem with front zip. Iconic military-inspired streetwear style.",
+        "tags": ["jacket", "bomber", "streetwear", "military"],
+        "colors": ["#556B2F", "#000000", "#2F4F4F"],
+        "sizes": ["S", "M", "L", "XL"]
+    },
+    // Women's Clothing
+    {
+        "id": "sai2001",
+        "name": "Floral Midi Dress",
+        "price": 85.00,
+        "image": "images/products/womens_floral_dress.png",
+        "category": "women",
+        "description": "Elegant pink floral midi dress with flutter sleeves. Soft flowing fabric with romantic rose pattern. Perfect for special occasions.",
+        "tags": ["dress", "floral", "romantic", "midi"],
+        "colors": ["#FFB6C1", "#FFFFFF", "#98FB98"],
+        "sizes": ["XS", "S", "M", "L"]
+    },
+    {
+        "id": "sai2002",
+        "name": "Silk Blouse",
+        "price": 120.00,
+        "image": "images/products/womens_silk_blouse.png",
+        "category": "women",
+        "description": "Luxurious ivory silk blouse with delicate pearl buttons. Soft drape and elegant collar. Timeless sophistication.",
+        "tags": ["silk", "blouse", "luxury", "elegant"],
+        "colors": ["#FFFFF0", "#000000", "#FFB6C1"],
+        "sizes": ["XS", "S", "M", "L", "XL"]
+    },
+    {
+        "id": "sai2003",
+        "name": "High-Waist Skinny Jeans",
+        "price": 79.00,
+        "image": "images/products/womens_skinny_jeans.png",
+        "category": "women",
+        "description": "Dark indigo skinny jeans with high waist fit. Premium stretch denim for comfort. Flattering silhouette for all body types.",
+        "tags": ["denim", "jeans", "skinny", "stretch"],
+        "colors": ["#00008B", "#000000", "#87CEEB"],
+        "sizes": ["24", "26", "28", "30", "32"]
+    },
+    {
+        "id": "sai2004",
+        "name": "Cashmere Cardigan",
+        "price": 165.00,
+        "image": "images/products/womens_cardigan.png",
+        "category": "women",
+        "description": "Soft pink cashmere cardigan with button front. Ultra-soft fine knit for luxurious comfort. Perfect layering piece.",
+        "tags": ["cashmere", "cardigan", "knitwear", "luxury"],
+        "colors": ["#FFB6C1", "#F5F5DC", "#808080"],
+        "sizes": ["XS", "S", "M", "L"]
+    },
+    {
+        "id": "sai2005",
+        "name": "Pleated Maxi Skirt",
+        "price": 75.00,
+        "image": "images/products/womens_pleated_skirt.png",
+        "category": "women",
+        "description": "Champagne gold pleated maxi skirt. Flowing fabric with elegant movement. Statement piece for sophisticated style.",
+        "tags": ["skirt", "pleated", "maxi", "elegant"],
+        "colors": ["#D4AF37", "#C0C0C0", "#000000"],
+        "sizes": ["XS", "S", "M", "L"]
+    },
+    {
+        "id": "sai2006",
+        "name": "Cropped Blazer",
+        "price": 135.00,
+        "image": "images/products/womens_cropped_blazer.png",
+        "category": "women",
+        "description": "Chic black cropped blazer with gold buttons. Fitted design with double-breasted styling. Power dressing essential.",
+        "tags": ["blazer", "cropped", "formal", "power-dressing"],
+        "colors": ["#000000", "#FFFFFF", "#2F4F4F"],
+        "sizes": ["XS", "S", "M", "L", "XL"]
+    },
+    {
+        "id": "sai2007",
+        "name": "Off-Shoulder Top",
+        "price": 45.00,
+        "image": "images/products/womens_off_shoulder_top.png",
+        "category": "women",
+        "description": "White cotton off-shoulder top with ruffle details. Feminine and fresh summer essential. Lightweight and breathable.",
+        "tags": ["top", "summer", "cotton", "feminine"],
+        "colors": ["#FFFFFF", "#87CEEB", "#FFB6C1"],
+        "sizes": ["XS", "S", "M", "L"]
+    },
+    {
+        "id": "sai2008",
+        "name": "Wrap Dress",
+        "price": 95.00,
+        "image": "images/products/womens_wrap_dress.png",
+        "category": "women",
+        "description": "Navy blue wrap dress with subtle floral print. V-neckline with tie waist. Flattering fit for any occasion.",
+        "tags": ["dress", "wrap", "elegant", "versatile"],
+        "colors": ["#000080", "#000000", "#800020"],
+        "sizes": ["XS", "S", "M", "L", "XL"]
+    },
+    // Footwear
+    {
+        "id": "sai3001",
+        "name": "Classic White Sneakers",
+        "price": 129.00,
+        "image": "images/products/white_sneakers.png",
+        "category": "shoes",
+        "description": "Premium white leather sneakers with minimalist design. Clean modern style with comfortable cushioned sole. Wardrobe essential.",
+        "tags": ["sneakers", "leather", "minimalist", "classic"],
+        "colors": ["#FFFFFF", "#000000", "#F5F5DC"],
+        "sizes": ["6", "7", "8", "9", "10", "11", "12"]
+    },
+    // Bags & Accessories
+    {
+        "id": "sai4001",
+        "name": "Leather Tote Bag",
+        "price": 195.00,
+        "image": "images/products/leather_tote_bag.png",
+        "category": "bag",
+        "description": "Premium brown leather tote bag with gold hardware. Structured design with elegant handles. Sophisticated everyday luxury.",
+        "tags": ["bag", "tote", "leather", "luxury"],
+        "colors": ["#8B4513", "#000000", "#D2B48C"],
+        "sizes": ["One Size"]
+    },
+    // Watches
+    {
+        "id": "sai5001",
+        "name": "Minimalist Leather Watch",
+        "price": 159.00,
+        "image": "images/products/minimalist_watch.png",
+        "category": "watches",
+        "description": "Elegant minimalist watch with brown leather strap. White dial with rose gold case. Timeless design for everyday wear.",
+        "tags": ["watch", "minimalist", "leather", "elegant"],
+        "colors": ["#8B4513", "#000000", "#C0C0C0"],
+        "sizes": ["One Size"]
     }
 ];
