@@ -13,6 +13,45 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Google Tag Manager Data Layer - Initialize IMMEDIATELY before other scripts -->
+    <script>
+        // Initialize data layer array
+        window.dataLayer = window.dataLayer || [];
+
+        // Push initial page load data
+        window.dataLayer.push({
+            page: {
+                pageType: 'about',
+                pageName: document.title,
+                pageCategory: 'info',
+                url: window.location.href,
+                referrer: document.referrer || null,
+                language: navigator.language?.split('-')[0] || 'en',
+                country: 'US',
+                currency: 'USD'
+            },
+            user: {
+                loginStatus: 'logged_out',
+                userType: 'guest'
+            },
+            device: {
+                deviceType: /Mobile|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+                os: /Windows/i.test(navigator.userAgent) ? 'Windows' :
+                    /Mac OS/i.test(navigator.userAgent) ? 'MacOS' :
+                        /Android/i.test(navigator.userAgent) ? 'Android' :
+                            /iOS|iPhone/i.test(navigator.userAgent) ? 'iOS' : 'Unknown',
+                browser: /Chrome/i.test(navigator.userAgent) && !/Edge/i.test(navigator.userAgent) ? 'Chrome' :
+                    /Safari/i.test(navigator.userAgent) && !/Chrome/i.test(navigator.userAgent) ? 'Safari' :
+                        /Firefox/i.test(navigator.userAgent) ? 'Firefox' :
+                            /Edge/i.test(navigator.userAgent) ? 'Edge' : 'Unknown'
+            }
+        });
+    </script>
+
+    <!-- Adobe Launch - Loaded after dataLayer initialization -->
+    <script src="https://assets.adobedtm.com/e78d80a30a77/c6e17ff1045a/launch-b1fbebf85d59-development.min.js"
+        async></script>
 </head>
 
 <body>
