@@ -142,17 +142,23 @@ const DataLayerManager = {
             product: {
                 productId: product.id || product.productId,
                 productName: product.name || product.productName,
+                sku: product.sku || product.id || product.productId,
                 brand: product.brand || 'PrimeStore',
                 categoryLevel1: product.category || product.categoryLevel1,
                 categoryLevel2: product.subcategory || product.categoryLevel2 || null,
                 categoryLevel3: product.categoryLevel3 || null,
+                description: product.description || null,
                 variant: product.variant || null,
                 price: product.originalPrice || product.price,
                 salePrice: product.salePrice || product.price,
-                currency: 'USD',
+                currency: product.currency || 'USD',
                 availability: product.stockStatus || product.availability || 'in_stock',
                 rating: product.rating || null,
-                reviewCount: product.reviewCount || null
+                reviewCount: product.reviewCount || null,
+                tags: product.tags || [],
+                sizes: product.sizes || [],
+                colors: product.colors || [],
+                image: product.image || null
             }
         });
         window.dataLayer.push(productData);

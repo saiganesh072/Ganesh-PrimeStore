@@ -446,9 +446,25 @@ function filterProducts(category) {
     }
 }
 
-function initPDP(params) {
+async function initPDP(params) {
     console.log("PDP Mounted", params);
     const { id } = params;
+
+    // Ensure products are loaded (important for direct PDP navigation)
+    if (products.length === 0) {
+        try {
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Fetch timeout')), 5000)
+            );
+            products = await Promise.race([getProducts(), timeoutPromise]);
+            window.productsData = products;
+            console.log(`PDP: Loaded ${products.length} products from Supabase`);
+        } catch (error) {
+            console.error('Failed to fetch products for PDP, using local:', error.message);
+            products = localProducts;
+            window.productsData = products;
+        }
+    }
 
     const cleanId = id.replace('p-', '');
     const product = products.find(p => p.id === cleanId || p.id === id);
@@ -603,17 +619,24 @@ function initPDP(params) {
             // Push page data for product page
             window.DataLayerManager.pushPageData('pdp', `PrimeStore | ${product.name}`, 'product');
 
-            // Push product data
+            // Push comprehensive product data
             window.DataLayerManager.pushProductData({
                 productId: product.id,
                 productName: product.name,
+                sku: product.id.toUpperCase(),
                 brand: product.brand || 'PrimeStore',
                 categoryLevel1: product.category,
+                description: product.description || '',
                 price: product.price,
                 salePrice: product.salePrice || product.price,
+                currency: 'USD',
                 availability: 'in_stock',
-                rating: product.rating,
-                reviewCount: product.reviewCount
+                rating: product.rating || null,
+                reviewCount: product.reviewCount || null,
+                tags: product.tags || [],
+                sizes: product.sizes || [],
+                colors: product.colors || [],
+                image: product.image || ''
             });
 
             // Push view_item event
