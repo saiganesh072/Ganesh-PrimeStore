@@ -116,14 +116,21 @@ export const onMounted = () => {
             if (result.success) {
                 window.showToast('Welcome back, ' + result.user.name + '!');
                 window.router.navigateTo('/');
-            } else {
-                errorEl.textContent = result.error || 'Invalid credentials';
+                let errorMsg = result.error || 'Invalid credentials';
+                if (errorMsg === 'Failed to fetch') {
+                    errorMsg = 'Network Error: Cannot connect to the auth server. The backend (Supabase) might be paused or unreachable.';
+                }
+                errorEl.textContent = errorMsg;
                 errorEl.style.display = 'block';
                 btn.innerHTML = '<span>Sign In</span>';
                 btn.disabled = false;
             }
         } catch (error) {
-            errorEl.textContent = 'An error occurred. Please try again.';
+            let errorMsg = 'An error occurred. Please try again.';
+            if (error.message === 'Failed to fetch') {
+                errorMsg = 'Network Error: Cannot connect to the auth server. The backend (Supabase) might be paused or unreachable.';
+            }
+            errorEl.textContent = errorMsg;
             errorEl.style.display = 'block';
             btn.innerHTML = '<span>Sign In</span>';
             btn.disabled = false;
@@ -160,13 +167,21 @@ export const onMounted = () => {
                     window.router.navigateTo('/');
                 }
             } else {
-                errorEl.textContent = result.error || 'Could not create account';
+                let errorMsg = result.error || 'Could not create account';
+                if (errorMsg === 'Failed to fetch') {
+                    errorMsg = 'Network Error: Cannot connect to the auth server. The backend (Supabase) might be paused or unreachable.';
+                }
+                errorEl.textContent = errorMsg;
                 errorEl.style.display = 'block';
                 btn.innerHTML = '<span>Create Account</span>';
                 btn.disabled = false;
             }
         } catch (error) {
-            errorEl.textContent = 'An error occurred. Please try again.';
+            let errorMsg = 'An error occurred. Please try again.';
+            if (error.message === 'Failed to fetch') {
+                errorMsg = 'Network Error: Cannot connect to the auth server. The backend (Supabase) might be paused or unreachable.';
+            }
+            errorEl.textContent = errorMsg;
             errorEl.style.display = 'block';
             btn.innerHTML = '<span>Create Account</span>';
             btn.disabled = false;
