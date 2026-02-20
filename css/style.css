@@ -2810,6 +2810,18 @@ img {
     gap: 16px;
 }
 
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 480px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
 .signin-form .form-group {
     margin-bottom: 0;
 }

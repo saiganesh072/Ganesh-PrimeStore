@@ -14,13 +14,15 @@ export const view = () => `
 
             <!-- Login Form -->
             <form id="login-form" class="signin-form active">
-                <div class="form-group">
-                    <label for="login-email">Email</label>
-                    <input type="email" id="login-email" placeholder="you@example.com" required>
-                </div>
-                <div class="form-group">
-                    <label for="login-password">Password</label>
-                    <input type="password" id="login-password" placeholder="••••••••" required minlength="6">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="••••••••" required minlength="6">
+                    </div>
                 </div>
                 <div id="login-error" class="form-error" style="display: none;"></div>
                 <button type="submit" class="btn btn-primary btn-block" id="login-btn">
@@ -30,15 +32,17 @@ export const view = () => `
 
             <!-- Signup Form -->
             <form id="signup-form" class="signin-form" style="display: none;">
-                <div class="form-group">
-                    <label for="signup-name">Full Name</label>
-                    <input type="text" id="signup-name" placeholder="John Doe" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" placeholder="you@example.com" required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="signup-email">Email</label>
-                    <input type="email" id="signup-email" placeholder="you@example.com" required>
-                </div>
-                <div class="form-group">
+                <div class="form-group full-width">
                     <label for="signup-password">Password</label>
                     <input type="password" id="signup-password" placeholder="••••••••" required minlength="6">
                 </div>
